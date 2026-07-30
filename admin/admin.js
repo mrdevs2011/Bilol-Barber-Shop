@@ -2052,7 +2052,11 @@ serviceForm?.addEventListener('submit', async (e) => {
   svSubmitBtn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i>`;
 
   try {
-    const nameRu = uzLatinToCyrillic(name) || null;
+    // Xizmat nomi — ma'noli matn (masalan "Soqol shakllantirish"), shuning
+    // uchun atoqli ot kabi harf almashtirish (translit.js) emas, balki
+    // haqiqiy tarjima (/api/translate) ishlatiladi — xuddi ustalar tavsifi
+    // kabi (yuqoridagi autoTranslateToRu'ga qarang).
+    const nameRu = await autoTranslateToRu(name);
     if (svEditingId) {
       const { error } = await supabaseClient.from('services')
         .update({ name, name_ru: nameRu, price, duration, active: svActive.checked })
