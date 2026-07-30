@@ -5,7 +5,17 @@
     { "source": "/install", "destination": "/install/index.html" },
     { "source": "/admin/install", "destination": "/admin/install/index.html" },
     { "source": "/bron", "destination": "/index.html" },
-    { "source": "/bron/", "destination": "/index.html" }
+    { "source": "/bron/", "destination": "/index.html" },
+    { "source": "/admin/today", "destination": "/admin/index.html" },
+    { "source": "/admin/today/", "destination": "/admin/index.html" },
+    { "source": "/admin/bookings", "destination": "/admin/index.html" },
+    { "source": "/admin/bookings/", "destination": "/admin/index.html" },
+    { "source": "/admin/staff", "destination": "/admin/index.html" },
+    { "source": "/admin/staff/", "destination": "/admin/index.html" },
+    { "source": "/admin/blocked", "destination": "/admin/index.html" },
+    { "source": "/admin/blocked/", "destination": "/admin/index.html" },
+    { "source": "/admin/reviews", "destination": "/admin/index.html" },
+    { "source": "/admin/reviews/", "destination": "/admin/index.html" }
   ],
   "headers": [
     {

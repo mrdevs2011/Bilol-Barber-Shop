@@ -498,22 +498,32 @@
   .nb-slots-empty{font-size:12.5px; color:var(--ink-3); padding:6px 2px;}
   .nb-hint{font-size:11.5px; color:var(--ink-3); margin:-8px 0 14px;}
 
-  /* ---------- Bronlar / Tahrirlash almashtirgich ---------- */
+  /* ---------- Bo'limlar almashtirgichi ----------
+     Bazaviy (default) ko'rinish — mobil/planshet uchun pastki tab-bar.
+     Eski "gorizontal pill qator" endi hech qayerda default sifatida
+     qolmaydi, shuning uchun max-width:1023px / min-width:1024px
+     media so'rovlari orasida (masalan brauzer zoom/DPI sabab kasr
+     piksel kenglikda, m: 1023.4px) "hech biri mos kelmaydi" degan
+     bo'shliq umuman bo'lmaydi — faqat bitta chegara (1024px) bor. */
+  body{ padding-bottom:calc(60px + env(safe-area-inset-bottom, 0px)); }
   .view-switch{
-    display:flex; gap:8px; max-width:1180px; margin:16px auto 0; padding:0 16px;
-    overflow-x:auto; -webkit-overflow-scrolling:touch; scrollbar-width:none;
+    position:fixed; left:0; right:0; bottom:0; z-index:40;
+    max-width:none; margin:0; overflow-x:visible;
+    padding:6px 6px calc(6px + env(safe-area-inset-bottom, 0px));
+    background:var(--panel); border-top:1px solid var(--line);
+    box-shadow:0 -8px 24px -14px rgba(11,31,26,.25);
+    display:flex; justify-content:stretch; align-items:stretch; gap:2px;
   }
   .view-switch::-webkit-scrollbar{display:none;}
   .view-switch-btn{
-    padding:10px 18px; border-radius:11px; border:1px solid var(--line); background:var(--panel);
-    color:var(--ink-2); font-size:13px; font-weight:700; cursor:pointer; display:flex; align-items:center; gap:8px;
-    transition:all .15s ease; flex-shrink:0; white-space:nowrap;
+    flex:1; flex-direction:column; justify-content:center; align-items:center; gap:3px;
+    padding:7px 4px 6px; border-radius:10px; border:1px solid transparent; background:transparent;
+    color:var(--ink-3); font-size:10.5px; font-weight:700; line-height:1.1; cursor:pointer;
+    display:flex; white-space:nowrap; transition:all .15s ease;
   }
-  .view-switch-btn:hover{border-color:var(--brass);}
-  .view-switch-btn.active{background:var(--ink); color:#FAF8F3; border-color:var(--ink);}
-  @media (max-width:480px){
-    .view-switch-btn{padding:9px 13px; font-size:12.5px; gap:6px;}
-  }
+  .view-switch-btn i{font-size:16.5px;}
+  .view-switch-btn:hover{background:var(--canvas); border-color:transparent;}
+  .view-switch-btn.active{background:transparent; color:var(--brass-deep); border-color:transparent;}
   #viewStaff.hidden, #viewBookings.hidden, #viewDash.hidden{display:none;}
 
   /* ---------- Dashboard ---------- */
@@ -681,33 +691,9 @@
     .staff-grid{grid-template-columns:repeat(auto-fill, minmax(150px, 1fr));}
   }
 
-  /* =====================================================================
-     MOBILE / TABLET LAYOUT UPGRADE — bottom navigation bar
-     Purely additive: only applies below the 1024px desktop-sidebar
-     breakpoint above, so it never conflicts with it. Replaces the old
-     top horizontal-scroll pill row with a fixed bottom tab bar (like a
-     native app), which is easier to reach with a thumb on phones/tablets.
-     ===================================================================== */
-  @media (max-width:1023px){
-    body{ padding-bottom:calc(60px + env(safe-area-inset-bottom, 0px)); }
-
-    #viewSwitch.view-switch{
-      position:fixed; left:0; right:0; bottom:0; z-index:40;
-      max-width:none; margin:0; overflow-x:visible;
-      padding:6px 6px calc(6px + env(safe-area-inset-bottom, 0px));
-      background:var(--panel); border-top:1px solid var(--line);
-      box-shadow:0 -8px 24px -14px rgba(11,31,26,.25);
-      display:flex; justify-content:stretch; align-items:stretch; gap:2px;
-    }
-    .view-switch-btn{
-      flex:1; flex-direction:column; justify-content:center; align-items:center; gap:3px;
-      padding:7px 4px 6px; font-size:10.5px; font-weight:700; line-height:1.1;
-      border-radius:10px; background:transparent; border-color:transparent; color:var(--ink-3);
-    }
-    .view-switch-btn i{font-size:16.5px;}
-    .view-switch-btn:hover{background:var(--canvas); border-color:transparent;}
-    .view-switch-btn.active{background:transparent; border-color:transparent; color:var(--brass-deep);}
-  }
+  /* MOBILE / TABLET LAYOUT — pastki tab-bar endi yuqorida bazaviy (default)
+     qoida sifatida ta'riflangan, shuning uchun bu yerda alohida
+     max-width:1023px bloki kerak emas (1024px yagona chegara). */
 
 
 

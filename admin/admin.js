@@ -426,6 +426,7 @@ function showDashboard() {
   bootView?.classList.add('hidden');
   loginView.classList.add('hidden');
   dashView.classList.remove('hidden');
+  activateViewFromLocation();
   loadBookings();
   loadCatalog(supabaseClient).then(() => { populateNbMasterSelect(); renderDashboard(); });
   refreshCommentsBadge();
@@ -1344,17 +1345,48 @@ function escapeHtml(str) {
 // ---------------------------------------------------------------------------
 // "Bronlar" / "Tahrirlash" almashtirgichi
 // ---------------------------------------------------------------------------
-viewSwitch?.addEventListener('click', (e) => {
-  const btn = e.target.closest('.view-switch-btn');
-  if (!btn) return;
-  viewSwitch.querySelectorAll('.view-switch-btn').forEach(b => {
-    b.classList.remove('active');
-    b.removeAttribute('aria-current');
-  });
-  btn.classList.add('active');
-  btn.setAttribute('aria-current', 'page');
+// ---------------------------------------------------------------------------
+// URL marshrutlash — har bir bo'lim (tab) o'zining manzili bilan ochiladi
+// (masalan /admin/bookings/), shunda sahifa yangilanganda (F5 / refresh)
+// foydalanuvchi o'sha bo'limda qolaveradi. Manzillar inglizcha, chunki
+// URL'lar odatda lotincha/inglizcha bo'lishi kutiladi.
+// ---------------------------------------------------------------------------
+const VIEW_SLUGS = { dash: 'today', bookings: 'bookings', staff: 'staff', blocked: 'blocked', comments: 'reviews' };
+const SLUG_VIEWS = Object.fromEntries(Object.entries(VIEW_SLUGS).map(([view, slug]) => [slug, view]));
+const VIEW_TITLES = { dash: 'Bugun', bookings: 'Bronlar', staff: 'Tahrirlash', blocked: 'Bloklanganlar', comments: 'Sharhlar' };
 
-  const view = btn.dataset.view;
+// Admin panel qaysi bazaviy yo'lda joylashgan bo'lsa ham (masalan "/admin/"
+// yoki lokal ishlab chiqishda boshqa prefiks bilan) to'g'ri ishlashi uchun,
+// joriy manzildagi "/admin/" segmentidan foydalanamiz.
+function getAdminBasePath() {
+  const path = window.location.pathname;
+  const marker = '/admin/';
+  const idx = path.indexOf(marker);
+  if (idx !== -1) return path.slice(0, idx + marker.length);
+  return '/admin/';
+}
+
+function slugFromLocation() {
+  const base = getAdminBasePath();
+  const path = window.location.pathname;
+  let rest = path.startsWith(base) ? path.slice(base.length) : '';
+  rest = rest.replace(/index\.html$/, '').replace(/^\/+|\/+$/g, '');
+  return rest;
+}
+
+// Bo'limlarni ko'rsatish/yashirish va tegishli ma'lumotni yuklash — bitta
+// joyda, shunda tugma bosilganda ham, sahifa ochilganda/yangilanganda ham,
+// brauzerning orqaga/oldinga tugmalari bosilganda ham bir xil ishlaydi.
+function activateView(view, { pushUrl = true } = {}) {
+  if (!VIEW_SLUGS[view]) view = 'dash';
+
+  viewSwitch?.querySelectorAll('.view-switch-btn').forEach(b => {
+    const isActive = b.dataset.view === view;
+    b.classList.toggle('active', isActive);
+    if (isActive) b.setAttribute('aria-current', 'page');
+    else b.removeAttribute('aria-current');
+  });
+
   viewDash?.classList.toggle('hidden', view !== 'dash');
   viewBookings?.classList.toggle('hidden', view !== 'bookings');
   viewStaff?.classList.toggle('hidden', view !== 'staff');
@@ -1383,6 +1415,34 @@ viewSwitch?.addEventListener('click', (e) => {
     // (currentBookings allaqachon fon rejimida yuklangan bo'ladi).
     renderDashboard();
   }
+
+  const slug = VIEW_SLUGS[view];
+  const url = getAdminBasePath() + slug + '/';
+  document.title = `${VIEW_TITLES[view]} — Admin · BILOL BARBER`;
+  if (pushUrl) {
+    if (window.location.pathname !== url) history.pushState({ view }, '', url);
+  } else {
+    if (window.location.pathname !== url) history.replaceState({ view }, '', url);
+  }
+}
+
+// Sahifa birinchi ochilganda (yoki refresh qilinganda) joriy URL'dagi
+// bo'limni ochadi; noma'lum/bo'sh manzil bo'lsa "Bugun"ga tushadi.
+function activateViewFromLocation() {
+  const slug = slugFromLocation();
+  const view = SLUG_VIEWS[slug] || 'dash';
+  activateView(view, { pushUrl: false });
+}
+
+viewSwitch?.addEventListener('click', (e) => {
+  const btn = e.target.closest('.view-switch-btn');
+  if (!btn) return;
+  activateView(btn.dataset.view);
+});
+
+// Brauzerning orqaga/oldinga tugmalari bosilganda ham to'g'ri bo'limni ochamiz
+window.addEventListener('popstate', () => {
+  activateViewFromLocation();
 });
 
 // Lotin/kirill harflarni ID (slug) ga aylantiradi — yangi xodim/xizmat
