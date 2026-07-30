@@ -734,7 +734,14 @@
       align-items:start;
       min-height:100vh;
     }
-    header.admin-header{grid-area:header; padding:16px 28px;}
+    header.admin-header{
+      grid-area:header; padding:16px 28px;
+      /* Desktop'da header doimo ko'rinib tursin (sidebar "nav" allaqachon
+         top:88px bilan sticky bo'lib, header 88px balandlikda deb hisoblab
+         qo'yilgan edi — lekin header'ning o'zi static bo'lgani uchun u
+         scroll qilinganda yo'qolib, o'sha joyda bo'sh joy qolardi). */
+      position:sticky; top:0; z-index:5;
+    }
     .header-row{max-width:none;}
 
     /* Sidebar */
