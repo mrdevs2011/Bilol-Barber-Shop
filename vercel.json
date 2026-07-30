@@ -2,8 +2,8 @@
   "buildCommand": "npm run build",
   "outputDirectory": ".",
   "rewrites": [
-    { "source": "/install", "destination": "/install.html" },
-    { "source": "/admin/install", "destination": "/admin/install.html" },
+    { "source": "/install", "destination": "/install/index.html" },
+    { "source": "/admin/install", "destination": "/admin/install/index.html" },
     { "source": "/bron", "destination": "/index.html" },
     { "source": "/bron/", "destination": "/index.html" }
   ],

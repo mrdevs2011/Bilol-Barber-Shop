@@ -535,10 +535,11 @@ input[type="date"]::-webkit-calendar-picker-indicator {
    pastki qatori (mualliflik huquqi matni) ustidan chiqib, uni bosib
    turardi va matnni to'liq o'qib bo'lmasdi. Faqat tugma ko'rinadigan
    (640px dan kichik) ekranlarda footerga qo'shimcha pastki joy beramiz.
-   #aloqa ID selektori .pb-10 Tailwind klassidan ustun turishi uchun
-   ataylab shu yerda, class emas, ID orqali yoziladi. */
+   #aloqa endi footer emas, "Aloqa" ustuniga tegishli bo'lgani uchun,
+   footer'ning o'zi uchun #site-footer ID selektoridan foydalanamiz —
+   bu ham .pb-10 Tailwind klassidan ustun turadi. */
 @media (max-width: 639px) {
-  #aloqa { padding-bottom: 6.5rem; }
+  #site-footer { padding-bottom: 6.5rem; }
 }
 
 /* UI TUZATISH: #mastersGrid oldin qattiq "sm:grid-cols-2 lg:grid-cols-4"

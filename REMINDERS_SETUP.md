@@ -148,7 +148,11 @@ vaqt ko'rsatmaydi.
 - Mijoz botda **Start** bosmasa, unga eslatma yuborilmaydi (Telegram shunday
   ishlaydi — botlar avval yozmagan odamga xabar yubora olmaydi). Shuning
   uchun bron tugmasi matnini jozibali qildik, lekin baribir ba'zi mijozlar
-  bosmasligi mumkin.
+  bosmasligi mumkin. Bunday holatda mijozning bron kartasi rasmi (PNG)
+  "tickets" bucket'ida qolib ketmasligi uchun alohida
+  `supabase/functions/cleanup-tickets` funksiyasi bor — u har kuni ishlab,
+  3 kundan eski BARCHA booking-*.png fayllarni (Start bosilgan-bosilmaganidan
+  qat'iy nazar) tozalab turadi. Sozlash: `sql/cleanup_tickets_cron.sql`.
 - Bosqichlar orasidan hech biri "quvib tutilmaydi": agar funksiya biror
   sababdan bir muddat ishlamay qolsa (masalan xizmat ko'rsatmay qolsa),
   mijozga bir vaqtning o'zida bir nechta o'tkazib yuborilgan bosqich

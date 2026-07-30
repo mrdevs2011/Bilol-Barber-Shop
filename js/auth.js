@@ -446,7 +446,14 @@ async function handleAuthSubmit(e) {
 function settingsModal() { return document.getElementById('settingsModal'); }
 
 function openSettingsModal() {
-  if (!currentProfile) return;
+  // "Sozlamalar" tugmasi endi login holatidan qat'iy nazar doim ko'rinadi
+  // (mobil/desktop). Agar mijoz hali kirmagan/ro'yxatdan o'tmagan bo'lsa,
+  // profil tahrirlash oynasi o'rniga login/ro'yxatdan o'tish oynasi
+  // ochiladi — u yerda ham til almashtirish mumkin (authLangToggle).
+  if (!currentProfile) {
+    openAuthModal('login');
+    return;
+  }
   document.getElementById('settingsName').value = currentProfile.full_name || '';
   document.getElementById('settingsPhone').value = currentProfile.phone
     ? formatPhoneMask(currentProfile.phone)

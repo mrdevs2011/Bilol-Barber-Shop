@@ -182,7 +182,7 @@
         <a href="#mening-bronlarim" id="headerMyBookingsBtn" data-auth-logged-in aria-label="Mening bronlarim" title="Mening bronlarim" data-i18n-title="nav.myBookings" class="hidden auth-gate lg:flex w-10 h-10 items-center justify-center rounded-full border border-emerald-900/20 nav-link hover:text-gold-500 hover:border-gold-500/40 transition-colors">
           <i class="fa-regular fa-calendar-check text-lg"></i>
         </a>
-        <button id="headerSettingsBtn" data-auth-logged-in data-open-settings aria-label="Sozlamalar" title="Sozlamalar" data-i18n-title="nav.settings" class="hidden auth-gate lg:flex w-10 h-10 items-center justify-center rounded-full border border-emerald-900/20 nav-link hover:text-gold-500 hover:border-gold-500/40 transition-colors">
+        <button id="headerSettingsBtn" data-open-settings aria-label="Sozlamalar" title="Sozlamalar" data-i18n-title="nav.settings" class="hidden lg:flex w-10 h-10 items-center justify-center rounded-full border border-emerald-900/20 nav-link hover:text-gold-500 hover:border-gold-500/40 transition-colors">
           <i class="fa-solid fa-gear text-lg"></i>
         </button>
         <button id="menuBtn" aria-label="Menyu" aria-expanded="false" aria-controls="mobileMenu" data-i18n-title="a11y.menu" title="Menyu" class="lg:hidden w-10 h-10 flex items-center justify-center rounded-full border border-emerald-900/20">
@@ -202,7 +202,7 @@
     <a href="#mening-bronlarim" data-auth-logged-in class="auth-gate mobile-link text-left hover:text-gold-400">
       <i class="fa-regular fa-calendar-check mr-1.5"></i> <span data-i18n="nav.myBookings">Mening bronlarim</span>
     </a>
-    <button data-auth-logged-in data-open-settings class="auth-gate mobile-link text-left hover:text-gold-400">
+    <button data-open-settings class="mobile-link text-left hover:text-gold-400">
       <i class="fa-solid fa-gear mr-1.5"></i> <span data-i18n="nav.settings">Sozlamalar</span>
     </button>
   </div>
@@ -411,7 +411,7 @@
 </section>
 
 <!-- ================= FOOTER / ALOQA / JOYLASHUV ================= -->
-<footer id="aloqa" class="bg-emerald-950 text-cream pt-20 pb-10">
+<footer id="site-footer" class="bg-emerald-950 text-cream pt-20 pb-10">
   <div class="max-w-7xl mx-auto px-5 md:px-8 grid md:grid-cols-4 gap-12 mb-16">
     <div>
       <div class="flex items-center gap-2.5 mb-5">
@@ -442,7 +442,7 @@
       </a>
     </div>
 
-    <div>
+    <div id="aloqa">
       <h4 class="font-display text-lg font-semibold mb-5" data-i18n="footer.contactTitle">Aloqa</h4>
       <ul class="text-cream/60 text-sm space-y-3">
         <li class="flex items-center gap-2.5"><i class="fa-solid fa-phone text-gold-400 w-4"></i> <a href="tel:+998983114311" class="hover:text-gold-300 transition-colors">+998 98 311 43 11</a></li>
@@ -454,7 +454,7 @@
 
   <div class="max-w-7xl mx-auto px-5 md:px-8 pt-8 border-t border-cream/10 flex flex-col sm:flex-row justify-between items-center gap-3 text-xs text-cream/40">
     <span data-i18n="footer.copyright">© 2026 BILOL BARBER. Barcha huquqlar himoyalangan.</span>
-    <a href="install.html" class="inline-flex items-center gap-1.5 text-cream/60 hover:text-gold-400 transition-colors">
+    <a href="install/" class="inline-flex items-center gap-1.5 text-cream/60 hover:text-gold-400 transition-colors">
       <i class="fa-solid fa-download"></i> <span data-i18n="footer.installApp">Ilovani o'rnatish</span>
     </a>
     <span data-i18n="footer.builtWith">Onlayn bron tizimi bilan ishlab chiqilgan</span>
@@ -657,6 +657,18 @@
         <button id="authModalCloseBtn" aria-label="Yopish" data-i18n-title="a11y.close" title="Yopish" class="w-9 h-9 rounded-full hover:bg-emerald-950/5 flex items-center justify-center text-lg">
           <i class="fa-solid fa-xmark"></i>
         </button>
+      </div>
+
+      <div class="px-6 sm:px-8 pt-6">
+        <label class="block text-sm font-semibold mb-2" data-i18n="settings.language">Til</label>
+        <div id="authLangToggle" class="w-full bg-white border border-emerald-950/15 rounded-xl p-1 flex gap-1 mb-2">
+          <button type="button" data-lang-switch="uz" class="lang-option flex-1 py-2.5 rounded-lg text-sm font-semibold transition-colors">
+            UZ
+          </button>
+          <button type="button" data-lang-switch="ru" class="lang-option flex-1 py-2.5 rounded-lg text-sm font-semibold transition-colors">
+            RU
+          </button>
+        </div>
       </div>
 
       <form id="authForm" class="px-6 sm:px-8 py-6">

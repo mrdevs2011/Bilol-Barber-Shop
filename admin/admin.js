@@ -7,7 +7,7 @@ import { initAdminPWA } from './pwa.js';
 
 // Admin panelni PWA sifatida o'rnatish uchun Service Worker'ni ro'yxatdan
 // o'tkazadi (mijozlar saytidagidan alohida o'rnatilganlik belgisi bilan —
-// batafsili uchun admin/pwa.js va admin/install.html'ga qarang).
+// batafsili uchun admin/pwa.js va admin/install/index.html'ga qarang).
 initAdminPWA();
 
 let supabaseClient = null;
