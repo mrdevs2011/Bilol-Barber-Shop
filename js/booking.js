@@ -274,7 +274,7 @@ function renderModalServiceList() {
         <i class="fa-solid ${s.icon} text-emerald-800/50 text-sm"></i>
       </div>
       <div class="flex items-center gap-3 text-xs text-emerald-950/50 font-mono">
-        <span>${s.duration} daq</span><span>•</span><span>${money(s.price)}</span>
+        <span>${s.duration} ${t('services.minutes')}</span><span>•</span><span>${money(s.price)}</span>
       </div>
     </button>
   `).join('');

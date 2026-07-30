@@ -74,6 +74,11 @@ const DICT = {
 
     // ---- Ticket preview (dekorativ) ----
     'ticket.previewLabel': 'Bron chiptasi',
+    'ticket.previewService': 'Fade / dizaynli kesish',
+    'ticket.previewBarber': 'Barber: Alisher Yusupov',
+    'ticket.previewDate': '24-iyul, Payshanba',
+    'ticket.previewDuration': '50 daqiqa',
+    'ticket.previewPrice': '60 000 so\u2019m',
     'ticket.dateLabel': 'Sana',
     'ticket.timeLabel': 'Vaqt',
     'ticket.durationLabel': 'Davomiyligi',
@@ -244,6 +249,11 @@ const DICT = {
     'srv.cancelTooLate': 'Bronni faqat boshlanishiga kamida 2 soat qolganda bekor qilish mumkin. Iltimos, administrator bilan bog\u2019laning.',
     'srv.reviewBlocked': 'Bloklangan hisob sharh qoldira olmaydi.',
     'srv.invalidCatalog': 'Tanlangan xizmat yoki barber topilmadi. Iltimos, sahifani yangilab qaytadan urinib ko\u2019ring.',
+    'srv.invalidName': 'Ism noto\u2019g\u2019ri kiritilgan. Iltimos, to\u2019liq ismingizni kiriting.',
+    'srv.invalidPhone': 'Telefon raqam noto\u2019g\u2019ri kiritilgan.',
+    'srv.pastDate': 'O\u2019tgan sanaga bron qilib bo\u2019lmaydi. Iltimos, kelajakdagi sanani tanlang.',
+    'srv.rateLimitPhone': 'Siz yaqinda bron yubordingiz. Iltimos, bir necha daqiqadan so\u2019ng qayta urinib ko\u2019ring.',
+    'srv.rateLimitGlobal': 'Hozir so\u2019rovlar soni ko\u2019p. Iltimos, bir necha daqiqadan so\u2019ng qayta urinib ko\u2019ring.',
   },
 
   ru: {
@@ -291,6 +301,11 @@ const DICT = {
     'stats.rating': 'оценка клиентов',
 
     'ticket.previewLabel': 'Талон записи',
+    'ticket.previewService': 'Фейд / дизайнерская стрижка',
+    'ticket.previewBarber': 'Барбер: Алишер Юсупов',
+    'ticket.previewDate': '24 июля, четверг',
+    'ticket.previewDuration': '50 мин.',
+    'ticket.previewPrice': '60 000 сум',
     'ticket.dateLabel': 'Дата',
     'ticket.timeLabel': 'Время',
     'ticket.durationLabel': 'Длительность',
@@ -449,6 +464,11 @@ const DICT = {
     'srv.cancelTooLate': 'Запись можно отменить не позднее чем за 2 часа до начала. Свяжитесь с администратором.',
     'srv.reviewBlocked': 'Заблокированный аккаунт не может оставлять отзывы.',
     'srv.invalidCatalog': 'Выбранная услуга или барбер не найдены. Обновите страницу и попробуйте снова.',
+    'srv.invalidName': 'Имя введено неверно. Пожалуйста, введите полное имя.',
+    'srv.invalidPhone': 'Номер телефона введён неверно.',
+    'srv.pastDate': 'Нельзя записаться на прошедшую дату. Пожалуйста, выберите дату в будущем.',
+    'srv.rateLimitPhone': 'Вы недавно уже отправляли запись. Пожалуйста, повторите попытку через несколько минут.',
+    'srv.rateLimitGlobal': 'Сейчас слишком много запросов. Пожалуйста, повторите попытку через несколько минут.',
   },
 };
 
@@ -527,7 +547,21 @@ const SERVER_ERROR_PATTERNS = [
   [/endi bekor qilib bo.lmaydi/i, 'srv.cannotCancelNow'],
   [/kamida 2 soat qolganda bekor/i, 'srv.cancelTooLate'],
   [/bloklangan hisob sharh/i, 'srv.reviewBlocked'],
-  [/noto.g.ri yoki mavjud bo.lmagan/i, 'srv.invalidCatalog'],
+  // MUHIM: bazadagi haqiqiy (schema_dump.sql) trigger "Noma'lum ... xizmat/
+  // barber" deb yozadi, eski sql/catalog_validation_and_limits.sql patch
+  // faylida esa "Noto'g'ri ... xizmat/barber" — ikkalasi ham ishlab
+  // turgan bo'lishi mumkin bo'lgani uchun ikkalasi ham tanib olinadi.
+  [/(noto.g.ri|noma.lum) yoki mavjud bo.lmagan/i, 'srv.invalidCatalog'],
+  // Quyidagi 5 tasi bookings_before_insert() trigger'idan (schema_dump.sql)
+  // — 1-bosqich auditda o'tkazib yuborilgan, chunki o'sha vaqtda faqat
+  // sql/*.sql patch fayllari ko'rib chiqilgan edi, ammo shu trigger
+  // bazada HAQIQATDA ishlab turibdi va bron yuborishda tez-tez uchrashi
+  // mumkin (masalan ism/telefon validatsiyasi, rate-limit).
+  [/ism noto.g.ri kiritilgan/i, 'srv.invalidName'],
+  [/telefon raqam noto.g.ri kiritilgan/i, 'srv.invalidPhone'],
+  [/o.tgan sanaga bron qilib bo.lmaydi/i, 'srv.pastDate'],
+  [/yaqinda bron yubordingiz/i, 'srv.rateLimitPhone'],
+  [/so.rovlar soni ko.p/i, 'srv.rateLimitGlobal'],
 ];
 
 /**
