@@ -21,6 +21,17 @@
 // (HTTP POST orqali) chaqiradi — shuning uchun bu funksiya o'zi jadval
 // bo'yicha ishlamaydi, faqat chaqirilganda bir marta ishlaydi.
 //
+// KO'P QURILMA/TELEGRAM (sql/PATCH_round18_telegram_link_once_and_
+// subscribers.sql): bitta mijoz turli bronlarida yoki turli qurilmalarida
+// "Telegram orqali eslatma oling" tugmasini necha marta bossa ham (yoki
+// yangi Telegram akkaunt ochsa ham), har bir chat_id telegram_subscribers
+// jadvaliga (mijozning auth user_id'si bilan) yozilib boradi — CHEKSIZ.
+// Bu funksiya endi har bir bron uchun eslatmani FAQAT o'sha bronning
+// client_chat_id ustuniga emas, balki mijozning BARCHA ma'lum
+// chat_id'lariga (client_chat_id + telegram_subscribers'dagi hammasi)
+// yuboradi — mijoz qaysi qurilmadan Telegram ochgan bo'lsa ham, o'sha
+// yerga avtomatik eslatma boradi, hech narsa qayta bosish shart emas.
+//
 // Joylashtirish (deploy):
 //   supabase secrets set TELEGRAM_REMINDER_BOT_TOKEN=<bot_token>
 //   supabase secrets set SB_URL=https://<PROJECT_REF>.supabase.co
@@ -134,12 +145,16 @@ function buildReminderHtml(
 // -----------------------------------------------------------------------------
 Deno.serve(async (_req) => {
   try {
-    // Hali oxirgi (4-) bosqichgacha yetmagan, chat_id bor, bekor qilinmagan
-    // bronlarni olib kelamiz. Aniq vaqt filtri JS tomonda hisoblanadi, chunki
+    // Hali oxirgi (4-) bosqichgacha yetmagan, bekor qilinmagan bronlarni
+    // olib kelamiz. Aniq vaqt filtri JS tomonda hisoblanadi, chunki
     // booking_date+booking_time'ni SQL filterda solishtirish qulay emas.
+    //
+    // MUHIM: endi `client_chat_id=not.is.null` filtri OLIB TASHLANDI —
+    // chat_id yo'q bo'lsa ham, mijozning user_id'siga bog'langan
+    // telegram_subscribers yozuvlari bo'lishi mumkin (pastga qarang).
     const listRes = await fetch(
-      `${SB_URL}/rest/v1/bookings?select=id,client_chat_id,service_name,master_name,booking_date,booking_time,status,reminder_stage,client_lang` +
-        `&reminder_stage=lt.4&client_chat_id=not.is.null&status=neq.cancelled`,
+      `${SB_URL}/rest/v1/bookings?select=id,client_chat_id,user_id,service_name,master_name,booking_date,booking_time,status,reminder_stage,client_lang` +
+        `&reminder_stage=lt.4&status=neq.cancelled`,
       {
         headers: {
           apikey: SB_SERVICE_ROLE_KEY,
@@ -152,7 +167,8 @@ Deno.serve(async (_req) => {
     }
     const bookings: Array<{
       id: number;
-      client_chat_id: number;
+      client_chat_id: number | null;
+      user_id: string | null;
       service_name: string;
       master_name: string;
       booking_date: string;
@@ -160,6 +176,34 @@ Deno.serve(async (_req) => {
       reminder_stage: number | null;
       client_lang: string | null;
     }> = await listRes.json();
+
+    // Shu bronlar egalari (user_id) uchun ma'lum BARCHA chat_id'larni bir
+    // so'rovda olib, xaritaga (user_id -> chat_id[]) yig'amiz — bronlar soni
+    // qancha bo'lmasin, bitta qo'shimcha so'rov yetarli.
+    const subscribersByUser = new Map<string, number[]>();
+    const userIds = [...new Set(bookings.map((b) => b.user_id).filter((id): id is string => !!id))];
+    if (userIds.length > 0) {
+      const subRes = await fetch(
+        `${SB_URL}/rest/v1/telegram_subscribers?select=user_id,chat_id&user_id=in.(${userIds.join(",")})`,
+        {
+          headers: {
+            apikey: SB_SERVICE_ROLE_KEY,
+            Authorization: `Bearer ${SB_SERVICE_ROLE_KEY}`,
+          },
+        },
+      );
+      if (subRes.ok) {
+        const subs: Array<{ user_id: string; chat_id: number }> = await subRes.json();
+        for (const sub of subs) {
+          const list = subscribersByUser.get(sub.user_id) ?? [];
+          list.push(sub.chat_id);
+          subscribersByUser.set(sub.user_id, list);
+        }
+      } else {
+        console.error("telegram_subscribers so'rovi muvaffaqiyatsiz:", await subRes.text());
+        // Davom etamiz — hech bo'lmasa client_chat_id borlarga eslatma boradi.
+      }
+    }
 
     const now = Date.now();
     let sent = 0;
@@ -191,46 +235,69 @@ Deno.serve(async (_req) => {
       }
       if (!target) continue;
 
+      // Shu bron mijoziga tegishli BARCHA chat_id'lar: bronning o'zidagi
+      // client_chat_id (agar bor bo'lsa) + mijoz hisobiga bog'langan
+      // telegram_subscribers'dagi hammasi (necha qurilma/Telegram bo'lsa
+      // ham). Takrorlanish bo'lmasligi uchun Set ishlatiladi.
+      const chatIds = new Set<number>();
+      if (b.client_chat_id) chatIds.add(b.client_chat_id);
+      if (b.user_id) {
+        for (const cid of subscribersByUser.get(b.user_id) ?? []) chatIds.add(cid);
+      }
+      if (chatIds.size === 0) continue; // bu mijoz hech qanday Telegram'ga ulanmagan
+
       const html = buildReminderHtml(minutesLeft, b);
 
-      try {
-        await sendTelegramText(b.client_chat_id, html);
-
-        // Xabar allaqachon mijozga yuborildi — endi reminder_stage'ni
-        // yangilash SHART, aks holda keyingi cron aylanishida (5 daqiqadan
-        // keyin) shu bosqich yana bir marta yuborilib, mijoz ikki marta
-        // xabar oladi. Shu sababli vaqtinchalik tarmoq xatosi uchun bir
-        // necha marta qayta urinamiz.
-        let updateOk = false;
-        let lastErrText = "";
-        for (let attempt = 1; attempt <= 3 && !updateOk; attempt++) {
-          const updateRes = await fetch(`${SB_URL}/rest/v1/bookings?id=eq.${b.id}`, {
-            method: "PATCH",
-            headers: {
-              "Content-Type": "application/json",
-              apikey: SB_SERVICE_ROLE_KEY,
-              Authorization: `Bearer ${SB_SERVICE_ROLE_KEY}`,
-              Prefer: "return=minimal",
-            },
-            body: JSON.stringify({ reminder_stage: target.stage }),
-          });
-          if (updateRes.ok) {
-            updateOk = true;
-          } else {
-            lastErrText = await updateRes.text();
-            if (attempt < 3) await new Promise((r) => setTimeout(r, 500 * attempt));
-          }
+      // Har bir chat_id'ga alohida yuboramiz — bittasi ishlamay qolsa
+      // (masalan mijoz botni bloklagan bo'lsa) qolganlariga baribir boradi.
+      let successCount = 0;
+      for (const cid of chatIds) {
+        try {
+          await sendTelegramText(cid, html);
+          successCount++;
+        } catch (err) {
+          console.error(`Booking #${b.id} (bosqich ${target.stage}) -> chat ${cid} ga yuborilmadi:`, err);
         }
-        if (!updateOk) {
-          throw new Error(
-            `Booking #${b.id} reminder_stage 3 urinishdan keyin ham yangilanmadi (xabar mijozga yuborilgan bo'lishi mumkin!): ${lastErrText}`,
-          );
-        }
-        sent++;
-      } catch (err) {
-        console.error(`Booking #${b.id} (bosqich ${target.stage}) uchun eslatma yuborilmadi:`, err);
-        failed++;
       }
+
+      if (successCount === 0) {
+        // Hech kimga yuborib bo'lmadi — reminder_stage'ni YANGILAMAYMIZ,
+        // shunda keyingi cron aylanishida qayta urinib ko'riladi.
+        failed++;
+        continue;
+      }
+
+      // Kamida bittasiga yuborildi — endi reminder_stage'ni yangilash
+      // SHART, aks holda keyingi cron aylanishida (5 daqiqadan keyin) shu
+      // bosqich yana bir marta yuborilib, mijoz ikki marta xabar oladi.
+      // Shu sababli vaqtinchalik tarmoq xatosi uchun bir necha marta
+      // qayta urinamiz.
+      let updateOk = false;
+      let lastErrText = "";
+      for (let attempt = 1; attempt <= 3 && !updateOk; attempt++) {
+        const updateRes = await fetch(`${SB_URL}/rest/v1/bookings?id=eq.${b.id}`, {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+            apikey: SB_SERVICE_ROLE_KEY,
+            Authorization: `Bearer ${SB_SERVICE_ROLE_KEY}`,
+            Prefer: "return=minimal",
+          },
+          body: JSON.stringify({ reminder_stage: target.stage }),
+        });
+        if (updateRes.ok) {
+          updateOk = true;
+        } else {
+          lastErrText = await updateRes.text();
+          if (attempt < 3) await new Promise((r) => setTimeout(r, 500 * attempt));
+        }
+      }
+      if (!updateOk) {
+        console.error(
+          `Booking #${b.id} reminder_stage 3 urinishdan keyin ham yangilanmadi (xabar mijozga yuborilgan bo'lishi mumkin!): ${lastErrText}`,
+        );
+      }
+      sent++;
     }
 
     return new Response(JSON.stringify({ ok: true, sent, failed }), {

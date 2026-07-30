@@ -32,6 +32,24 @@ telefon qo'ng'irog'i ham emas — **butunlay bepul**.
 Kerak bo'ladigan narsalar: mavjud Telegram bot (allaqachon bor —
 `@bilolbarber_navbat_bot`) va Supabase loyihangiz (allaqachon bor).
 
+> **Havola bir martalik (sql/PATCH_round18):** har bir bronning
+> `t.me/bilolbarber_navbat_bot?start=b<ID>` havolasi faqat BIR MARTA
+> ishlaydi. Birinchi marta muvaffaqiyatli bosilgach, o'sha booking_id
+> uchun havola "eskirgan" bo'lib qoladi — qayta yuborilsa yoki boshqa
+> odam sinab ko'rsa, bot mutlaqo hech qanday javob qaytarmaydi (jim).
+> Eslatma: Telegram bizga havola qayerdan (sahifadagi tugmadanmi, brauzer
+> manzil satridan qo'lda kiritilganmi) ochilganini umuman bildirmaydi —
+> bu Bot API'ning o'zida yo'q. Shu sabab bu farqni ajratib bo'lmaydi,
+> lekin "bir martalik havola" amalda xuddi shu maqsadga xizmat qiladi.
+>
+> **Ko'p qurilma/Telegram:** mijoz botga bir marta ulangach, uning
+> chat_id'si `telegram_subscribers` jadvalida hisobiga (user_id) bog'lab
+> saqlanadi. Shundan keyingi barcha bronlarida — hatto "Telegram orqali
+> eslatma oling" tugmasini bosmasa ham — avtomatik eslatma o'sha yerga
+> boradi. Mijoz yangi telefon/Telegram ochsa, tugmani yana bossa, o'sha
+> chat_id ham xuddi shu hisobga qo'shiladi (cheksiz) — barcha qurilmalari
+> avtomatik eslatma olib turadi.
+
 ---
 
 ## 1-qadam — Supabase CLI o'rnating va loyihaga ulaning
@@ -79,6 +97,9 @@ https://api.telegram.org/bot<TELEGRAM_REMINDER_BOT_TOKEN>/setWebhook?url=https:/
 3. `<PROJECT_REF>` ni `riyanrmrjrartdmwzymt` bilan, `<SB_SERVICE_ROLE_KEY>` ni
    service_role kaliti bilan almashtiring
 4. **Run** tugmasini bosing
+5. Bundan tashqari, `sql/PATCH_round18_telegram_link_once_and_subscribers.sql`
+   faylini ham (bir marta) shu tarzda ishga tushiring — bu bir martalik
+   havola va ko'p-qurilma obuna jadvalini yaratadi.
 
 Tekshirish: `select * from cron.job;` — `send-booking-reminders` nomli job
 ro'yxatda ko'rinishi kerak. Bu job har 5 daqiqada `send-reminders` Edge

@@ -17,6 +17,17 @@
 // o'sha tayyor faylni Storage'dan o'qib, Telegram'ga jo'natadi — hech
 // qanday shrift/rendering muammosi yo'q.
 //
+// MUHIM (4-versiya — BIR MARTALIK HAVOLA): sql/PATCH_round18_telegram_link_
+// once_and_subscribers.sql dan keyin har bir bron uchun t.me/bot?start=bID
+// havolasi FAQAT BIR MARTA ishlaydi (bookings.telegram_link_status: "new"
+// -> "eskirgan"). Havola allaqachon "eskirgan" bo'lsa, bu funksiya HECH
+// QANDAY xabar yubormaydi (na "band", na "xato" — mutlaqo jim javob) —
+// shunga o'xshab qayta yuborilgan/tasodifiy sinalgan havolalar sezilmay
+// qoladi. Bundan tashqari, mijoz (agar hisobga kirgan bo'lsa, ya'ni bron
+// user_id'ga ega bo'lsa) chat_id'si telegram_subscribers jadvaliga ham
+// yoziladi — shu orqali KEYINGI bronlarida bu tugmani qayta bosmasa ham
+// avtomatik eslatma oladi (supabase/functions/send-reminders/index.ts).
+//
 // MUHIM (3-versiya — XAVFSIZLIK TUZATISHI): bu funksiya "--no-verify-jwt"
 // bilan deploy qilinadi (Telegram Supabase JWT yubormagani uchun bu
 // SHART), lekin bu degani — bu manzil butunlay OCHIQ, ya'ni Telegramdan
@@ -194,30 +205,11 @@ Deno.serve(async (req) => {
     }
     const bookingId = match[1];
 
-    // 1) chat_id'ni bronga yozamiz
-    const updateRes = await fetch(`${SB_URL}/rest/v1/bookings?id=eq.${bookingId}`, {
-      method: "PATCH",
-      headers: {
-        "Content-Type": "application/json",
-        apikey: SB_SERVICE_ROLE_KEY,
-        Authorization: `Bearer ${SB_SERVICE_ROLE_KEY}`,
-        Prefer: "return=minimal",
-      },
-      body: JSON.stringify({ client_chat_id: chatId }),
-    });
-
-    if (!updateRes.ok) {
-      // Bu bosqichda hali bookings.client_lang'ni o'qiy olmadik — sukut
-      // bo'yicha o'zbekcha xabar (bron umuman topilmagani uchun bu holatda
-      // farqi kam, lekin baribir aniqlik uchun UZ qoldirildi).
-      await sendTelegramText(chatId, STR.uz.notFound);
-      return new Response("ok");
-    }
-
-    // 2) bronning to'liq ma'lumotini olamiz (matn uchun) — client_lang ham
-    //    shu yerda olinadi, shunga qarab javob tili tanlanadi.
+    // 1) Avval bronni O'QIYMIZ (hali yozmasdan) — telegram_link_status va
+    //    user_id shu yerda kerak bo'ladi: bir martalik havola tekshiruvi
+    //    va obunachini saqlash uchun.
     const getRes = await fetch(
-      `${SB_URL}/rest/v1/bookings?id=eq.${bookingId}&select=id,service_name,master_name,booking_date,booking_time,client_name,client_phone,price,duration,client_lang`,
+      `${SB_URL}/rest/v1/bookings?id=eq.${bookingId}&select=id,service_name,master_name,booking_date,booking_time,client_name,client_phone,price,duration,client_lang,telegram_link_status,user_id`,
       {
         headers: {
           apikey: SB_SERVICE_ROLE_KEY,
@@ -227,12 +219,80 @@ Deno.serve(async (req) => {
     );
     const rows = await getRes.json();
     const b = rows?.[0];
-    const lang = pickLang(b?.client_lang);
-    const s = STR[lang];
 
     if (!b) {
+      // Bron umuman topilmadi (masalan noto'g'ri/xato id) — bu holat
+      // "qayta ishlatilgan havola"dan farqli, shuning uchun tushunarli
+      // xabar bilan javob beramiz. Til hali noma'lum -> sukut o'zbekcha.
+      await sendTelegramText(chatId, STR.uz.notFound);
+      return new Response("ok");
+    }
+
+    // 2) BIR MARTALIK HAVOLA: agar bu bron uchun havola allaqachon
+    //    ishlatilgan bo'lsa ("eskirgan"), MUTLAQO HECH QANDAY xabar
+    //    yubormasdan jimgina to'xtaymiz — qayta yuborilgan yoki
+    //    tasodifiy/ketma-ket sinalgan havolalar sezilmay qoladi.
+    if (b.telegram_link_status === "eskirgan") {
+      return new Response("ok");
+    }
+
+    const lang = pickLang(b.client_lang);
+    const s = STR[lang];
+
+    // 3) chat_id'ni bronga yozamiz VA havolani "eskirgan"ga o'tkazamiz —
+    //    shart (telegram_link_status=eq.new) bilan, shunda ikki so'rov
+    //    bir vaqtda kelib qolsa ham (poyga holati) faqat BIRTASI
+    //    muvaffaqiyatli bo'ladi.
+    const updateRes = await fetch(
+      `${SB_URL}/rest/v1/bookings?id=eq.${bookingId}&telegram_link_status=eq.new`,
+      {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+          apikey: SB_SERVICE_ROLE_KEY,
+          Authorization: `Bearer ${SB_SERVICE_ROLE_KEY}`,
+          Prefer: "return=representation",
+        },
+        body: JSON.stringify({ client_chat_id: chatId, telegram_link_status: "eskirgan" }),
+      },
+    );
+
+    if (!updateRes.ok) {
       await sendTelegramText(chatId, s.linkedNoData);
       return new Response("ok");
+    }
+
+    const updatedRows = await updateRes.json();
+    if (!updatedRows || updatedRows.length === 0) {
+      // Poyga holati: boshqa so'rov bizdan oldin ulgurib, havolani
+      // allaqachon "eskirgan"ga o'tkazgan — jim to'xtaymiz (yuqoridagi
+      // 2-band bilan bir xil qoida).
+      return new Response("ok");
+    }
+
+    // 4) Mijoz hisobga kirgan holda bron qilgan bo'lsa (user_id mavjud),
+    //    shu chat_id'ni telegram_subscribers'ga ham yozib qo'yamiz —
+    //    shunda KEYINGI bronlarida (hatto shu tugmani bosmasa ham)
+    //    send-reminders avtomatik shu chat_id'ga ham eslatma yuboradi.
+    //    Bitta hisobga cheksiz chat_id yozilishi mumkin (unique(user_id,
+    //    chat_id) tufayli takroriy urinish xato bermaydi — merge qilinadi).
+    if (b.user_id) {
+      try {
+        await fetch(`${SB_URL}/rest/v1/telegram_subscribers?on_conflict=user_id,chat_id`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            apikey: SB_SERVICE_ROLE_KEY,
+            Authorization: `Bearer ${SB_SERVICE_ROLE_KEY}`,
+            Prefer: "resolution=merge-duplicates,return=minimal",
+          },
+          body: JSON.stringify({ user_id: b.user_id, chat_id: chatId, lang }),
+        });
+      } catch (subErr) {
+        // Obunachini saqlab bo'lmasa ham mijozga hozirgi tasdiqni
+        // yuborishga xalaqit bermasin — faqat konsolga yozamiz.
+        console.error("telegram_subscribers'ga yozishda xatolik:", subErr);
+      }
     }
 
     const priceFmt = Number(b.price).toLocaleString("uz-UZ") + " " + s.currency;
@@ -246,7 +306,7 @@ Deno.serve(async (req) => {
       `${s.price} ${priceFmt}\n\n` +
       `${s.footer}`;
 
-    // 3) oldindan brauzerda tayyorlangan karta rasmini Storage'dan olib
+    // 5) oldindan brauzerda tayyorlangan karta rasmini Storage'dan olib
     //    yuboramiz. Topilmasa (masalan juda eski bron, rasm hali yo'q
     //    paytda yaratilgan bo'lsa) — mijoz hech bo'lmasa matnli tasdiqni oladi.
     const png = await fetchTicketPng(bookingId);

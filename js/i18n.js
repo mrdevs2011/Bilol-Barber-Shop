@@ -528,7 +528,19 @@ export function getWeekdayNames(short = true) {
 /** Berilgan kalit uchun joriy tildagi matnni qaytaradi. Topilmasa — kalitning o'zi. */
 export function t(key) {
   const lang = getLang();
-  return (DICT[lang] && DICT[lang][key]) || DICT.uz[key] || key;
+  // MUHIM: avval oldingi kod shu yerda "||" zanjiridan foydalangan edi
+  // (DICT[lang][key] || DICT.uz[key] || key). Bu KATTA xato edi — agar
+  // biror til uchun tarjima ATAYLAB bo'sh qator ('') qilib qo'yilgan
+  // bo'lsa (masalan 'hero.title3' rus tilida — gap tarkibiga kirmagani
+  // uchun bo'sh qilingan), bo'sh qator JS'da "falsy" hisoblanadi va "||"
+  // uni "tarjima yo'q" deb noto'g'ri tushunib, o'zbekcha matnni orqasidan
+  // qo'shib yuborardi (natijada rus sarlavhasi oxirida ortiqcha o'zbekcha
+  // so'z chiqib qolardi). Shu sabab endi kalit haqiqatan mavjudmi
+  // (qiymatidan qat'iy nazar) hasOwnProperty bilan aniq tekshiriladi.
+  const table = DICT[lang];
+  if (table && Object.prototype.hasOwnProperty.call(table, key)) return table[key];
+  if (Object.prototype.hasOwnProperty.call(DICT.uz, key)) return DICT.uz[key];
+  return key;
 }
 
 // =============================================================================
