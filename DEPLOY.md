@@ -15,7 +15,8 @@ Settings -> Environment Variables (Production **va** Preview uchun):
 | `SUPABASE_SERVICE_ROLE_KEY` | Supabase -> Settings -> API Keys -> Secret key | Faqat serverga (`/api/notify-admin`) |
 | `TELEGRAM_BOT_TOKEN` | @BotFather -> admin-bot | Faqat serverga |
 | `TELEGRAM_CHAT_ID` | `https://api.telegram.org/bot<TOKEN>/getUpdates` | Faqat serverga |
-| `ALLOWED_ORIGIN` | Saytingiz haqiqiy domeni | Faqat serverga |
+| `ALLOWED_ORIGIN_UZ` | Saytingizning haqiqiy `.uz` domeni (masalan `https://bilolbarber.uz`) | Faqat serverga |
+| `ALLOWED_ORIGIN_VERCEL` | Vercel'ning standart domeni (masalan `https://loyiha-nomi.vercel.app`) | Faqat serverga |
 | `ADMIN_EMAIL` *(ixtiyoriy)* | O'zingiz belgilaysiz | Brauzerga |
 | `TELEGRAM_BOT_USERNAME` *(ixtiyoriy)* | Mijozlar-bot username | Brauzerga |
 

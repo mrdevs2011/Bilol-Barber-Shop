@@ -12,7 +12,9 @@
 //                               (bu kalit FAQAT shu yerda, serverda
 //                               ishlatiladi — hech qachon frontend'ga
 //                               chiqarilmaydi!)
-//   ALLOWED_ORIGIN            — (tavsiya etiladi) https://sizning-domeningiz.uz
+//   ALLOWED_ORIGIN_UZ         — (tavsiya etiladi) https://sizning-domeningiz.uz
+//   ALLOWED_ORIGIN_VERCEL     — (tavsiya etiladi) https://loyiha-nomi.vercel.app
+//                               (Vercel'ning standart preview/prod domeni)
 //
 // HIMOYA QATLAMLARI (xavfsizlik auditidan keyin to'liq versiya):
 //   1) Faqat o'z saytimizdan kelgan so'rovlar (Origin tekshiruvi)
@@ -93,11 +95,19 @@ export default async function handler(req, res) {
     return res.status(405).json({ ok: false, error: 'Method not allowed' });
   }
 
-  // 1) Origin tekshiruvi (agar ALLOWED_ORIGIN sozlangan bo'lsa)
-  const ALLOWED_ORIGIN = process.env.ALLOWED_ORIGIN;
-  if (ALLOWED_ORIGIN) {
+  // 1) Origin tekshiruvi (ALLOWED_ORIGIN_UZ va/yoki ALLOWED_ORIGIN_VERCEL
+  //    sozlangan bo'lsa). Ikkalasi ham bo'sh bo'lsa — tekshiruv o'tkazib
+  //    yuboriladi (masalan lokal devda), aks holda kelgan so'rov shu
+  //    ikkitadan kamida bittasiga mos kelishi shart.
+  const ALLOWED_ORIGINS = [
+    process.env.ALLOWED_ORIGIN_UZ,
+    process.env.ALLOWED_ORIGIN_VERCEL,
+  ].filter(Boolean);
+
+  if (ALLOWED_ORIGINS.length > 0) {
     const origin = req.headers.origin || req.headers.referer || '';
-    if (!origin.startsWith(ALLOWED_ORIGIN)) {
+    const isAllowed = ALLOWED_ORIGINS.some((allowed) => origin.startsWith(allowed));
+    if (!isAllowed) {
       return res.status(403).json({ ok: false, error: 'Forbidden' });
     }
   }
