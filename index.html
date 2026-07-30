@@ -2,7 +2,7 @@
 <html lang="uz">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title data-i18n="meta.title">BILOL BARBER — Onlayn Bron</title>
 <meta name="description" content="BILOL BARBER — erkaklar uchun zamonaviy barber shop. Onlayn navbatga yozilish, xizmatlar va barberlar." data-i18n-content="meta.description">
 <link rel="canonical" href="https://bilolbarber.uz/">
@@ -108,7 +108,7 @@
 <!-- Tailwind + shriftlar + loyiha uslublari — bitta faylga birlashtirilgan
      (avval 3 ta alohida so'rov bo'lgan, endi 1 ta — CSS tezroq yuklanadi,
      "CSS siz" lahzalik ko'rinish (FOUC) kamayadi) -->
-<link rel="stylesheet" href="css/app.css?v=6">
+<link rel="stylesheet" href="css/app.css?v=7">
 
 <!-- "Sharhlar" (haqiqiy mijoz sharhlari) bo'limi uchun uslublar. MUHIM: bu
      bo'lim alohida <style> ichida yozilgan, css/app.css'dagi Tailwind
@@ -185,7 +185,7 @@
         <button id="headerSettingsBtn" data-auth-logged-in data-open-settings aria-label="Sozlamalar" title="Sozlamalar" data-i18n-title="nav.settings" class="hidden auth-gate lg:flex w-10 h-10 items-center justify-center rounded-full border border-emerald-900/20 nav-link hover:text-gold-500 hover:border-gold-500/40 transition-colors">
           <i class="fa-solid fa-gear text-lg"></i>
         </button>
-        <button id="menuBtn" class="lg:hidden w-10 h-10 flex items-center justify-center rounded-full border border-emerald-900/20">
+        <button id="menuBtn" aria-label="Menyu" aria-expanded="false" aria-controls="mobileMenu" data-i18n-title="a11y.menu" title="Menyu" class="lg:hidden w-10 h-10 flex items-center justify-center rounded-full border border-emerald-900/20">
           <i class="fa-solid fa-bars" id="menuIcon"></i>
         </button>
       </div>
@@ -462,12 +462,12 @@
 </footer>
 
 <!-- floating mobile booking button -->
-<button data-open-booking class="sm:hidden fixed bottom-5 inset-x-5 z-30 bg-gold-500 text-emerald-950 font-semibold py-4 rounded-full shadow-2xl shadow-emerald-950/30 flex items-center justify-center gap-2">
+<button id="mobileBookBtn" data-open-booking class="sm:hidden fixed bottom-5 inset-x-5 z-30 bg-gold-500 text-emerald-950 font-semibold py-4 rounded-full shadow-2xl shadow-emerald-950/30 flex items-center justify-center gap-2">
   <i class="fa-regular fa-calendar-check"></i> <span data-i18n="cta.book">Navbatga yozilish</span>
 </button>
 
 <!-- ================= BOOKING MODAL ================= -->
-<div id="bookingModal" class="fixed inset-0 z-50 hidden">
+<div id="bookingModal" class="fixed inset-0 z-50 hidden" role="dialog" aria-modal="true" aria-labelledby="bookingModalTitle">
   <div id="modalBackdrop" class="absolute inset-0 bg-emerald-950/70"></div>
 
   <div class="relative h-full flex items-end sm:items-center justify-center p-0 sm:p-6">
@@ -476,10 +476,10 @@
       <!-- modal header -->
       <div class="sticky top-0 bg-cream z-10 px-6 sm:px-8 pt-6 pb-4 border-b border-emerald-950/10 flex items-center justify-between">
         <div>
-          <h3 class="font-display text-2xl font-semibold" data-i18n="booking.modalTitle">Navbatga yozilish</h3>
+          <h3 id="bookingModalTitle" class="font-display text-2xl font-semibold" data-i18n="booking.modalTitle">Navbatga yozilish</h3>
           <p class="text-xs text-emerald-950/50 mt-1" id="stepLabel">1-qadam / 4 — Xizmatni tanlang</p>
         </div>
-        <button id="modalCloseBtn" class="w-9 h-9 rounded-full hover:bg-emerald-950/5 flex items-center justify-center text-lg">
+        <button id="modalCloseBtn" aria-label="Yopish" data-i18n-title="a11y.close" title="Yopish" class="w-9 h-9 rounded-full hover:bg-emerald-950/5 flex items-center justify-center text-lg">
           <i class="fa-solid fa-xmark"></i>
         </button>
       </div>
@@ -595,7 +595,7 @@
           <h3 class="font-display text-2xl font-semibold" data-i18n="settings.title">Sozlamalar</h3>
           <p class="text-xs text-emerald-950/50 mt-1" data-i18n="settings.subtitle">Ism va telefon raqamingizni yangilang</p>
         </div>
-        <button id="settingsModalCloseBtn" class="w-9 h-9 rounded-full hover:bg-emerald-950/5 flex items-center justify-center text-lg">
+        <button id="settingsModalCloseBtn" aria-label="Yopish" data-i18n-title="a11y.close" title="Yopish" class="w-9 h-9 rounded-full hover:bg-emerald-950/5 flex items-center justify-center text-lg">
           <i class="fa-solid fa-xmark"></i>
         </button>
       </div>
@@ -654,7 +654,7 @@
           <h3 class="font-display text-2xl font-semibold" id="authTitle" data-i18n="auth.loginTitle">Kirish</h3>
           <p class="text-xs text-emerald-950/50 mt-1" data-i18n="auth.subtitle">Navbatga yozilish uchun hisobingizga kiring</p>
         </div>
-        <button id="authModalCloseBtn" class="w-9 h-9 rounded-full hover:bg-emerald-950/5 flex items-center justify-center text-lg">
+        <button id="authModalCloseBtn" aria-label="Yopish" data-i18n-title="a11y.close" title="Yopish" class="w-9 h-9 rounded-full hover:bg-emerald-950/5 flex items-center justify-center text-lg">
           <i class="fa-solid fa-xmark"></i>
         </button>
       </div>

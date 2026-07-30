@@ -72,6 +72,30 @@ button, a { -webkit-tap-highlight-color: transparent; }
   scroll-margin-top: 88px;
 }
 
+/* Notch'li/gesture-navigatsiyali telefonlarda (iPhone 14/15/16 va h.k.)
+   pastki suzuvchi tugma ekran pastidagi "xavfsiz hudud"ga (home indicator)
+   yopishib qolmasligi uchun — Tailwind'ning qattiq "bottom-5" (1.25rem)
+   qiymati o'rniga, qurilmaning xavfsiz maydoni + 1.25rem bo'shliq beriladi. */
+#mobileBookBtn {
+  bottom: calc(env(safe-area-inset-bottom, 0px) + 1.25rem);
+}
+
+/* Standalone PWA rejimida (iOS) header notch/status-bar hududiga
+   yopishib qolmasligi uchun — oddiy brauzerda env() 0 ga teng bo'lgani
+   uchun bu qatorlar hech narsani o'zgartirmaydi, faqat o'rnatilgan
+   ilovada ta'sir qiladi. */
+#siteHeader {
+  padding-top: env(safe-area-inset-top, 0px);
+}
+
+/* KONTRAST TUZATISHI: asl .text-gold-600 (#A9821C) cream fon (#FAF8F3)
+   ustida matn sifatida ishlatilganda WCAG AA (4.5:1) talabini
+   qanoatlantirmaydi (~3.4:1). Bu yerda biroz to'qroq soya bilan
+   almashtirildi (~4.7:1) — brend rangi deyarli bir xil ko'rinadi. */
+.text-gold-600 {
+  color: #8A6B17 !important;
+}
+
 body {
   font-family: 'Manrope', sans-serif;
   background: #FAF8F3;

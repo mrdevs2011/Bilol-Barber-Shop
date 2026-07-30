@@ -110,6 +110,8 @@ const DICT = {
     'err.genericServer': 'Server xatoligi yuz berdi. Iltimos, birozdan so\u2019ng qayta urinib ko\u2019ring.',
     'err.sessionExpired': 'Sessiyangiz muddati tugagan (uzoq vaqt fon rejimida qolgan bo\u2019lishi mumkin). Iltimos, sahifani yangilab, qaytadan urinib ko\u2019ring.',
     'err.networkMobile': 'Internet aloqasi uzilib qoldi. Wi-Fi yoki mobil internetni tekshirib, qaytadan urinib ko\u2019ring.',
+    'a11y.menu': 'Menyu',
+    'a11y.close': 'Yopish',
 
     // ---- Xizmatlar bo'limi ----
     'services.eyebrow': 'Narxnoma',
@@ -339,6 +341,8 @@ const DICT = {
     'err.genericServer': 'Произошла ошибка сервера. Пожалуйста, попробуйте немного позже.',
     'err.sessionExpired': 'Срок вашей сессии истёк (возможно, приложение долго было в фоновом режиме). Обновите страницу и попробуйте снова.',
     'err.networkMobile': 'Соединение с интернетом прервалось. Проверьте Wi-Fi или мобильный интернет и попробуйте снова.',
+    'a11y.menu': 'Меню',
+    'a11y.close': 'Закрыть',
 
     'services.eyebrow': 'Прайс-лист',
     'services.title': 'Услуги и цены',
