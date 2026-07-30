@@ -14,6 +14,31 @@ function friendlyError(message) {
   return err;
 }
 
+// MOBIL QURILMALARDA KO'PROQ UCHRAYDIGAN 2 XATOLIK TURINI ANIQLASH:
+//
+//  1) Tarmoq uzilishi (Wi-Fi <-> mobil internet almashishi, signal
+//     yo'qolishi) — brauzer fetch() so'zsiz "Failed to fetch" yoki
+//     "NetworkError" turidagi texnik xato tashlaydi.
+//  2) Sessiya muddati tugashi — mobil brauzerlar sahifa fon rejimida
+//     (boshqa ilovaga o'tilganda) uzoq turib qolsa uni "muzlatib" qo'yadi,
+//     shu payt Supabase avtomatik token yangilanmaydi; mijoz qaytib kelib
+//     "Bron qilish"ni bossa, eskirgan token bilan so'rov ketadi va server
+//     "JWT expired" / "invalid claim" kabi texnik xato qaytaradi.
+//
+// Ikkalasi ham avval umumiy "server xatoligi" ostida yashiringan edi —
+// endi aniq, mijozga tushunarli va TO'G'RI harakatga chaqiruvchi (sahifani
+// yangilash / internetni tekshirish) xabar bilan almashtiriladi.
+function classifyUnexpectedError(err) {
+  const msg = String(err?.message || err || '');
+  if (/failed to fetch|network ?error|load failed|ERR_INTERNET|ERR_NETWORK/i.test(msg)) {
+    return friendlyError(t('err.networkMobile'));
+  }
+  if (/jwt|token is expired|invalid claim|session.*(expired|missing)|refresh_token/i.test(msg)) {
+    return friendlyError(t('err.sessionExpired'));
+  }
+  return null; // tanib bo'lmadi — chaqiruvchi tomon o'zining odatiy (generic) xabarini ko'rsatadi
+}
+
 let supabaseClient = null;
 
 export function initSupabase() {
@@ -406,7 +431,22 @@ export async function submitBookingToBackend({ service, master, date, time, name
   // qiladi — sql/auth_and_noshow.sql'ga qarang). js/booking.js har doim
   // login qilingandan keyingina shu funksiyani chaqiradi, shuning uchun
   // bu yerda sessiya bo'lishi kerak; bo'lmasa aniq xabar bilan to'xtaymiz.
-  const { data: { user } } = await supabaseClient.auth.getUser();
+  //
+  // MUHIM (mobil qurilmalar): bu yerdan boshlab try/catch bilan o'raymiz —
+  // agar ilova uzoq vaqt fon rejimida turgach mijoz qaytib kelsa (tarmoq
+  // uzilgan yoki token eskirgan bo'lishi mumkin), supabase-js xom texnik
+  // xato ("Failed to fetch", "JWT expired" va h.k.) tashlab yuborishi
+  // mumkin — buni aniqlab, mijozga TO'G'RI (harakatga chaqiruvchi) xabar
+  // ko'rsatamiz, "server xatoligi" degan tushunarsiz umumiy matn o'rniga.
+  let user;
+  try {
+    const authResult = await supabaseClient.auth.getUser();
+    user = authResult.data.user;
+  } catch (err) {
+    const classified = classifyUnexpectedError(err);
+    if (classified) throw classified;
+    throw err;
+  }
   if (!user) {
     throw friendlyError(t('err.bookLoginRequired'));
   }
@@ -420,7 +460,16 @@ export async function submitBookingToBackend({ service, master, date, time, name
   // shu patch albatta ishga tushirilishi kerak.
   row.client_lang = getLang();
 
-  const { data: inserted, error } = await supabaseClient.from('bookings').insert([row]).select('id').single();
+  let inserted, error;
+  try {
+    const insertResult = await supabaseClient.from('bookings').insert([row]).select('id').single();
+    inserted = insertResult.data;
+    error = insertResult.error;
+  } catch (err) {
+    const classified = classifyUnexpectedError(err);
+    if (classified) throw classified;
+    throw err;
+  }
   if (error) {
     // Postgres unique constraint xatosi (kod 23505) — demak shu vaqtga
     // ayni damda boshqa kimdir ulgurib bron qilib qo'ygan.
@@ -438,6 +487,10 @@ export async function submitBookingToBackend({ service, master, date, time, name
     // qilingan xabar chiqadi.
     const translated = translateServerError(error.message);
     if (translated) throw friendlyError(translated);
+    // Tarjima qilinmadi — tarmoq/sessiya muammosi bo'lishi mumkinmi,
+    // oxirgi marta shuni tekshiramiz, faqat shundan keyin generic'ga tushamiz.
+    const classified = classifyUnexpectedError(error);
+    if (classified) throw classified;
     console.error('Kutilmagan Supabase xatoligi (tarjima qilinmadi):', error.message);
     throw friendlyError(t('booking.errGeneric') + '. ' + t('booking.errRetry'));
   }

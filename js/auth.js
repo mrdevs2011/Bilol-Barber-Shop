@@ -28,6 +28,18 @@ import { t } from './i18n.js';
 // mumkin bo'ladi.
 function friendlyErrorMessage(rawMessage, context) {
   const msg = (rawMessage || '').trim();
+
+  // MOBIL QURILMALARDA KO'PROQ UCHRAYDI: ilova fon rejimida uzoq turib
+  // qolsa (boshqa ilovaga o'tilganda) tarmoq uzilishi yoki sessiya/token
+  // eskirishi mumkin — bularni aniqlab, "server xatoligi" degan noaniq
+  // umumiy xabar o'rniga aniq, harakatga chaqiruvchi xabar ko'rsatamiz.
+  if (/failed to fetch|network ?error|load failed|ERR_INTERNET|ERR_NETWORK/i.test(msg)) {
+    return t('err.networkMobile');
+  }
+  if (/jwt|token is expired|invalid claim|session.*(expired|missing)|refresh_token/i.test(msg)) {
+    return t('err.sessionExpired');
+  }
+
   const looksRaw = !msg || msg === '[]' || msg === '{}' || /^[\[{]/.test(msg);
   if (looksRaw) {
     console.error(`[auth] ${context}: kutilmagan/bo'sh xatolik javobi ->`, rawMessage);
@@ -219,7 +231,18 @@ export async function signUp(fullName, phoneRaw, password) {
   }
 
   if (!data.session) {
-    // "Confirm email" hali OFF qilinmagan bo'lsa shu holat yuz beradi.
+    // Supabase ikkita holatda "session: null, error: null" qaytaradi:
+    //   1) "Confirm email" hali OFF qilinmagan bo'lsa (sozlash muammosi).
+    //   2) Bu email (pseudo-email, ya'ni telefon raqami) allaqachon
+    //      RO'YXATDAN O'TGAN bo'lsa — Supabase buni ataylab xatolik
+    //      qilib qaytarmaydi (email enumeration hujumidan himoya uchun),
+    //      shu o'rniga `identities: []` bilan "muvaffaqiyatli" javob beradi.
+    // Ikkinchisini aniqlab, to'g'ri xabar ko'rsatamiz — aks holda mijoz
+    // bu holatni umumiy server xatosi deb tushunib qoladi.
+    const looksAlreadyRegistered = Array.isArray(data.user?.identities) && data.user.identities.length === 0;
+    if (looksAlreadyRegistered) {
+      throw new Error(t('err.phoneAlreadyRegistered'));
+    }
     throw new Error(t('err.signupIncomplete'));
   }
 
@@ -235,7 +258,15 @@ export async function signIn(phoneRaw, password) {
   const digits = normalizePhone(phoneRaw);
   const email = toPseudoEmail(digits);
   const { data, error } = await client.auth.signInWithPassword({ email, password });
-  if (error) throw new Error(t('err.wrongCredentials'));
+  if (error) {
+    // Avval tarmoq/sessiya muammosi emasligini tekshiramiz — aks holda
+    // mijoz haqiqatan internet uzilgani uchun kira olmayotgan bo'lsa ham,
+    // unga noto'g'ri ravishda "parolingiz xato" deb ko'rsatib yuboramiz.
+    if (/failed to fetch|network ?error|load failed|ERR_INTERNET|ERR_NETWORK/i.test(error.message || '')) {
+      throw new Error(t('err.networkMobile'));
+    }
+    throw new Error(t('err.wrongCredentials'));
+  }
 
   await loadProfile(data.user.id);
   updateHeaderUI();

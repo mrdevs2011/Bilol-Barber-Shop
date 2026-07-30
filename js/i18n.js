@@ -108,6 +108,8 @@ const DICT = {
     'err.slotTaken': 'Kechirasiz, bu vaqt hozirgina band qilindi. Iltimos, boshqa vaqtni tanlang.',
     'err.accountBlocked': 'Hisobingiz vaqtincha bloklangan (bir necha marta navbatga kelmaganingiz sabab). Administrator bilan bog\u2019laning.',
     'err.genericServer': 'Server xatoligi yuz berdi. Iltimos, birozdan so\u2019ng qayta urinib ko\u2019ring.',
+    'err.sessionExpired': 'Sessiyangiz muddati tugagan (uzoq vaqt fon rejimida qolgan bo\u2019lishi mumkin). Iltimos, sahifani yangilab, qaytadan urinib ko\u2019ring.',
+    'err.networkMobile': 'Internet aloqasi uzilib qoldi. Wi-Fi yoki mobil internetni tekshirib, qaytadan urinib ko\u2019ring.',
 
     // ---- Xizmatlar bo'limi ----
     'services.eyebrow': 'Narxnoma',
@@ -335,6 +337,8 @@ const DICT = {
     'err.slotTaken': 'Извините, это время только что заняли. Пожалуйста, выберите другое время.',
     'err.accountBlocked': 'Ваш аккаунт временно заблокирован (из-за неявок на запись). Свяжитесь с администратором.',
     'err.genericServer': 'Произошла ошибка сервера. Пожалуйста, попробуйте немного позже.',
+    'err.sessionExpired': 'Срок вашей сессии истёк (возможно, приложение долго было в фоновом режиме). Обновите страницу и попробуйте снова.',
+    'err.networkMobile': 'Соединение с интернетом прервалось. Проверьте Wi-Fi или мобильный интернет и попробуйте снова.',
 
     'services.eyebrow': 'Прайс-лист',
     'services.title': 'Услуги и цены',
