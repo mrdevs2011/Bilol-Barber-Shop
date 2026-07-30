@@ -4,11 +4,42 @@
 import { SUPABASE_URL, SUPABASE_ANON_KEY, ADMIN_EMAIL } from '../js/config.js';
 import { MASTERS, SERVICES, generateDaySlots, loadCatalog } from '../js/data.js';
 import { initAdminPWA } from './pwa.js';
+import { uzLatinToCyrillic } from './translit.js';
 
 // Admin panelni PWA sifatida o'rnatish uchun Service Worker'ni ro'yxatdan
 // o'tkazadi (mijozlar saytidagidan alohida o'rnatilganlik belgisi bilan —
 // batafsili uchun admin/pwa.js va admin/install/index.html'ga qarang).
 initAdminPWA();
+
+// ---------------------------------------------------------------------------
+// Tavsif (description) matnlarini o'zbekchadan ruschaga avtomatik tarjima
+// qilish uchun /api/translate serverless funksiyasiga murojaat qiladi
+// (haqiqiy ma'no tarjimasi kerak — shuning uchun translit.js emas, bu
+// ishlatiladi). Xatolik bo'lsa (masalan API kalit sozlanmagan yoki tarmoq
+// muammosi) null qaytaradi — bu holda saqlashda description_ru bo'sh
+// qoladi va sayt avtomatik o'zbekcha matnga qaytadi (js/data.js -> pickLang()),
+// ya'ni saqlash jarayoni hech qachon bloklanmaydi.
+// ---------------------------------------------------------------------------
+async function autoTranslateToRu(text) {
+  const trimmed = (text || '').trim();
+  if (!trimmed) return null;
+  try {
+    const res = await fetch('/api/translate', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ text: trimmed }),
+    });
+    const data = await res.json().catch(() => null);
+    if (!res.ok || !data?.ok || !data.translated) {
+      console.warn("Avtomatik tarjima muvaffaqiyatsiz:", data?.error || res.status);
+      return null;
+    }
+    return data.translated;
+  } catch (err) {
+    console.warn('Avtomatik tarjima xatolik:', err);
+    return null;
+  }
+}
 
 let supabaseClient = null;
 let currentBookings = [];
@@ -178,9 +209,7 @@ const staffModal       = document.getElementById('staffModal');
 const staffCloseBtn    = document.getElementById('staffCloseBtn');
 const staffForm         = document.getElementById('staffForm');
 const stName            = document.getElementById('stName');
-const stNameRu          = document.getElementById('stNameRu');
 const stDesc            = document.getElementById('stDesc');
-const stDescRu          = document.getElementById('stDescRu');
 const stPhoto           = document.getElementById('stPhoto');
 const stPhotoPreviewWrap= document.getElementById('stPhotoPreviewWrap');
 const stPhotoPreview    = document.getElementById('stPhotoPreview');
@@ -196,7 +225,6 @@ const serviceModal     = document.getElementById('serviceModal');
 const serviceCloseBtn  = document.getElementById('serviceCloseBtn');
 const serviceForm       = document.getElementById('serviceForm');
 const svName             = document.getElementById('svName');
-const svNameRu           = document.getElementById('svNameRu');
 const svPrice            = document.getElementById('svPrice');
 const svDuration         = document.getElementById('svDuration');
 const svActive           = document.getElementById('svActive');
@@ -1716,9 +1744,7 @@ function openStaffModal(row = null) {
   stPhotoFile = null;
   document.getElementById('staffModalTitle').textContent = row ? "Xodimni tahrirlash" : "Yangi xodim";
   stName.value = row?.name || '';
-  stNameRu.value = row?.name_ru || '';
   stDesc.value = row?.description || '';
-  stDescRu.value = row?.description_ru || '';
   stActive.checked = row ? !!row.active : true;
   stPhoto.value = '';
   stError.classList.add('hidden');
@@ -1849,6 +1875,13 @@ staffForm?.addEventListener('submit', async (e) => {
   stSubmitBtn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i>`;
 
   try {
+    const description = stDesc.value.trim() || null;
+    // Ism — atoqli ot, shuning uchun API emas, faqat harf almashtirish
+    // (lotin -> kirill) orqali o'giriladi (translit.js). Tavsif esa haqiqiy
+    // ma'no tarjimasi talab qiladi, shuning uchun /api/translate chaqiriladi.
+    const nameRu = uzLatinToCyrillic(name) || null;
+    const descriptionRu = description ? await autoTranslateToRu(description) : null;
+
     let photoUrl = null;
     const oldPhotoUrl = stEditingId ? allStaffRows.find(m => String(m.id) === String(stEditingId))?.photo_url : null;
     if (stPhotoFile) {
@@ -1861,7 +1894,7 @@ staffForm?.addEventListener('submit', async (e) => {
     }
 
     if (stEditingId) {
-      const patch = { name, name_ru: stNameRu.value.trim() || null, description: stDesc.value.trim() || null, description_ru: stDescRu.value.trim() || null, active: stActive.checked };
+      const patch = { name, name_ru: nameRu, description, description_ru: descriptionRu, active: stActive.checked };
       if (photoUrl) patch.photo_url = photoUrl;
       const { error } = await supabaseClient.from('masters').update(patch).eq('id', stEditingId);
       if (error) throw error;
@@ -1874,7 +1907,7 @@ staffForm?.addEventListener('submit', async (e) => {
       let id = slugify(name);
       if (allStaffRows.some(m => String(m.id) === id)) id = `${id}_${Math.floor(Math.random() * 1000)}`;
       const { error } = await supabaseClient.from('masters').insert({
-        id, name, name_ru: stNameRu.value.trim() || null, description: stDesc.value.trim() || null, description_ru: stDescRu.value.trim() || null, active: stActive.checked, photo_url: photoUrl,
+        id, name, name_ru: nameRu, description, description_ru: descriptionRu, active: stActive.checked, photo_url: photoUrl,
       });
       if (error) throw error;
     }
@@ -1984,7 +2017,6 @@ function openServiceModal(svc = null) {
   svEditingId = svc ? svc.id : null;
   document.getElementById('serviceModalTitle').textContent = svc ? "Xizmatni tahrirlash" : "Yangi xizmat";
   svName.value = svc?.name || '';
-  svNameRu.value = svc?.name_ru || '';
   svPrice.value = svc?.price ?? '';
   svDuration.value = svc?.duration ?? '';
   svActive.checked = svc ? !!svc.active : true;
@@ -2020,15 +2052,16 @@ serviceForm?.addEventListener('submit', async (e) => {
   svSubmitBtn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i>`;
 
   try {
+    const nameRu = uzLatinToCyrillic(name) || null;
     if (svEditingId) {
       const { error } = await supabaseClient.from('services')
-        .update({ name, name_ru: svNameRu.value.trim() || null, price, duration, active: svActive.checked })
+        .update({ name, name_ru: nameRu, price, duration, active: svActive.checked })
         .eq('id', svEditingId);
       if (error) throw error;
     } else {
       let id = slugify(name);
       if (allServiceRows.some(s => String(s.id) === id)) id = `${id}_${Math.floor(Math.random() * 1000)}`;
-      const { error } = await supabaseClient.from('services').insert({ id, name, name_ru: svNameRu.value.trim() || null, price, duration, active: svActive.checked });
+      const { error } = await supabaseClient.from('services').insert({ id, name, name_ru: nameRu, price, duration, active: svActive.checked });
       if (error) throw error;
     }
 

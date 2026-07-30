@@ -17,6 +17,7 @@ Settings -> Environment Variables (Production **va** Preview uchun):
 | `TELEGRAM_CHAT_ID` | `https://api.telegram.org/bot<TOKEN>/getUpdates` | Faqat serverga |
 | `ALLOWED_ORIGIN_UZ` | Saytingizning haqiqiy `.uz` domeni (masalan `https://bilolbarber.uz`) | Faqat serverga |
 | `ALLOWED_ORIGIN_VERCEL` | Vercel'ning standart domeni (masalan `https://loyiha-nomi.vercel.app`) | Faqat serverga |
+| `GOOGLE_TRANSLATE_API_KEY` | Google Cloud Console -> "Cloud Translation API"ni yoqib, API kalit yarating | Faqat serverga (`/api/translate`) — admin panelda xodim/xizmat tavsifini uz->ru avtomatik tarjima qilish uchun |
 | `ADMIN_EMAIL` *(ixtiyoriy)* | O'zingiz belgilaysiz | Brauzerga |
 | `TELEGRAM_BOT_USERNAME` *(ixtiyoriy)* | Mijozlar-bot username | Brauzerga |
 
