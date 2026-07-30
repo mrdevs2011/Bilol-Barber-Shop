@@ -17,7 +17,7 @@
 <link rel="stylesheet" href="/css/app.css?v=1">
 <style>
   :root{
-    --ink:#0B1F1A; --ink-2:rgba(11,31,26,.62); --ink-3:rgba(11,31,26,.42); --ink-4:rgba(11,31,26,.14);
+    --ink:#0B1F1A; --ink-2:rgba(11,31,26,.62); --ink-3:rgba(11,31,26,.62); --ink-4:rgba(11,31,26,.14);
     --forest:#0E4B3A;
     --canvas:#F3F0E8; --panel:#FFFFFF; --line:rgba(11,31,26,.09);
     --brass:#C9A227; --brass-deep:#8A6A18; --brass-soft:#F7EDCB;
@@ -41,6 +41,23 @@
   a{color:inherit;}
   button, select, input{font-family:inherit;}
   :focus-visible{outline:2px solid var(--brass); outline-offset:2px;}
+  /* Themed slim scrollbar for panels with their own scroll (sidebar, modals,
+     time-slot grids) so the browser's default thick bar doesn't clash. */
+  .modal-card, .nb-slots, #viewSwitch.view-switch{
+    scrollbar-width:thin; scrollbar-color:var(--ink-4) transparent;
+  }
+  .modal-card::-webkit-scrollbar, .nb-slots::-webkit-scrollbar, #viewSwitch.view-switch::-webkit-scrollbar{
+    width:6px;
+  }
+  .modal-card::-webkit-scrollbar-track, .nb-slots::-webkit-scrollbar-track, #viewSwitch.view-switch::-webkit-scrollbar-track{
+    background:transparent;
+  }
+  .modal-card::-webkit-scrollbar-thumb, .nb-slots::-webkit-scrollbar-thumb, #viewSwitch.view-switch::-webkit-scrollbar-thumb{
+    background:var(--ink-4); border-radius:999px;
+  }
+  .modal-card::-webkit-scrollbar-thumb:hover, .nb-slots::-webkit-scrollbar-thumb:hover, #viewSwitch.view-switch::-webkit-scrollbar-thumb:hover{
+    background:var(--ink-3);
+  }
   @media (prefers-reduced-motion: reduce){
     *{animation-duration:.001ms !important; animation-iteration-count:1 !important; transition-duration:.001ms !important;}
   }
@@ -154,7 +171,10 @@
   .stat-card{
     background:var(--panel); border:1px solid var(--line); border-radius:var(--radius);
     padding:16px 17px; display:flex; flex-direction:column; gap:10px;
-    box-shadow:0 1px 2px rgba(11,31,26,.03);
+    box-shadow:0 1px 2px rgba(11,31,26,.03); transition:transform .1s ease;
+  }
+  @media (max-width:1023px){
+    .stat-card:active{transform:scale(.97); background:var(--canvas);}
   }
   .stat-top{display:flex; align-items:center; justify-content:space-between;}
   .stat-icon{
@@ -251,7 +271,8 @@
   }
   .booking-row.urgency-urgent::before{background:var(--red);}
   .booking-row.urgency-soon::before{background:var(--amber);}
-  .booking-row.urgency-past{opacity:.6; filter:grayscale(1);}
+  .booking-row.urgency-past{opacity:.72;}
+  .booking-row.urgency-past::before{background:var(--ink-4);}
 
   .booking-row.history-row{background:var(--canvas);}
   .booking-row.history-row::before{background:var(--ink-4);}
@@ -333,6 +354,7 @@
     transition:opacity .16s ease, transform .16s ease;
   }
   .booking-row.show-fab .card-delete-fab{ opacity:1; transform:scale(1); pointer-events:auto; }
+  .booking-row.show-fab .card-delete-fab:active{ transform:scale(.88); }
   .card-delete-fab.confirming{ animation:pulse-warn 1s ease infinite; }
   .card-delete-fab:disabled{ opacity:.5; cursor:wait; }
 
@@ -345,6 +367,7 @@
     transition:opacity .16s ease, transform .16s ease;
   }
   .booking-row.show-fab .card-edit-fab{ opacity:1; transform:scale(1); pointer-events:auto; }
+  .booking-row.show-fab .card-edit-fab:active{ transform:scale(.88); }
   .card-edit-fab:hover{ background:var(--forest); }
   .card-edit-fab:disabled{ opacity:.5; cursor:wait; }
 
@@ -610,9 +633,10 @@
   .btn-add{
     padding:9px 15px; border-radius:10px; border:none; background:var(--brass); color:var(--ink);
     font-size:12.5px; font-weight:700; cursor:pointer; display:flex; align-items:center; gap:7px;
-    transition:background .15s ease;
+    transition:background .15s ease, transform .1s ease;
   }
   .btn-add:hover{background:#DCC15E;}
+  .btn-add:active{transform:scale(.96);}
 
   /* ---------- Xodimlar grid ---------- */
   .staff-grid{
@@ -638,9 +662,10 @@
   .icon-btn{
     width:32px; height:32px; border-radius:9px; border:1px solid var(--line); background:var(--canvas);
     color:var(--ink-2); cursor:pointer; display:flex; align-items:center; justify-content:center;
-    transition:border-color .15s ease;
+    transition:border-color .15s ease, transform .1s ease;
   }
   .icon-btn:hover{border-color:var(--brass); color:var(--ink);}
+  .icon-btn:active{transform:scale(.92);}
   .icon-btn-danger:hover{border-color:var(--red); color:var(--red);}
   .icon-btn-danger.confirming{background:var(--red); border-color:var(--red); color:#fff; animation:pulse-warn 1s ease infinite;}
   .icon-btn:disabled{opacity:.5; cursor:wait;}
@@ -858,11 +883,11 @@
   </header>
 
   <nav class="view-switch" id="viewSwitch" aria-label="Bo'limlar">
-    <button type="button" class="view-switch-btn active" data-view="dash" aria-current="page"><i class="fa-solid fa-house" aria-hidden="true"></i> <span class="vsb-label">Bugun</span></button>
-    <button type="button" class="view-switch-btn" data-view="bookings"><i class="fa-solid fa-calendar-check" aria-hidden="true"></i> <span class="vsb-label">Bronlar</span></button>
-    <button type="button" class="view-switch-btn" data-view="staff"><i class="fa-solid fa-user-gear" aria-hidden="true"></i> <span class="vsb-label">Tahrirlash</span></button>
-    <button type="button" class="view-switch-btn" data-view="blocked"><i class="fa-solid fa-ban" aria-hidden="true"></i> <span class="vsb-label">Bloklanganlar</span></button>
-    <button type="button" class="view-switch-btn" data-view="comments"><i class="fa-solid fa-comment-dots" aria-hidden="true"></i> <span class="vsb-label">Sharhlar</span> <span id="commentsPendingBadge" class="hidden vsb-badge" style="background:var(--red); color:#fff; font-size:10.5px; font-weight:700; border-radius:999px; padding:1px 6px; margin-left:4px;">0</span></button>
+    <button type="button" class="view-switch-btn active" data-view="dash" aria-current="page" title="Bugun"><i class="fa-solid fa-house" aria-hidden="true"></i> <span class="vsb-label">Bugun</span></button>
+    <button type="button" class="view-switch-btn" data-view="bookings" title="Bronlar"><i class="fa-solid fa-calendar-check" aria-hidden="true"></i> <span class="vsb-label">Bronlar</span></button>
+    <button type="button" class="view-switch-btn" data-view="staff" title="Tahrirlash"><i class="fa-solid fa-user-gear" aria-hidden="true"></i> <span class="vsb-label">Tahrirlash</span></button>
+    <button type="button" class="view-switch-btn" data-view="blocked" title="Bloklanganlar"><i class="fa-solid fa-ban" aria-hidden="true"></i> <span class="vsb-label">Bloklanganlar</span></button>
+    <button type="button" class="view-switch-btn" data-view="comments" title="Sharhlar"><i class="fa-solid fa-comment-dots" aria-hidden="true"></i> <span class="vsb-label">Sharhlar</span> <span id="commentsPendingBadge" class="hidden vsb-badge" style="background:var(--red); color:#fff; font-size:10.5px; font-weight:700; border-radius:999px; padding:1px 6px; margin-left:4px;">0</span></button>
   </nav>
 
   <!-- ================= BUGUN: kunlik jadval/holat ko'rinishi ================= -->
