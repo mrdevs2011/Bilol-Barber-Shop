@@ -1,0 +1,41 @@
+name: Deploy Supabase Edge Functions
+
+# main (yoki master) branchga push qilinganda, faqat
+# supabase/functions papkasi o'zgargan bo'lsa ishga tushadi.
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "supabase/functions/**"
+      - "supabase/config.toml"
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Repo kodini olish
+        uses: actions/checkout@v4
+
+      - name: Supabase CLI o'rnatish
+        uses: supabase/setup-cli@v1
+        with:
+          version: latest
+
+      - name: Loyihaga ulanish
+        run: supabase link --project-ref $SUPABASE_PROJECT_ID
+        env:
+          SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+          SUPABASE_PROJECT_ID: ${{ secrets.SUPABASE_PROJECT_ID }}
+
+      - name: telegram-webhook funksiyasini deploy qilish
+        run: supabase functions deploy telegram-webhook --no-verify-jwt
+        env:
+          SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+          SUPABASE_PROJECT_ID: ${{ secrets.SUPABASE_PROJECT_ID }}
+
+      - name: send-reminders funksiyasini deploy qilish
+        run: supabase functions deploy send-reminders --no-verify-jwt
+        env:
+          SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+          SUPABASE_PROJECT_ID: ${{ secrets.SUPABASE_PROJECT_ID }}

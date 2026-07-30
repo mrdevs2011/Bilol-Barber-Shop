@@ -1,0 +1,705 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title data-i18n="meta.title">BILOL BARBER — Onlayn Bron</title>
+<meta name="description" content="BILOL BARBER — erkaklar uchun zamonaviy barber shop. Onlayn navbatga yozilish, xizmatlar va barberlar." data-i18n-content="meta.description">
+<link rel="canonical" href="https://bilolbarber.uz/">
+
+<!-- ================= SEO: Open Graph / Twitter Card =================
+     MUHIM: Agar saytingiz boshqa domenda joylashgan bo'lsa (masalan
+     bilolbarber.vercel.app), yuqoridagi <link rel="canonical"> va
+     pastdagi barcha "https://bilolbarber.uz" manzillarini shu haqiqiy
+     domeningizga almashtiring — aks holda Google/Telegram/Instagram
+     noto'g'ri manzilni ko'rsatishi mumkin. -->
+<meta property="og:type" content="business.business">
+<meta property="og:site_name" content="BILOL BARBER">
+<meta property="og:title" content="BILOL BARBER — Onlayn Bron">
+<meta property="og:description" content="Andijondagi ishonchli erkaklar barber shopi. Soch, soqol va tarash xizmatlari uchun bir necha bosishda onlayn navbatga yoziling.">
+<meta property="og:image" content="https://bilolbarber.uz/assets/logo-header.png">
+<meta property="og:url" content="https://bilolbarber.uz/">
+<meta property="og:locale" content="uz_UZ" data-i18n-content="meta.ogLocale">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="BILOL BARBER — Onlayn Bron">
+<meta name="twitter:description" content="Andijondagi ishonchli erkaklar barber shopi. Bir necha bosishda onlayn navbatga yoziling.">
+<meta name="twitter:image" content="https://bilolbarber.uz/assets/logo-header.png">
+
+<!-- ================= SEO: Google uchun LocalBusiness + sharhlar (structured data) =================
+     Bu Google qidiruv natijasida do'kon nomi ostida yulduzcha (★ 4.9) va
+     ish vaqti kabi ma'lumotlarni ko'rsatishga yordam beradi. Sharhlar
+     bo'limini yangilaganda shu ro'yxatni ham yangilab turing. -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "HairSalon",
+  "name": "BILOL BARBER",
+  "image": "https://bilolbarber.uz/assets/logo-header.png",
+  "url": "https://bilolbarber.uz/",
+  "telephone": "+998983114311",
+  "email": "bilolbarber.uz@gmail.com",
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "Bobur ko'chasi, 12-uy",
+    "addressLocality": "Andijon",
+    "addressCountry": "UZ"
+  },
+  "openingHoursSpecification": [
+    { "@type": "OpeningHoursSpecification", "dayOfWeek": ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"], "opens": "09:00", "closes": "20:00" },
+    { "@type": "OpeningHoursSpecification", "dayOfWeek": "Sunday", "opens": "10:00", "closes": "18:00" }
+  ],
+  "sameAs": [
+    "https://www.instagram.com/bilol_ulugbekovich/",
+    "https://t.me/bilolxonoff"
+  ],
+  "priceRange": "30000-65000 UZS",
+  "aggregateRating": {
+    "@type": "AggregateRating",
+    "ratingValue": "4.9",
+    "reviewCount": "127"
+  },
+  "review": [
+    {
+      "@type": "Review",
+      "author": { "@type": "Person", "name": "Javohir M." },
+      "reviewRating": { "@type": "Rating", "ratingValue": "5" },
+      "reviewBody": "Xizmat sifati va muomala juda yoqdi, navbatga onlayn yozilish ham qulay ekan."
+    },
+    {
+      "@type": "Review",
+      "author": { "@type": "Person", "name": "Sardor A." },
+      "reviewRating": { "@type": "Rating", "ratingValue": "5" },
+      "reviewBody": "Fade kesim juda chiroyli chiqdi, endi doim shu yerga kelaman."
+    },
+    {
+      "@type": "Review",
+      "author": { "@type": "Person", "name": "Otabek R." },
+      "reviewRating": { "@type": "Rating", "ratingValue": "4" },
+      "reviewBody": "Barbershop toza va zamonaviy, narxlar ham mos. Tavsiya qilaman."
+    }
+  ]
+}
+</script>
+
+<!-- Favicon -->
+<link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="assets/favicon-16.png">
+<link rel="shortcut icon" href="assets/favicon.ico">
+<link rel="apple-touch-icon" sizes="180x180" href="assets/apple-touch-icon.png">
+
+<!-- ================= PWA: ilova sifatida o'rnatish uchun ================= -->
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#07211A">
+<meta name="mobile-web-app-capable" content="yes">
+<!-- iOS: Bosh ekranga qo'shilganda standalone (fullscreen emas) rejimda ochilishi uchun -->
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Bilol Barber">
+
+<!-- Eng ko'p ishlatiladigan shriftlarni oldindan yuklash (LCP/matn chaqnashini tezlashtirish uchun) -->
+<link rel="preload" as="font" type="font/woff2" href="assets/fonts/manrope-latin-400-normal.woff2" crossorigin>
+<link rel="preload" as="font" type="font/woff2" href="assets/fonts/manrope-latin-600-normal.woff2" crossorigin>
+<link rel="preload" as="font" type="font/woff2" href="assets/fonts/playfair-display-latin-600-normal.woff2" crossorigin>
+
+<!-- FontAwesome (lokal, self-hosted) -->
+<link rel="stylesheet" href="assets/fontawesome/css/all.min.css">
+
+<!-- Tailwind + shriftlar + loyiha uslublari — bitta faylga birlashtirilgan
+     (avval 3 ta alohida so'rov bo'lgan, endi 1 ta — CSS tezroq yuklanadi,
+     "CSS siz" lahzalik ko'rinish (FOUC) kamayadi) -->
+<link rel="stylesheet" href="css/app.css?v=6">
+
+<!-- "Sharhlar" (haqiqiy mijoz sharhlari) bo'limi uchun uslublar. MUHIM: bu
+     bo'lim alohida <style> ichida yozilgan, css/app.css'dagi Tailwind
+     klasslariga TAYANMAYDI — chunki app.css qo'lda oldindan generatsiya
+     qilingan (purge qilingan) fayl va build jarayonida avtomatik qayta
+     yig'ilmaydi, shu sabab yangi qo'shilgan Tailwind klasslari CSS'da
+     umuman bo'lmasligi mumkin edi. -->
+<style>
+  .review-card{background:#fff;border:1px solid rgba(7,33,26,.08);border-radius:1rem;padding:1.5rem;display:flex;flex-direction:column;}
+  .review-card-stars{color:#a9821c;font-size:.85rem;margin-bottom:1rem;letter-spacing:.1em;}
+  .review-card-text{font-size:.875rem;color:rgba(7,33,26,.7);line-height:1.625;margin-bottom:1.5rem;flex:1;}
+  .review-card-foot{display:flex;align-items:center;gap:.75rem;padding-top:1rem;border-top:1px solid rgba(7,33,26,.08);}
+  .review-card-avatar{width:2.5rem;height:2.5rem;border-radius:9999px;background:#0b3b2e;color:#d9bb5c;display:flex;align-items:center;justify-content:center;font-family:'Playfair Display',serif;font-weight:600;font-size:.875rem;flex-shrink:0;}
+  .review-card-name{font-weight:600;font-size:.875rem;color:#07211a;}
+  .review-card-tag{font-size:.75rem;color:rgba(7,33,26,.45);}
+  .review-skel{background:#fff;border:1px solid rgba(7,33,26,.08);border-radius:1rem;padding:1.5rem;height:190px;position:relative;overflow:hidden;}
+  .review-skel::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,transparent,rgba(7,33,26,.05),transparent);animation:review-shimmer 1.4s infinite;}
+  @keyframes review-shimmer{from{transform:translateX(-100%);}to{transform:translateX(100%);}}
+  .review-empty{text-align:center;padding:3.5rem 1rem;color:rgba(7,33,26,.45);}
+  .review-empty i{font-size:1.5rem;margin-bottom:.75rem;display:block;}
+  .review-empty p{font-size:.875rem;}
+  .review-form-card{margin-top:3.5rem;max-width:36rem;margin-left:auto;margin-right:auto;background:#fff;border:1px solid rgba(7,33,26,.08);border-radius:1rem;padding:1.5rem;}
+  .review-form-hint{font-size:.75rem;color:rgba(7,33,26,.5);margin-bottom:1.25rem;}
+  .review-stars{display:flex;align-items:center;gap:.4rem;margin-bottom:1rem;}
+  .review-star{background:none;border:none;cursor:pointer;font-size:1.5rem;line-height:1;color:rgba(7,33,26,.2);padding:.15rem;transition:color .15s, transform .1s;}
+  .review-star:hover{transform:scale(1.08);}
+  .review-star.active{color:#c9a227;}
+  .review-textarea{width:100%;border-radius:.75rem;border:1px solid rgba(7,33,26,.15);padding:.75rem;font-size:.875rem;color:#07211a;font-family:inherit;resize:vertical;}
+  .review-textarea:focus{outline:none;border-color:rgba(201,162,39,.6);}
+  .review-form-footer{display:flex;align-items:center;justify-content:space-between;margin-top:.75rem;}
+  .review-char-count{font-size:.75rem;color:rgba(7,33,26,.4);}
+  .review-submit-btn{background:#0b3b2e;color:#faf8f3;padding:.6rem 1.25rem;border-radius:9999px;border:none;font-size:.875rem;font-weight:600;cursor:pointer;transition:background .15s, opacity .15s;}
+  .review-submit-btn:hover:not(:disabled){background:#0e4b3a;}
+  .review-submit-btn:disabled{opacity:.5;cursor:default;}
+  .review-msg{font-size:.75rem;margin-top:.75rem;}
+  .review-msg.ok{color:#0e4b3a;}
+  .review-msg.err{color:#dc2626;}
+  .review-login-cta{margin-top:2.5rem;max-width:36rem;margin-left:auto;margin-right:auto;text-align:center;}
+  .review-login-btn{background:none;border:none;cursor:pointer;display:inline-flex;align-items:center;gap:.5rem;font-size:.875rem;font-weight:600;color:#0e4b3a;transition:color .15s;}
+  .review-login-btn:hover{color:#a9821c;}
+</style>
+
+<!-- Supabase JS client (lokal UMD build, global "supabase" obyektini beradi) -->
+<script src="js/vendor/supabase.js" defer></script>
+
+</head>
+
+<body class="bg-cream text-emerald-950 antialiased">
+
+<!-- ================= HEADER ================= -->
+<header id="siteHeader" class="fixed top-0 inset-x-0 z-40 transition-all duration-300">
+  <div class="max-w-7xl mx-auto px-5 md:px-8">
+    <div id="headerInner" class="flex items-center justify-between py-5 transition-all duration-300 border-b border-transparent text-cream">
+      <a href="#top" class="flex items-center gap-2.5">
+        <img src="assets/logo-header.png" alt="BILOL BARBER" fetchpriority="high" width="40" height="40" class="w-10 h-10 rounded-full object-cover">
+        <span class="font-display text-xl tracking-[0.15em] font-semibold" id="brandText">BILOL <span class="text-gold-500">BARBER</span></span>
+      </a>
+
+      <nav class="hidden lg:flex items-center gap-9 font-medium text-sm tracking-wide" id="navLinks">
+        <a href="#xizmatlar" class="nav-link hover:text-gold-500 transition-colors" data-i18n="nav.services">Xizmatlar</a>
+        <a href="#ustalar" class="nav-link hover:text-gold-500 transition-colors" data-i18n="nav.masters">Barberlar</a>
+        <a href="#sharhlar" class="nav-link hover:text-gold-500 transition-colors" data-i18n="nav.reviews">Sharhlar</a>
+        <a href="#joylashuv" class="nav-link hover:text-gold-500 transition-colors" data-i18n="nav.location">Joylashuv</a>
+        <a href="#aloqa" class="nav-link hover:text-gold-500 transition-colors" data-i18n="nav.contact">Aloqa</a>
+      </nav>
+
+      <div class="flex items-center gap-3">
+        <button data-open-booking class="hidden lg:inline-flex items-center gap-2 bg-gold-500 hover:bg-gold-600 text-emerald-950 font-semibold text-sm px-5 py-2.5 rounded-full transition-colors">
+          <i class="fa-regular fa-calendar-check"></i> <span data-i18n="cta.book">Navbatga yozilish</span>
+        </button>
+        <a href="#mening-bronlarim" id="headerMyBookingsBtn" data-auth-logged-in aria-label="Mening bronlarim" title="Mening bronlarim" data-i18n-title="nav.myBookings" class="hidden auth-gate lg:flex w-10 h-10 items-center justify-center rounded-full border border-emerald-900/20 nav-link hover:text-gold-500 hover:border-gold-500/40 transition-colors">
+          <i class="fa-regular fa-calendar-check text-lg"></i>
+        </a>
+        <button id="headerSettingsBtn" data-auth-logged-in data-open-settings aria-label="Sozlamalar" title="Sozlamalar" data-i18n-title="nav.settings" class="hidden auth-gate lg:flex w-10 h-10 items-center justify-center rounded-full border border-emerald-900/20 nav-link hover:text-gold-500 hover:border-gold-500/40 transition-colors">
+          <i class="fa-solid fa-gear text-lg"></i>
+        </button>
+        <button id="menuBtn" class="lg:hidden w-10 h-10 flex items-center justify-center rounded-full border border-emerald-900/20">
+          <i class="fa-solid fa-bars" id="menuIcon"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Mobile menu -->
+  <div id="mobileMenu" class="lg:hidden hidden bg-emerald-950 text-cream px-6 py-6 flex flex-col gap-5 font-medium">
+    <a href="#xizmatlar" class="mobile-link hover:text-gold-400" data-i18n="nav.services">Xizmatlar</a>
+    <a href="#ustalar" class="mobile-link hover:text-gold-400" data-i18n="nav.masters">Barberlar</a>
+    <a href="#sharhlar" class="mobile-link hover:text-gold-400" data-i18n="nav.reviews">Sharhlar</a>
+    <a href="#joylashuv" class="mobile-link hover:text-gold-400" data-i18n="nav.location">Joylashuv</a>
+    <a href="#aloqa" class="mobile-link hover:text-gold-400" data-i18n="nav.contact">Aloqa</a>
+    <a href="#mening-bronlarim" data-auth-logged-in class="auth-gate mobile-link text-left hover:text-gold-400">
+      <i class="fa-regular fa-calendar-check mr-1.5"></i> <span data-i18n="nav.myBookings">Mening bronlarim</span>
+    </a>
+    <button data-auth-logged-in data-open-settings class="auth-gate mobile-link text-left hover:text-gold-400">
+      <i class="fa-solid fa-gear mr-1.5"></i> <span data-i18n="nav.settings">Sozlamalar</span>
+    </button>
+  </div>
+</header>
+
+<!-- ================= MENING BRONLARIM (DASHBOARD) =================
+     Login qilgan mijoz saytga kirishi bilan, hech qanday modal ochmasdan,
+     o'z bronlarini shu yerda — bosh sahifaning yuqori qismida — ko'radi. -->
+<section id="mening-bronlarim" data-auth-logged-in class="auth-gate bg-emerald-950 text-cream pt-28 pb-14 md:pt-32 md:pb-16">
+  <div class="max-w-7xl mx-auto px-5 md:px-8">
+    <div class="flex items-center justify-between gap-3 mb-6">
+      <div>
+        <span class="text-gold-400 text-xs tracking-[0.25em] uppercase font-semibold" data-i18n="dashboard.eyebrow">Shaxsiy kabinet</span>
+        <h2 class="font-display text-2xl md:text-3xl font-semibold mt-2" data-i18n="dashboard.title">Mening bronlarim</h2>
+      </div>
+      <button data-open-booking class="hidden sm:inline-flex items-center gap-2 bg-gold-500 hover:bg-gold-600 text-emerald-950 font-semibold text-sm px-5 py-2.5 rounded-full transition-colors shrink-0">
+        <i class="fa-regular fa-calendar-check"></i> <span data-i18n="cta.newBooking">Yangi bron</span>
+      </button>
+    </div>
+    <div id="myBookingsList" class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4"></div>
+  </div>
+</section>
+
+<!-- ================= HERO ================= -->
+<section id="top" class="relative overflow-hidden bg-emerald-950 text-cream pt-40 pb-28 md:pt-48 md:pb-36">
+  <div class="absolute inset-0 bg-noise opacity-40"></div>
+  <div class="absolute -top-32 -right-32 w-[36rem] h-[36rem] rounded-full bg-emerald-700/30 blur-3xl"></div>
+  <div class="absolute -bottom-40 -left-24 w-[30rem] h-[30rem] rounded-full bg-gold-500/10 blur-3xl"></div>
+
+  <div class="relative max-w-7xl mx-auto px-5 md:px-8 grid lg:grid-cols-12 gap-12 items-center">
+    <div class="lg:col-span-7">
+      <div class="inline-flex items-center gap-2 border border-gold-500/40 text-gold-400 text-xs tracking-[0.2em] uppercase px-4 py-1.5 rounded-full mb-7 reveal">
+        <i class="fa-solid fa-star text-[10px]"></i> <span data-i18n="hero.badge">Andijondagi ishonchli erkaklar barber shopi</span>
+      </div>
+      <h1 class="reveal font-display text-4xl sm:text-5xl md:text-6xl font-semibold leading-[1.1] mb-6">
+        <span data-i18n="hero.title1">O'zingizga bo'lgan</span><br class="hidden sm:block">
+        <span data-i18n="hero.title2">ishonchni</span> <span class="italic text-gold-400" data-i18n="hero.titleEm">barberlarimiz</span><br class="hidden sm:block">
+        <span data-i18n="hero.title3">bilan oshiring</span>
+      </h1>
+      <p class="reveal text-cream/70 text-lg max-w-xl mb-9 leading-relaxed" data-i18n="hero.subtitle">
+        Soch, soqol va tarash bo'yicha tajribali barberlar jamoasi — sizga qulay vaqtda, qulay narxda, yuqori sifatli xizmat ko'rsatadi.
+      </p>
+      <div class="reveal flex flex-wrap items-center gap-4">
+        <button data-open-booking class="inline-flex items-center gap-2 bg-gold-500 hover:bg-gold-600 text-emerald-950 font-semibold px-7 py-4 rounded-full transition-colors">
+          <span data-i18n="cta.chooseTime">Vaqtni tanlash</span> <i class="fa-solid fa-arrow-right text-sm"></i>
+        </button>
+        <a href="#xizmatlar" class="inline-flex items-center gap-2 border border-cream/25 hover:border-gold-400 text-cream font-medium px-7 py-4 rounded-full transition-colors" data-i18n="cta.viewServices">
+          Xizmatlarni ko'rish
+        </a>
+      </div>
+
+      <div class="reveal flex items-center gap-8 mt-12 pt-8 border-t border-cream/10">
+        <div>
+          <div class="font-display text-3xl text-gold-400 font-semibold">12+</div>
+          <div class="text-xs text-cream/60 tracking-wide mt-1" data-i18n="stats.experience">yillik tajriba</div>
+        </div>
+        <div class="w-px h-10 bg-cream/15"></div>
+        <div>
+          <div class="font-display text-3xl text-gold-400 font-semibold" id="statMasterCount">4</div>
+          <div class="text-xs text-cream/60 tracking-wide mt-1" data-i18n="stats.masters">tajribali barber</div>
+        </div>
+        <div class="w-px h-10 bg-cream/15"></div>
+        <div>
+          <div class="font-display text-3xl text-gold-400 font-semibold">4.9</div>
+          <div class="text-xs text-cream/60 tracking-wide mt-1" data-i18n="stats.rating">mijozlar bahosi</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Signature: mini ticket preview -->
+    <div class="lg:col-span-5 reveal">
+      <div class="ticket ticket-perf ticket-float max-w-sm mx-auto text-cream p-7">
+        <div class="flex items-center justify-between mb-6">
+          <span class="text-[11px] tracking-[0.25em] text-gold-400 uppercase" data-i18n="ticket.previewLabel">Bron chiptasi</span>
+          <i class="fa-solid fa-scissors text-gold-400"></i>
+        </div>
+        <div class="font-display text-2xl mb-1">Fade / dizaynli kesish</div>
+        <div class="text-cream/60 text-sm mb-6">Barber: Alisher Yusupov</div>
+        <div class="hairline mb-6"></div>
+        <div class="flex justify-between text-sm mb-2">
+          <span class="text-cream/60" data-i18n="ticket.dateLabel">Sana</span>
+          <span class="font-mono">24-iyul, Payshanba</span>
+        </div>
+        <div class="flex justify-between text-sm mb-2">
+          <span class="text-cream/60" data-i18n="ticket.timeLabel">Vaqt</span>
+          <span class="font-mono">14:30</span>
+        </div>
+        <div class="flex justify-between text-sm mb-6">
+          <span class="text-cream/60" data-i18n="ticket.durationLabel">Davomiyligi</span>
+          <span class="font-mono">50 daqiqa</span>
+        </div>
+        <div class="flex justify-between items-center">
+          <span class="text-xs text-cream/50">№ 00427</span>
+          <span class="font-display text-xl text-gold-400">60 000 so'm</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <a href="#xizmatlar" class="scroll-cue hidden sm:flex" aria-hidden="true">
+    <span></span>
+  </a>
+</section>
+
+<!-- ================= XIZMATLAR ================= -->
+<section id="xizmatlar" class="max-w-7xl mx-auto px-5 md:px-8 py-24 md:py-32">
+  <div class="max-w-2xl mb-16 reveal">
+    <span class="text-gold-600 text-xs tracking-[0.25em] uppercase font-semibold" data-i18n="services.eyebrow">Narxnoma</span>
+    <h2 class="font-display text-3xl md:text-5xl font-semibold mt-3 mb-5" data-i18n="services.title">Xizmatlar va narxlar</h2>
+    <p class="text-emerald-950/60 leading-relaxed" data-i18n="services.subtitle">Har bir xizmatni tanlab, to'g'ridan-to'g'ri bron qilish oynasini oching — davomiyligi va narxi oldindan ko'rsatilgan.</p>
+  </div>
+
+  <div id="servicesGrid" class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+</section>
+
+<!-- ================= USTALAR ================= -->
+<section id="ustalar" class="bg-emerald-900 text-cream py-24 md:py-32">
+  <div class="max-w-7xl mx-auto px-5 md:px-8">
+    <div class="max-w-2xl mb-16 reveal">
+      <span class="text-gold-400 text-xs tracking-[0.25em] uppercase font-semibold" data-i18n="masters.eyebrow">Jamoamiz</span>
+      <h2 class="font-display text-3xl md:text-5xl font-semibold mt-3 mb-5" data-i18n="masters.title">Professional barberlar</h2>
+      <p class="text-cream/60 leading-relaxed" data-i18n="masters.subtitle">Har biri o'z sohasida yillar davomida tajriba orttirgan, mijozlar tomonidan sevib tanlangan barberlar.</p>
+    </div>
+    <div id="mastersGrid" class="grid sm:grid-cols-2 lg:grid-cols-3 gap-7"></div>
+  </div>
+</section>
+
+<!-- ================= SHARHLAR ================= -->
+<section id="sharhlar" class="max-w-7xl mx-auto px-5 md:px-8 py-24 md:py-32">
+  <div class="max-w-2xl mb-16 reveal">
+    <span class="text-gold-600 text-xs tracking-[0.25em] uppercase font-semibold" data-i18n="reviews.eyebrow">Mijozlar fikri</span>
+    <h2 class="font-display text-3xl md:text-5xl font-semibold mt-3 mb-5" data-i18n="reviews.title">Bizga ishonishadi</h2>
+    <p class="text-emerald-950/60 leading-relaxed" data-i18n="reviews.subtitle">Har bir mijozimizning fikri biz uchun muhim — quyida ulardan ba'zilarining sharhlari.</p>
+  </div>
+
+  <!-- Haqiqiy mijoz sharhlari: js/reviews.js orqali Supabase'dagi `comments`
+       jadvalidan (faqat status='approved' bo'lganlari) dinamik yuklanadi.
+       Hech qanday qo'lda yozilgan/soxta sharh yo'q. -->
+  <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6" id="reviewsGrid">
+    <div class="review-skel reveal"></div>
+    <div class="review-skel reveal"></div>
+    <div class="review-skel reveal"></div>
+  </div>
+  <div id="reviewsEmpty" class="hidden review-empty">
+    <i class="fa-solid fa-comment-dots"></i>
+    <p data-i18n="reviews.empty">Hozircha tasdiqlangan sharhlar yo'q — birinchi bo'lib fikringizni yozing!</p>
+  </div>
+
+  <!-- Sharh qoldirish: faqat tizimga kirgan (login qilgan) mijoz o'z
+       qurilmasidan yozadi. Ism profildan avtomatik olinadi, "doimiy/yangi
+       mijoz" belgisi esa bron tarixidan serverda hisoblanadi — mijoz o'zi
+       hech narsani "soxta" kiritolmaydi. Yuborilgan sharh admin
+       tasdiqlaguncha bu yerda ko'rinmaydi. -->
+  <div class="reveal review-form-card" data-auth-logged-in>
+    <h3 class="font-display text-lg font-semibold mb-1" data-i18n="reviews.formTitle">Sharh qoldiring</h3>
+    <p class="review-form-hint" data-i18n="reviews.formHint">Yuborilgan sharhingiz tekshiruvdan o'tgach shu sahifada chiqadi.</p>
+    <form id="reviewForm">
+      <div class="review-stars" id="reviewStars" role="radiogroup" aria-label="Bahoingiz">
+        <button type="button" class="review-star" data-star="1" aria-label="1 yulduz"><i class="fa-solid fa-star"></i></button>
+        <button type="button" class="review-star" data-star="2" aria-label="2 yulduz"><i class="fa-solid fa-star"></i></button>
+        <button type="button" class="review-star" data-star="3" aria-label="3 yulduz"><i class="fa-solid fa-star"></i></button>
+        <button type="button" class="review-star" data-star="4" aria-label="4 yulduz"><i class="fa-solid fa-star"></i></button>
+        <button type="button" class="review-star" data-star="5" aria-label="5 yulduz"><i class="fa-solid fa-star"></i></button>
+      </div>
+      <textarea id="reviewText" maxlength="500" rows="3" required placeholder="Xizmat haqida fikringizni yozing..." data-i18n-placeholder="reviews.placeholder" class="review-textarea"></textarea>
+      <div class="review-form-footer">
+        <span id="reviewCharCount" class="review-char-count">0/500</span>
+        <button type="submit" id="reviewSubmitBtn" class="review-submit-btn" data-i18n="reviews.submit">Yuborish</button>
+      </div>
+      <p id="reviewMsg" class="review-msg hidden"></p>
+    </form>
+  </div>
+
+  <div class="reveal review-login-cta" data-auth-logged-out>
+    <button type="button" id="reviewLoginPrompt" class="auth-gate review-login-btn">
+      <i class="fa-solid fa-lock"></i> <span data-i18n="reviews.loginPrompt">Sharh qoldirish uchun hisobingizga kiring</span>
+    </button>
+  </div>
+
+  <div class="reveal mt-10 text-center">
+    <a href="https://www.instagram.com/bilol_ulugbekovich/" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 text-emerald-800 text-sm font-semibold hover:text-gold-600 transition-colors">
+      <i class="fa-brands fa-instagram"></i> <span data-i18n="reviews.instagramCta">Instagramda ko'proq sharh va natijalarni ko'ring</span>
+    </a>
+  </div>
+</section>
+
+<!-- ================= NIMA UCHUN BIZ ================= -->
+<section class="max-w-7xl mx-auto px-5 md:px-8 py-24 md:py-28">
+  <div class="grid md:grid-cols-3 gap-10">
+    <div class="reveal">
+      <i class="fa-solid fa-leaf text-gold-600 text-2xl mb-4"></i>
+      <h3 class="font-display text-xl font-semibold mb-2" data-i18n="why.title1">Premium mahsulotlar</h3>
+      <p class="text-emerald-950/60 leading-relaxed text-sm" data-i18n="why.desc1">Faqat sertifikatlangan, yuqori sifatli professional erkaklar parvarish vositalari bilan ishlaymiz.</p>
+    </div>
+    <div class="reveal">
+      <i class="fa-solid fa-user-check text-gold-600 text-2xl mb-4"></i>
+      <h3 class="font-display text-xl font-semibold mb-2" data-i18n="why.title2">Tajribali barberlar</h3>
+      <p class="text-emerald-950/60 leading-relaxed text-sm" data-i18n="why.desc2">Jamoamiz muntazam malaka oshirish kurslaridan o'tadi va zamonaviy texnikalarni qo'llaydi.</p>
+    </div>
+    <div class="reveal">
+      <i class="fa-solid fa-bolt text-gold-600 text-2xl mb-4"></i>
+      <h3 class="font-display text-xl font-semibold mb-2" data-i18n="why.title3">Tezkor onlayn bron</h3>
+      <p class="text-emerald-950/60 leading-relaxed text-sm" data-i18n="why.desc3">Bir necha bosishda o'zingizga qulay vaqtni tanlang — navbatda kutish shart emas.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ================= FOOTER / ALOQA / JOYLASHUV ================= -->
+<footer id="aloqa" class="bg-emerald-950 text-cream pt-20 pb-10">
+  <div class="max-w-7xl mx-auto px-5 md:px-8 grid md:grid-cols-4 gap-12 mb-16">
+    <div>
+      <div class="flex items-center gap-2.5 mb-5">
+        <img src="assets/logo-header.png" alt="BILOL BARBER" width="40" height="40" class="w-10 h-10 rounded-full object-cover">
+        <span class="font-display text-lg tracking-[0.15em] font-semibold">BILOL <span class="text-gold-500">BARBER</span></span>
+      </div>
+      <p class="text-cream/60 text-sm leading-relaxed" data-i18n="footer.tagline">Ishonchli tarosh — bizning ustunligimiz. Erkaklar uchun premium barber shop xizmatlari.</p>
+      <div class="flex items-center gap-3 mt-6">
+        <a href="https://www.instagram.com/bilol_ulugbekovich/" target="_blank" rel="noopener noreferrer" class="w-9 h-9 rounded-full border border-cream/20 flex items-center justify-center hover:border-gold-400 hover:text-gold-400 transition-colors"><i class="fa-brands fa-instagram"></i></a>
+        <a href="https://t.me/bilolxonoff" target="_blank" rel="noopener noreferrer" class="w-9 h-9 rounded-full border border-cream/20 flex items-center justify-center hover:border-gold-400 hover:text-gold-400 transition-colors"><i class="fa-brands fa-telegram"></i></a>
+      </div>
+    </div>
+
+    <div>
+      <h4 class="font-display text-lg font-semibold mb-5" data-i18n="footer.hoursTitle">Ish vaqti</h4>
+      <ul class="text-cream/60 text-sm space-y-2.5 font-mono">
+        <li class="flex justify-between max-w-[220px]"><span data-i18n="footer.hoursWeekday">Dush – Shan</span><span>09:00 – 20:00</span></li>
+        <li class="flex justify-between max-w-[220px]"><span data-i18n="footer.hoursSunday">Yakshanba</span><span>10:00 – 18:00</span></li>
+      </ul>
+      <p class="text-cream/50 text-xs mt-5 leading-relaxed" data-i18n="footer.hoursNote">Bayram kunlari ish jadvali o'zgarishi mumkin, iltimos oldindan qo'ng'iroq qiling.</p>
+    </div>
+
+    <div id="joylashuv">
+      <h4 class="font-display text-lg font-semibold mb-5" data-i18n="footer.locationTitle">Joylashuv</h4>
+      <p class="text-cream/60 text-sm leading-relaxed mb-4" data-i18n="footer.address">Andijon sh., Bobur ko'chasi, 12-uy</p>
+      <a href="https://maps.google.com/?cid=1076203736938571400" target="_blank" rel="noopener" class="inline-flex items-center gap-2 text-gold-400 text-sm font-medium hover:text-gold-300 transition-colors">
+        <i class="fa-solid fa-map-location-dot"></i> <span data-i18n="footer.viewMap">Xaritada ko'rish</span>
+      </a>
+    </div>
+
+    <div>
+      <h4 class="font-display text-lg font-semibold mb-5" data-i18n="footer.contactTitle">Aloqa</h4>
+      <ul class="text-cream/60 text-sm space-y-3">
+        <li class="flex items-center gap-2.5"><i class="fa-solid fa-phone text-gold-400 w-4"></i> <a href="tel:+998983114311" class="hover:text-gold-300 transition-colors">+998 98 311 43 11</a></li>
+        <li class="flex items-center gap-2.5"><i class="fa-solid fa-envelope text-gold-400 w-4"></i> <a href="mailto:bilolbarber.uz@gmail.com" class="hover:text-gold-300 transition-colors">bilolbarber.uz@gmail.com</a></li>
+        <li class="flex items-center gap-2.5"><i class="fa-brands fa-telegram text-gold-400 w-4"></i> <a href="https://t.me/bilolxonoff" target="_blank" rel="noopener noreferrer" class="hover:text-gold-300 transition-colors">t.me/bilolxonoff</a></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="max-w-7xl mx-auto px-5 md:px-8 pt-8 border-t border-cream/10 flex flex-col sm:flex-row justify-between items-center gap-3 text-xs text-cream/40">
+    <span data-i18n="footer.copyright">© 2026 BILOL BARBER. Barcha huquqlar himoyalangan.</span>
+    <a href="install.html" class="inline-flex items-center gap-1.5 text-cream/60 hover:text-gold-400 transition-colors">
+      <i class="fa-solid fa-download"></i> <span data-i18n="footer.installApp">Ilovani o'rnatish</span>
+    </a>
+    <span data-i18n="footer.builtWith">Onlayn bron tizimi bilan ishlab chiqilgan</span>
+  </div>
+</footer>
+
+<!-- floating mobile booking button -->
+<button data-open-booking class="sm:hidden fixed bottom-5 inset-x-5 z-30 bg-gold-500 text-emerald-950 font-semibold py-4 rounded-full shadow-2xl shadow-emerald-950/30 flex items-center justify-center gap-2">
+  <i class="fa-regular fa-calendar-check"></i> <span data-i18n="cta.book">Navbatga yozilish</span>
+</button>
+
+<!-- ================= BOOKING MODAL ================= -->
+<div id="bookingModal" class="fixed inset-0 z-50 hidden">
+  <div id="modalBackdrop" class="absolute inset-0 bg-emerald-950/70"></div>
+
+  <div class="relative h-full flex items-end sm:items-center justify-center p-0 sm:p-6">
+    <div class="bg-cream w-full sm:max-w-2xl sm:rounded-3xl rounded-t-3xl max-h-[92vh] overflow-y-auto shadow-2xl">
+
+      <!-- modal header -->
+      <div class="sticky top-0 bg-cream z-10 px-6 sm:px-8 pt-6 pb-4 border-b border-emerald-950/10 flex items-center justify-between">
+        <div>
+          <h3 class="font-display text-2xl font-semibold" data-i18n="booking.modalTitle">Navbatga yozilish</h3>
+          <p class="text-xs text-emerald-950/50 mt-1" id="stepLabel">1-qadam / 4 — Xizmatni tanlang</p>
+        </div>
+        <button id="modalCloseBtn" class="w-9 h-9 rounded-full hover:bg-emerald-950/5 flex items-center justify-center text-lg">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+
+      <!-- progress dots -->
+      <div class="flex items-center gap-2 px-6 sm:px-8 pt-5">
+        <div class="step-dot h-1.5 flex-1 rounded-full bg-gold-500" data-step-dot="1"></div>
+        <div class="step-dot h-1.5 flex-1 rounded-full bg-emerald-950/10" data-step-dot="2"></div>
+        <div class="step-dot h-1.5 flex-1 rounded-full bg-emerald-950/10" data-step-dot="3"></div>
+      </div>
+
+      <form id="bookingForm" class="px-6 sm:px-8 py-6">
+
+        <!-- Honeypot: odam foydalanuvchilarga ko'rinmaydi, lekin ko'plab oddiy
+             botlar formadagi barcha maydonlarni avtomatik to'ldiradi. Agar bu
+             maydon to'ldirilgan bo'lsa, yuborishni bot deb hisoblab bekor qilamiz. -->
+        <div class="absolute opacity-0 pointer-events-none -z-10" style="left:-9999px" aria-hidden="true">
+          <label for="companyWebsite">Veb-sayt</label>
+          <input type="text" id="companyWebsite" name="companyWebsite" tabindex="-1" autocomplete="off">
+        </div>
+
+        <!-- STEP 1: Service & Master -->
+        <div class="booking-step" data-step="1">
+          <label class="block text-sm font-semibold mb-3" data-i18n="booking.chooseService">Xizmatni tanlang</label>
+          <div id="modalServiceList" class="grid sm:grid-cols-2 gap-3 mb-7"></div>
+
+          <label class="block text-sm font-semibold mb-3" data-i18n="booking.chooseMaster">Barberni tanlang</label>
+          <div id="modalMasterList" class="grid grid-cols-2 sm:grid-cols-4 gap-3"></div>
+        </div>
+
+        <!-- STEP 2: Date & time -->
+        <div class="booking-step hidden" data-step="2">
+          <label class="block text-sm font-semibold mb-3" data-i18n="booking.chooseDate">Sanani tanlang</label>
+          <div id="monthTabs"></div>
+
+          <div id="dayCardWrap"></div>
+          <input type="hidden" id="bookingDate">
+
+          <label class="block text-sm font-semibold mb-3" data-i18n="booking.chooseTime">Bo'sh vaqtni tanlang</label>
+          <div id="timeSlotWrap" class="flex flex-wrap gap-2.5"></div>
+          <p class="text-xs text-emerald-950/40 mt-3" data-i18n="booking.bookedHint">Band vaqtlar kulrang va o'chirilgan holda ko'rsatiladi.</p>
+        </div>
+
+        <!-- STEP 3: Confirm (ticket summary) -->
+        <div class="booking-step hidden" data-step="3">
+          <div class="ticket ticket-perf text-cream p-6 mb-6">
+            <div id="ticketStamp" class="ticket-stamp hidden" data-i18n="ticket.confirmedStamp">Tasdiqlandi</div>
+
+            <!-- Bron yuborilayotganda chiqadigan, zerikarli bo'lmagan animatsion overlay.
+                 Hatto 10-20 soniya cho'zilib ketsa ham, aylanuvchi halqa, sirg'aluvchi
+                 progress chizig'i va navbat bilan almashinuvchi matnlar orqali
+                 mijozni band qilib turadi. -->
+            <div id="ticketLoadingOverlay" class="ticket-loading-overlay hidden">
+              <div class="ticket-loading-ring">
+                <i class="fa-solid fa-scissors" id="ticketLoadingIcon"></i>
+              </div>
+              <div class="ticket-loading-text" id="ticketLoadingText">Joy tekshirilmoqda...</div>
+              <div class="ticket-loading-bar"><span></span></div>
+              <div class="ticket-loading-dots"><span></span><span></span><span></span></div>
+            </div>
+
+            <div class="flex items-center justify-between mb-5">
+              <span class="text-[11px] tracking-[0.25em] text-gold-400 uppercase" id="ticketLabel" data-i18n="ticket.summaryLabel">Bron xulosasi</span>
+              <i class="fa-solid fa-check-circle text-gold-400"></i>
+            </div>
+            <div class="font-display text-xl mb-1" id="sumService">—</div>
+            <div class="text-cream/60 text-sm mb-5" id="sumMaster">—</div>
+            <div class="hairline mb-5"></div>
+            <div class="flex justify-between text-sm mb-2 hidden" id="sumCodeRow"><span class="text-cream/60" data-i18n="ticket.codeLabel">Bron kodi</span><span class="font-mono" id="sumCode">—</span></div>
+            <div class="flex justify-between text-sm mb-2"><span class="text-cream/60" data-i18n="ticket.dateLabel">Sana</span><span class="font-mono" id="sumDate">—</span></div>
+            <div class="flex justify-between text-sm mb-2"><span class="text-cream/60" data-i18n="ticket.timeLabel">Vaqt</span><span class="font-mono" id="sumTime">—</span></div>
+            <div class="flex justify-between text-sm mb-2"><span class="text-cream/60" data-i18n="ticket.clientLabel">Mijoz</span><span class="font-mono" id="sumClient">—</span></div>
+            <div class="flex justify-between text-sm mb-5"><span class="text-cream/60" data-i18n="ticket.phoneLabel">Telefon</span><span class="font-mono" id="sumPhone">—</span></div>
+            <div class="flex justify-between items-center">
+              <span class="text-xs text-cream/50" id="sumDuration">—</span>
+              <span class="font-display text-xl text-gold-400" id="sumPrice">—</span>
+            </div>
+          </div>
+          <div id="submitStatus" class="text-sm mb-2 hidden"></div>
+          <div id="reminderCta" class="hidden"></div>
+          <div id="ticketDebug" class="hidden text-[11px] mt-2 p-2 rounded bg-red-950/40 text-red-300 break-words"></div>
+        </div>
+
+        <!-- nav buttons -->
+        <div class="flex items-center gap-3 mt-8">
+          <button type="button" id="backBtn" class="hidden flex-1 border border-emerald-950/15 font-semibold py-3.5 rounded-full hover:bg-emerald-950/5 transition-colors" data-i18n="booking.back">
+            Orqaga
+          </button>
+          <button type="button" id="nextBtn" class="flex-1 bg-emerald-950 text-cream font-semibold py-3.5 rounded-full hover:bg-emerald-900 transition-colors" data-i18n="booking.next">
+            Davom etish
+          </button>
+          <button type="button" id="confirmBtn" class="hidden flex-1 bg-gold-500 text-emerald-950 font-semibold py-3.5 rounded-full hover:bg-gold-600 transition-colors">
+            <i class="fa-solid fa-check mr-1"></i> <span data-i18n="booking.confirm">Bron qilish</span>
+          </button>
+          <button type="button" id="closeTicketBtn" class="hidden flex-1 bg-emerald-950 text-cream font-semibold py-3.5 rounded-full hover:bg-emerald-900 transition-colors" data-i18n="booking.close">
+            Yopish
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- ================= SETTINGS MODAL (profil) ================= -->
+<div id="settingsModal" class="fixed inset-0 z-[60] hidden">
+  <div id="settingsModalBackdrop" class="absolute inset-0 bg-emerald-950/70"></div>
+
+  <div class="relative h-full flex items-end sm:items-center justify-center p-0 sm:p-6">
+    <div class="bg-cream w-full sm:max-w-sm sm:rounded-3xl rounded-t-3xl shadow-2xl">
+
+      <div class="px-6 sm:px-8 pt-6 pb-4 border-b border-emerald-950/10 flex items-center justify-between">
+        <div>
+          <h3 class="font-display text-2xl font-semibold" data-i18n="settings.title">Sozlamalar</h3>
+          <p class="text-xs text-emerald-950/50 mt-1" data-i18n="settings.subtitle">Ism va telefon raqamingizni yangilang</p>
+        </div>
+        <button id="settingsModalCloseBtn" class="w-9 h-9 rounded-full hover:bg-emerald-950/5 flex items-center justify-center text-lg">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+
+      <div class="px-6 sm:px-8 pt-6">
+        <label class="block text-sm font-semibold mb-2" data-i18n="settings.language">Til</label>
+        <div id="langToggle" class="w-full bg-white border border-emerald-950/15 rounded-xl p-1 flex gap-1 mb-6">
+          <button type="button" data-lang-switch="uz" class="lang-option flex-1 py-2.5 rounded-lg text-sm font-semibold transition-colors">
+            UZ
+          </button>
+          <button type="button" data-lang-switch="ru" class="lang-option flex-1 py-2.5 rounded-lg text-sm font-semibold transition-colors">
+            RU
+          </button>
+        </div>
+      </div>
+
+      <form id="settingsForm" class="px-6 sm:px-8 pb-6">
+        <label class="block text-sm font-semibold mb-2" data-i18n="settings.nameLabel">Ismingiz</label>
+        <input type="text" id="settingsName" required placeholder="Ism Familiya"
+          class="w-full bg-white border border-emerald-950/15 rounded-xl px-4 py-3.5 mb-5 focus-gold">
+
+        <label class="block text-sm font-semibold mb-2" data-i18n="settings.phoneLabel">Telefon raqamingiz</label>
+        <div class="phone-input-wrap w-full bg-white border border-emerald-950/15 rounded-xl px-4 py-3.5 mb-2 flex items-center gap-2">
+          <span class="text-emerald-950/50 font-mono select-none">+998</span>
+          <input type="tel" id="settingsPhone" required placeholder="90 123 45 67" maxlength="12"
+            class="flex-1 min-w-0 bg-transparent border-0 outline-none p-0">
+        </div>
+
+        <p id="settingsError" class="text-sm text-red-600 font-semibold mb-2 hidden"></p>
+        <p id="settingsSuccess" class="text-sm text-emerald-700 font-semibold mb-2 hidden"></p>
+
+        <button type="submit" id="settingsSaveBtn"
+          class="w-full bg-emerald-950 text-cream font-semibold py-3.5 rounded-full hover:bg-emerald-900 transition-colors mt-4"
+          data-i18n="settings.save">
+          Saqlash
+        </button>
+
+        <button type="button" data-logout
+          class="w-full border border-emerald-950/15 text-emerald-950/70 font-semibold py-3.5 rounded-full hover:bg-emerald-950/5 transition-colors mt-3">
+          <i class="fa-solid fa-arrow-right-from-bracket mr-1"></i> <span data-i18n="settings.logout">Chiqish</span>
+        </button>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- ================= AUTH MODAL (kirish / ro'yxatdan o'tish) ================= -->
+<div id="authModal" class="fixed inset-0 z-[60] hidden" data-mode="login">
+  <div id="authModalBackdrop" class="absolute inset-0 bg-emerald-950/70"></div>
+
+  <div class="relative h-full flex items-end sm:items-center justify-center p-0 sm:p-6">
+    <div class="bg-cream w-full sm:max-w-sm sm:rounded-3xl rounded-t-3xl shadow-2xl">
+
+      <div class="px-6 sm:px-8 pt-6 pb-4 border-b border-emerald-950/10 flex items-center justify-between">
+        <div>
+          <h3 class="font-display text-2xl font-semibold" id="authTitle" data-i18n="auth.loginTitle">Kirish</h3>
+          <p class="text-xs text-emerald-950/50 mt-1" data-i18n="auth.subtitle">Navbatga yozilish uchun hisobingizga kiring</p>
+        </div>
+        <button id="authModalCloseBtn" class="w-9 h-9 rounded-full hover:bg-emerald-950/5 flex items-center justify-center text-lg">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+
+      <form id="authForm" class="px-6 sm:px-8 py-6">
+        <div id="authNameRow" class="hidden">
+          <label class="block text-sm font-semibold mb-2" data-i18n="auth.nameLabel">Ismingiz</label>
+          <input type="text" id="authName" placeholder="Ism Familiya"
+            class="w-full bg-white border border-emerald-950/15 rounded-xl px-4 py-3.5 mb-5 focus-gold">
+        </div>
+
+        <label class="block text-sm font-semibold mb-2" data-i18n="auth.phoneLabel">Telefon raqamingiz</label>
+        <div class="phone-input-wrap w-full bg-white border border-emerald-950/15 rounded-xl px-4 py-3.5 mb-5 flex items-center gap-2">
+          <span class="text-emerald-950/50 font-mono select-none">+998</span>
+          <input type="tel" id="authPhone" required placeholder="90 123 45 67" maxlength="12"
+            class="flex-1 min-w-0 bg-transparent border-0 outline-none p-0">
+        </div>
+
+        <label class="block text-sm font-semibold mb-2" data-i18n="auth.passwordLabel">Parol</label>
+        <input type="password" id="authPassword" required minlength="6" placeholder="Kamida 6 belgi"
+          data-i18n-placeholder="auth.passwordHint"
+          class="w-full bg-white border border-emerald-950/15 rounded-xl px-4 py-3.5 mb-2 focus-gold">
+
+        <p id="authError" class="text-sm text-red-600 font-semibold mb-2 hidden"></p>
+
+        <button type="submit" id="authSubmitBtn"
+          class="w-full bg-emerald-950 text-cream font-semibold py-3.5 rounded-full hover:bg-emerald-900 transition-colors mt-4" data-i18n="auth.loginBtn">
+          Kirish
+        </button>
+
+        <p class="text-center text-sm text-emerald-950/50 mt-5">
+          <span id="authSwitchText" data-i18n="auth.noAccount">Hisobingiz yo'qmi?</span>
+          <button type="button" id="authSwitchBtn" class="text-gold-600 font-semibold hover:underline" data-i18n="auth.registerBtn">Ro'yxatdan o'tish</button>
+        </p>
+
+        <button type="button" id="authInstallBtn" class="hidden w-full items-center justify-center gap-2 mt-5 pt-5 border-t border-emerald-950/10 text-sm font-semibold text-emerald-950/60 hover:text-gold-600 transition-colors">
+          <i class="fa-solid fa-download"></i> <span data-i18n="auth.installApp">Ilovani telefoningizga o'rnatish</span>
+        </button>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- Loyiha JS modullari (ES modules) -->
+<script type="module" src="js/main.js"></script>
+
+</body>
+        </html>

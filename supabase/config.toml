@@ -1,0 +1,26 @@
+# =============================================================================
+# Supabase loyihasi konfiguratsiyasi
+#
+# ESLATMA: telegram-webhook funksiyasi endi bron kartasi rasmini o'zi
+# generatsiya qilmaydi (avval resvg-wasm + shrift fayllari ishlatilardi,
+# lekin production'da shriftlar noto'g'ri yuklanib, matnsiz karta chiqib
+# qolish muammosi kuzatilgan edi). Endi rasm brauzerda (js/api.js)
+# tayyorlanadi va Supabase Storage'ga ("tickets" bucket) yuklanadi —
+# funksiya faqat o'sha tayyor faylni o'qib jo'natadi. Shu sabab bu yerda
+# endi static_files sozlamasi kerak emas.
+#
+# MUHIM (deploy muammosi tuzatildi): Telegram Bot API webhook so'rovlari
+# HECH QANDAY "Authorization" header yubormaydi. Supabase Edge Functions
+# esa standart holda har bir so'rovda haqiqiy JWT talab qiladi — shu sabab
+# Telegram'ning so'rovlari funksiyaga hatto yetib bormasdan, gateway
+# darajasida 401 bilan rad etilardi (Invocations logида HECH NARSA
+# ko'rinmasligi ham shundan). Avval GitHub Actions workflow'da ishlatilgan
+# `--no-verify-jwt` CLI flag yangi Supabase CLI versiyalarida e'tiborga
+# olinmaydi (deprecated) — bu sozlama endi shu yerda, config.toml orqali
+# berilishi SHART.
+[functions.telegram-webhook]
+verify_jwt = false
+
+[functions.send-reminders]
+verify_jwt = false
+# =============================================================================

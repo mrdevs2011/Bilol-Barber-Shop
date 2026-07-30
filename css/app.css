@@ -1,0 +1,1120 @@
+*,:after,:before{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgba(59,130,246,.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }::backdrop{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgba(59,130,246,.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }/*! tailwindcss v3.4.19 | MIT License | https://tailwindcss.com*/*,:after,:before{box-sizing:border-box;border:0 solid #e5e7eb}:after,:before{--tw-content:""}:host,html{line-height:1.5;-webkit-text-size-adjust:100%;-moz-tab-size:4;-o-tab-size:4;tab-size:4;font-family:ui-sans-serif,system-ui,sans-serif,Apple Color Emoji,Segoe UI Emoji,Segoe UI Symbol,Noto Color Emoji;font-feature-settings:normal;font-variation-settings:normal;-webkit-tap-highlight-color:transparent}body{margin:0;line-height:inherit}hr{height:0;color:inherit;border-top-width:1px}abbr:where([title]){-webkit-text-decoration:underline dotted;text-decoration:underline dotted}h1,h2,h3,h4,h5,h6{font-size:inherit;font-weight:inherit}a{color:inherit;text-decoration:inherit}b,strong{font-weight:bolder}code,kbd,pre,samp{font-family:JetBrains Mono,monospace;font-feature-settings:normal;font-variation-settings:normal;font-size:1em}small{font-size:80%}sub,sup{font-size:75%;line-height:0;position:relative;vertical-align:baseline}sub{bottom:-.25em}sup{top:-.5em}table{text-indent:0;border-color:inherit;border-collapse:collapse}button,input,optgroup,select,textarea{font-family:inherit;font-feature-settings:inherit;font-variation-settings:inherit;font-size:100%;font-weight:inherit;line-height:inherit;letter-spacing:inherit;color:inherit;margin:0;padding:0}button,select{text-transform:none}button,input:where([type=button]),input:where([type=reset]),input:where([type=submit]){-webkit-appearance:button;background-color:transparent;background-image:none}:-moz-focusring{outline:auto}:-moz-ui-invalid{box-shadow:none}progress{vertical-align:baseline}::-webkit-inner-spin-button,::-webkit-outer-spin-button{height:auto}[type=search]{-webkit-appearance:textfield;outline-offset:-2px}::-webkit-search-decoration{-webkit-appearance:none}::-webkit-file-upload-button{-webkit-appearance:button;font:inherit}summary{display:list-item}blockquote,dd,dl,figure,h1,h2,h3,h4,h5,h6,hr,p,pre{margin:0}fieldset{margin:0}fieldset,legend{padding:0}menu,ol,ul{list-style:none;margin:0;padding:0}dialog{padding:0}textarea{resize:vertical}input::-moz-placeholder,textarea::-moz-placeholder{opacity:1;color:#9ca3af}input::placeholder,textarea::placeholder{opacity:1;color:#9ca3af}[role=button],button{cursor:pointer}:disabled{cursor:default}audio,canvas,embed,iframe,img,object,svg,video{display:block;vertical-align:middle}img,video{max-width:100%;height:auto}[hidden]:where(:not([hidden=until-found])){display:none}.pointer-events-none{pointer-events:none}.fixed{position:fixed}.absolute{position:absolute}.relative{position:relative}.sticky{position:sticky}.inset-0{inset:0}.inset-x-0{left:0;right:0}.inset-x-5{left:1.25rem;right:1.25rem}.-bottom-40{bottom:-10rem}.-left-24{left:-6rem}.-right-32{right:-8rem}.-top-32{top:-8rem}.bottom-5{bottom:1.25rem}.top-0{top:0}.-z-10{z-index:-10}.z-10{z-index:10}.z-30{z-index:30}.z-40{z-index:40}.z-50{z-index:50}.mx-auto{margin-left:auto;margin-right:auto}.mb-1{margin-bottom:.25rem}.mb-1\.5{margin-bottom:.375rem}.mb-16{margin-bottom:4rem}.mb-2{margin-bottom:.5rem}.mb-3{margin-bottom:.75rem}.mb-4{margin-bottom:1rem}.mb-5{margin-bottom:1.25rem}.mb-6{margin-bottom:1.5rem}.mb-7{margin-bottom:1.75rem}.mb-9{margin-bottom:2.25rem}.mr-1{margin-right:.25rem}.mt-1{margin-top:.25rem}.mt-12{margin-top:3rem}.mt-2{margin-top:.5rem}.mt-3{margin-top:.75rem}.mt-5{margin-top:1.25rem}.mt-6{margin-top:1.5rem}.mt-8{margin-top:2rem}.block{display:block}.flex{display:flex}.inline-flex{display:inline-flex}.table{display:table}.grid{display:grid}.hidden{display:none}.aspect-\[3\/4\]{aspect-ratio:3/4}.h-1\.5{height:.375rem}.h-10{height:2.5rem}.h-12{height:3rem}.h-14{height:3.5rem}.h-9{height:2.25rem}.h-\[30rem\]{height:30rem}.h-\[36rem\]{height:36rem}.h-full{height:100%}.max-h-\[92vh\]{max-height:92vh}.w-10{width:2.5rem}.w-12{width:3rem}.w-14{width:3.5rem}.w-4{width:1rem}.w-9{width:2.25rem}.w-\[30rem\]{width:30rem}.w-\[36rem\]{width:36rem}.w-full{width:100%}.w-px{width:1px}.max-w-2xl{max-width:42rem}.max-w-7xl{max-width:80rem}.max-w-\[220px\]{max-width:220px}.max-w-sm{max-width:24rem}.max-w-xl{max-width:36rem}.flex-1{flex:1 1 0%}.cursor-pointer{cursor:pointer}.grid-cols-2{grid-template-columns:repeat(2,minmax(0,1fr))}.flex-col{flex-direction:column}.flex-wrap{flex-wrap:wrap}.items-end{align-items:flex-end}.items-center{align-items:center}.justify-center{justify-content:center}.justify-between{justify-content:space-between}.gap-10{gap:2.5rem}.gap-12{gap:3rem}.gap-2{gap:.5rem}.gap-2\.5{gap:.625rem}.gap-3{gap:.75rem}.gap-4{gap:1rem}.gap-5{gap:1.25rem}.gap-6{gap:1.5rem}.gap-7{gap:1.75rem}.gap-8{gap:2rem}.gap-9{gap:2.25rem}.space-y-2\.5>:not([hidden])~:not([hidden]){--tw-space-y-reverse:0;margin-top:calc(.625rem*(1 - var(--tw-space-y-reverse)));margin-bottom:calc(.625rem*var(--tw-space-y-reverse))}.space-y-3>:not([hidden])~:not([hidden]){--tw-space-y-reverse:0;margin-top:calc(.75rem*(1 - var(--tw-space-y-reverse)));margin-bottom:calc(.75rem*var(--tw-space-y-reverse))}.overflow-hidden{overflow:hidden}.overflow-y-auto{overflow-y:auto}.rounded-2xl{border-radius:1rem}.rounded-full{border-radius:9999px}.rounded-lg{border-radius:.5rem}.rounded-xl{border-radius:.75rem}.rounded-t-3xl{border-top-left-radius:1.5rem;border-top-right-radius:1.5rem}.border{border-width:1px}.border-b{border-bottom-width:1px}.border-t{border-top-width:1px}.border-cream\/10{border-color:hsla(43,41%,97%,.1)}.border-cream\/20{border-color:hsla(43,41%,97%,.2)}.border-cream\/25{border-color:hsla(43,41%,97%,.25)}.border-emerald-900\/20{border-color:rgba(11,59,46,.2)}.border-emerald-950\/10{border-color:rgba(7,33,26,.1)}.border-emerald-950\/15{border-color:rgba(7,33,26,.15)}.border-gold-500{--tw-border-opacity:1;border-color:rgb(201 162 39/var(--tw-border-opacity,1))}.border-gold-500\/40{border-color:rgba(201,162,39,.4)}.border-transparent{border-color:transparent}.bg-cream{--tw-bg-opacity:1;background-color:rgb(250 248 243/var(--tw-bg-opacity,1))}.bg-cream\/15{background-color:hsla(43,41%,97%,.15)}.bg-cream\/90{background-color:hsla(43,41%,97%,.9)}.bg-emerald-700\/30{background-color:rgba(20,92,67,.3)}.bg-emerald-900{--tw-bg-opacity:1;background-color:rgb(11 59 46/var(--tw-bg-opacity,1))}.bg-emerald-950{--tw-bg-opacity:1;background-color:rgb(7 33 26/var(--tw-bg-opacity,1))}.bg-emerald-950\/10{background-color:rgba(7,33,26,.1)}.bg-emerald-950\/40{background-color:rgba(7,33,26,.4)}.bg-emerald-950\/70{background-color:rgba(7,33,26,.7)}.bg-gold-500{--tw-bg-opacity:1;background-color:rgb(201 162 39/var(--tw-bg-opacity,1))}.bg-gold-500\/10{background-color:rgba(201,162,39,.1)}.bg-white{--tw-bg-opacity:1;background-color:rgb(255 255 255/var(--tw-bg-opacity,1))}.object-cover{-o-object-fit:cover;object-fit:cover}.p-0{padding:0}.p-3{padding:.75rem}.p-5{padding:1.25rem}.p-6{padding:1.5rem}.p-7{padding:1.75rem}.px-3\.5{padding-left:.875rem;padding-right:.875rem}.px-4{padding-left:1rem;padding-right:1rem}.px-5{padding-left:1.25rem;padding-right:1.25rem}.px-6{padding-left:1.5rem;padding-right:1.5rem}.px-7{padding-left:1.75rem;padding-right:1.75rem}.py-1\.5{padding-top:.375rem;padding-bottom:.375rem}.py-14{padding-top:3.5rem;padding-bottom:3.5rem}.py-2\.5{padding-top:.625rem;padding-bottom:.625rem}.py-24{padding-top:6rem;padding-bottom:6rem}.py-3{padding-top:.75rem;padding-bottom:.75rem}.py-3\.5{padding-top:.875rem;padding-bottom:.875rem}.py-4{padding-top:1rem;padding-bottom:1rem}.py-5{padding-top:1.25rem;padding-bottom:1.25rem}.py-6{padding-top:1.5rem;padding-bottom:1.5rem}.pb-10{padding-bottom:2.5rem}.pb-28{padding-bottom:7rem}.pb-4{padding-bottom:1rem}.pt-20{padding-top:5rem}.pt-4{padding-top:1rem}.pt-40{padding-top:10rem}.pt-5{padding-top:1.25rem}.pt-6{padding-top:1.5rem}.pt-8{padding-top:2rem}.text-left{text-align:left}.text-center{text-align:center}.font-display{font-family:Playfair Display,serif}.font-mono{font-family:JetBrains Mono,monospace}.text-2xl{font-size:1.5rem;line-height:2rem}.text-3xl{font-size:1.875rem;line-height:2.25rem}.text-4xl{font-size:2.25rem;line-height:2.5rem}.text-\[10px\]{font-size:10px}.text-\[11px\]{font-size:11px}.text-lg{font-size:1.125rem;line-height:1.75rem}.text-sm{font-size:.875rem;line-height:1.25rem}.text-xl{font-size:1.25rem;line-height:1.75rem}.text-xs{font-size:.75rem;line-height:1rem}.font-medium{font-weight:500}.font-semibold{font-weight:600}.uppercase{text-transform:uppercase}.italic{font-style:italic}.leading-\[1\.1\]{line-height:1.1}.leading-relaxed{line-height:1.625}.leading-tight{line-height:1.25}.tracking-\[0\.15em\]{letter-spacing:.15em}.tracking-\[0\.25em\]{letter-spacing:.25em}.tracking-\[0\.2em\]{letter-spacing:.2em}.tracking-wide{letter-spacing:.025em}.text-cream{--tw-text-opacity:1;color:rgb(250 248 243/var(--tw-text-opacity,1))}.text-cream\/40{color:hsla(43,41%,97%,.4)}.text-cream\/50{color:hsla(43,41%,97%,.5)}.text-cream\/60{color:hsla(43,41%,97%,.6)}.text-cream\/70{color:hsla(43,41%,97%,.7)}.text-emerald-700{--tw-text-opacity:1;color:rgb(20 92 67/var(--tw-text-opacity,1))}.text-emerald-800{--tw-text-opacity:1;color:rgb(14 75 58/var(--tw-text-opacity,1))}.text-emerald-800\/50{color:rgba(14,75,58,.5)}.text-emerald-950{--tw-text-opacity:1;color:rgb(7 33 26/var(--tw-text-opacity,1))}.text-emerald-950\/40{color:rgba(7,33,26,.4)}.text-emerald-950\/50{color:rgba(7,33,26,.5)}.text-emerald-950\/55{color:rgba(7,33,26,.55)}.text-emerald-950\/60{color:rgba(7,33,26,.6)}.text-gold-400{--tw-text-opacity:1;color:rgb(217 187 92/var(--tw-text-opacity,1))}.text-gold-500{--tw-text-opacity:1;color:rgb(201 162 39/var(--tw-text-opacity,1))}.text-gold-600{--tw-text-opacity:1;color:rgb(169 130 28/var(--tw-text-opacity,1))}.text-red-600{--tw-text-opacity:1;color:rgb(220 38 38/var(--tw-text-opacity,1))}.antialiased{-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}.opacity-0{opacity:0}.opacity-40{opacity:.4}.shadow-2xl{--tw-shadow:0 25px 50px -12px rgba(0,0,0,.25);--tw-shadow-colored:0 25px 50px -12px var(--tw-shadow-color)}.shadow-2xl,.shadow-sm{box-shadow:var(--tw-ring-offset-shadow,0 0 #0000),var(--tw-ring-shadow,0 0 #0000),var(--tw-shadow)}.shadow-sm{--tw-shadow:0 1px 2px 0 rgba(0,0,0,.05);--tw-shadow-colored:0 1px 2px 0 var(--tw-shadow-color)}.shadow-emerald-950\/30{--tw-shadow-color:rgba(7,33,26,.3);--tw-shadow:var(--tw-shadow-colored)}.ring{--tw-ring-offset-shadow:var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);--tw-ring-shadow:var(--tw-ring-inset) 0 0 0 calc(3px + var(--tw-ring-offset-width)) var(--tw-ring-color);box-shadow:var(--tw-ring-offset-shadow),var(--tw-ring-shadow),var(--tw-shadow,0 0 #0000)}.blur-3xl{--tw-blur:blur(64px)}.blur-3xl,.filter{filter:var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow)}.backdrop-blur{--tw-backdrop-blur:blur(8px);backdrop-filter:var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia)}.transition-all{transition-property:all;transition-timing-function:cubic-bezier(.4,0,.2,1);transition-duration:.15s}.transition-colors{transition-property:color,background-color,border-color,text-decoration-color,fill,stroke;transition-timing-function:cubic-bezier(.4,0,.2,1);transition-duration:.15s}.duration-300{transition-duration:.3s}.hover\:border-emerald-950\/30:hover{border-color:rgba(7,33,26,.3)}.hover\:border-gold-400:hover{--tw-border-opacity:1;border-color:rgb(217 187 92/var(--tw-border-opacity,1))}.hover\:border-gold-500:hover{--tw-border-opacity:1;border-color:rgb(201 162 39/var(--tw-border-opacity,1))}.hover\:bg-emerald-900:hover{--tw-bg-opacity:1;background-color:rgb(11 59 46/var(--tw-bg-opacity,1))}.hover\:bg-emerald-950\/5:hover{background-color:rgba(7,33,26,.05)}.hover\:bg-gold-600:hover{--tw-bg-opacity:1;background-color:rgb(169 130 28/var(--tw-bg-opacity,1))}.hover\:text-gold-300:hover{--tw-text-opacity:1;color:rgb(232 212 138/var(--tw-text-opacity,1))}.hover\:text-gold-400:hover{--tw-text-opacity:1;color:rgb(217 187 92/var(--tw-text-opacity,1))}.hover\:text-gold-500:hover{--tw-text-opacity:1;color:rgb(201 162 39/var(--tw-text-opacity,1))}.group:hover .group-hover\:bg-gold-500{--tw-bg-opacity:1;background-color:rgb(201 162 39/var(--tw-bg-opacity,1))}.group:hover .group-hover\:text-emerald-950{--tw-text-opacity:1;color:rgb(7 33 26/var(--tw-text-opacity,1))}@media (min-width:640px){.sm\:block{display:block}.sm\:inline-flex{display:inline-flex}.sm\:hidden{display:none}.sm\:max-w-2xl{max-width:42rem}.sm\:grid-cols-2{grid-template-columns:repeat(2,minmax(0,1fr))}.sm\:grid-cols-4{grid-template-columns:repeat(4,minmax(0,1fr))}.sm\:flex-row{flex-direction:row}.sm\:items-center{align-items:center}.sm\:rounded-3xl{border-radius:1.5rem}.sm\:p-6{padding:1.5rem}.sm\:px-8{padding-left:2rem;padding-right:2rem}.sm\:text-5xl{font-size:3rem;line-height:1}}@media (min-width:768px){.md\:grid-cols-3{grid-template-columns:repeat(3,minmax(0,1fr))}.md\:grid-cols-4{grid-template-columns:repeat(4,minmax(0,1fr))}.md\:flex-row{flex-direction:row}.md\:px-8{padding-left:2rem;padding-right:2rem}.md\:py-28{padding-top:7rem;padding-bottom:7rem}.md\:py-32{padding-top:8rem;padding-bottom:8rem}.md\:pb-36{padding-bottom:9rem}.md\:pt-48{padding-top:12rem}.md\:text-left{text-align:left}.md\:text-3xl{font-size:1.875rem;line-height:2.25rem}.md\:text-5xl{font-size:3rem;line-height:1}.md\:text-6xl{font-size:3.75rem;line-height:1}}@media (min-width:1024px){.lg\:col-span-5{grid-column:span 5/span 5}.lg\:col-span-7{grid-column:span 7/span 7}.lg\:flex{display:flex}.lg\:hidden{display:none}.lg\:grid-cols-12{grid-template-columns:repeat(12,minmax(0,1fr))}.lg\:grid-cols-3{grid-template-columns:repeat(3,minmax(0,1fr))}.lg\:grid-cols-4{grid-template-columns:repeat(4,minmax(0,1fr))}}/* Self-hosted Google Fonts: Playfair Display, Manrope, JetBrains Mono */
+/* Generated from @fontsource packages — no external requests. */
+
+@font-face {
+  font-family: 'Playfair Display';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 500;
+  src: url(../assets/fonts/playfair-display-cyrillic-500-normal.woff2) format('woff2');
+  unicode-range: U+0301,U+0400-045F,U+0490-0491,U+04B0-04B1,U+2116;
+}
+
+@font-face {
+  font-family: 'Playfair Display';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 500;
+  src: url(../assets/fonts/playfair-display-latin-ext-500-normal.woff2) format('woff2');
+  unicode-range: U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF;
+}
+
+@font-face {
+  font-family: 'Playfair Display';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 500;
+  src: url(../assets/fonts/playfair-display-latin-500-normal.woff2) format('woff2');
+  unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;
+}
+
+@font-face {
+  font-family: 'Playfair Display';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 600;
+  src: url(../assets/fonts/playfair-display-cyrillic-600-normal.woff2) format('woff2');
+  unicode-range: U+0301,U+0400-045F,U+0490-0491,U+04B0-04B1,U+2116;
+}
+
+@font-face {
+  font-family: 'Playfair Display';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 600;
+  src: url(../assets/fonts/playfair-display-latin-ext-600-normal.woff2) format('woff2');
+  unicode-range: U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF;
+}
+
+@font-face {
+  font-family: 'Playfair Display';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 600;
+  src: url(../assets/fonts/playfair-display-latin-600-normal.woff2) format('woff2');
+  unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;
+}
+
+@font-face {
+  font-family: 'Playfair Display';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 700;
+  src: url(../assets/fonts/playfair-display-cyrillic-700-normal.woff2) format('woff2');
+  unicode-range: U+0301,U+0400-045F,U+0490-0491,U+04B0-04B1,U+2116;
+}
+
+@font-face {
+  font-family: 'Playfair Display';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 700;
+  src: url(../assets/fonts/playfair-display-latin-ext-700-normal.woff2) format('woff2');
+  unicode-range: U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF;
+}
+
+@font-face {
+  font-family: 'Playfair Display';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 700;
+  src: url(../assets/fonts/playfair-display-latin-700-normal.woff2) format('woff2');
+  unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;
+}
+
+@font-face {
+  font-family: 'Playfair Display';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 800;
+  src: url(../assets/fonts/playfair-display-cyrillic-800-normal.woff2) format('woff2');
+  unicode-range: U+0301,U+0400-045F,U+0490-0491,U+04B0-04B1,U+2116;
+}
+
+@font-face {
+  font-family: 'Playfair Display';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 800;
+  src: url(../assets/fonts/playfair-display-latin-ext-800-normal.woff2) format('woff2');
+  unicode-range: U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF;
+}
+
+@font-face {
+  font-family: 'Playfair Display';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 800;
+  src: url(../assets/fonts/playfair-display-latin-800-normal.woff2) format('woff2');
+  unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;
+}
+
+@font-face {
+  font-family: 'Playfair Display';
+  font-style: italic;
+  font-display: swap;
+  font-weight: 500;
+  src: url(../assets/fonts/playfair-display-cyrillic-500-italic.woff2) format('woff2');
+  unicode-range: U+0301,U+0400-045F,U+0490-0491,U+04B0-04B1,U+2116;
+}
+
+@font-face {
+  font-family: 'Playfair Display';
+  font-style: italic;
+  font-display: swap;
+  font-weight: 500;
+  src: url(../assets/fonts/playfair-display-latin-ext-500-italic.woff2) format('woff2');
+  unicode-range: U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF;
+}
+
+@font-face {
+  font-family: 'Playfair Display';
+  font-style: italic;
+  font-display: swap;
+  font-weight: 500;
+  src: url(../assets/fonts/playfair-display-latin-500-italic.woff2) format('woff2');
+  unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;
+}
+
+@font-face {
+  font-family: 'Manrope';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 400;
+  src: url(../assets/fonts/manrope-cyrillic-400-normal.woff2) format('woff2');
+  unicode-range: U+0301,U+0400-045F,U+0490-0491,U+04B0-04B1,U+2116;
+}
+
+@font-face {
+  font-family: 'Manrope';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 400;
+  src: url(../assets/fonts/manrope-latin-ext-400-normal.woff2) format('woff2');
+  unicode-range: U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF;
+}
+
+@font-face {
+  font-family: 'Manrope';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 400;
+  src: url(../assets/fonts/manrope-latin-400-normal.woff2) format('woff2');
+  unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;
+}
+
+@font-face {
+  font-family: 'Manrope';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 500;
+  src: url(../assets/fonts/manrope-cyrillic-500-normal.woff2) format('woff2');
+  unicode-range: U+0301,U+0400-045F,U+0490-0491,U+04B0-04B1,U+2116;
+}
+
+@font-face {
+  font-family: 'Manrope';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 500;
+  src: url(../assets/fonts/manrope-latin-ext-500-normal.woff2) format('woff2');
+  unicode-range: U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF;
+}
+
+@font-face {
+  font-family: 'Manrope';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 500;
+  src: url(../assets/fonts/manrope-latin-500-normal.woff2) format('woff2');
+  unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;
+}
+
+@font-face {
+  font-family: 'Manrope';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 600;
+  src: url(../assets/fonts/manrope-cyrillic-600-normal.woff2) format('woff2');
+  unicode-range: U+0301,U+0400-045F,U+0490-0491,U+04B0-04B1,U+2116;
+}
+
+@font-face {
+  font-family: 'Manrope';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 600;
+  src: url(../assets/fonts/manrope-latin-ext-600-normal.woff2) format('woff2');
+  unicode-range: U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF;
+}
+
+@font-face {
+  font-family: 'Manrope';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 600;
+  src: url(../assets/fonts/manrope-latin-600-normal.woff2) format('woff2');
+  unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;
+}
+
+@font-face {
+  font-family: 'Manrope';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 700;
+  src: url(../assets/fonts/manrope-cyrillic-700-normal.woff2) format('woff2');
+  unicode-range: U+0301,U+0400-045F,U+0490-0491,U+04B0-04B1,U+2116;
+}
+
+@font-face {
+  font-family: 'Manrope';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 700;
+  src: url(../assets/fonts/manrope-latin-ext-700-normal.woff2) format('woff2');
+  unicode-range: U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF;
+}
+
+@font-face {
+  font-family: 'Manrope';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 700;
+  src: url(../assets/fonts/manrope-latin-700-normal.woff2) format('woff2');
+  unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;
+}
+
+@font-face {
+  font-family: 'Manrope';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 800;
+  src: url(../assets/fonts/manrope-cyrillic-800-normal.woff2) format('woff2');
+  unicode-range: U+0301,U+0400-045F,U+0490-0491,U+04B0-04B1,U+2116;
+}
+
+@font-face {
+  font-family: 'Manrope';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 800;
+  src: url(../assets/fonts/manrope-latin-ext-800-normal.woff2) format('woff2');
+  unicode-range: U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF;
+}
+
+@font-face {
+  font-family: 'Manrope';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 800;
+  src: url(../assets/fonts/manrope-latin-800-normal.woff2) format('woff2');
+  unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;
+}
+
+@font-face {
+  font-family: 'JetBrains Mono';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 400;
+  src: url(../assets/fonts/jetbrains-mono-cyrillic-400-normal.woff2) format('woff2');
+  unicode-range: U+0301,U+0400-045F,U+0490-0491,U+04B0-04B1,U+2116;
+}
+
+@font-face {
+  font-family: 'JetBrains Mono';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 400;
+  src: url(../assets/fonts/jetbrains-mono-latin-ext-400-normal.woff2) format('woff2');
+  unicode-range: U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF;
+}
+
+@font-face {
+  font-family: 'JetBrains Mono';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 400;
+  src: url(../assets/fonts/jetbrains-mono-latin-400-normal.woff2) format('woff2');
+  unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;
+}
+
+@font-face {
+  font-family: 'JetBrains Mono';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 500;
+  src: url(../assets/fonts/jetbrains-mono-cyrillic-500-normal.woff2) format('woff2');
+  unicode-range: U+0301,U+0400-045F,U+0490-0491,U+04B0-04B1,U+2116;
+}
+
+@font-face {
+  font-family: 'JetBrains Mono';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 500;
+  src: url(../assets/fonts/jetbrains-mono-latin-ext-500-normal.woff2) format('woff2');
+  unicode-range: U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF;
+}
+
+@font-face {
+  font-family: 'JetBrains Mono';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 500;
+  src: url(../assets/fonts/jetbrains-mono-latin-500-normal.woff2) format('woff2');
+  unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;
+}
+
+@font-face {
+  font-family: 'JetBrains Mono';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 600;
+  src: url(../assets/fonts/jetbrains-mono-cyrillic-600-normal.woff2) format('woff2');
+  unicode-range: U+0301,U+0400-045F,U+0490-0491,U+04B0-04B1,U+2116;
+}
+
+@font-face {
+  font-family: 'JetBrains Mono';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 600;
+  src: url(../assets/fonts/jetbrains-mono-latin-ext-600-normal.woff2) format('woff2');
+  unicode-range: U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF;
+}
+
+@font-face {
+  font-family: 'JetBrains Mono';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 600;
+  src: url(../assets/fonts/jetbrains-mono-latin-600-normal.woff2) format('woff2');
+  unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;
+}
+/* ==========================================================================
+   BILOL BARBER — maxsus uslublar
+   (Tailwind utility klasslari HTML ichida, bu yerda faqat Tailwind qila
+   olmaydigan maxsus effektlar: ticket dizayni, animatsiyalar va h.k.)
+   ========================================================================== */
+
+:root {
+  --ease-smooth: cubic-bezier(.22, .8, .32, 1);
+  --ease-out-soft: cubic-bezier(.16, 1, .3, 1);
+  --gold: #C9A227;
+  --gold-soft: rgba(201, 162, 39, .35);
+  --ink: #07211A;
+}
+
+/* Umumiy yumshatish: qirralar yumaloqroq, chegaralar nozikroq bo'lsin —
+   Tailwind'ning tayyor rounded-* klasslari shu yerda kattaroq radius bilan
+   qayta belgilanadi (bir xil spetsifiklik, keyin yuklangani g'olib bo'ladi). */
+.rounded-xl  { border-radius: 1.1rem !important; }
+.rounded-2xl { border-radius: 1.5rem !important; }
+.rounded-3xl { border-radius: 1.85rem !important; }
+.rounded-t-3xl { border-radius: 1.85rem 1.85rem 0 0 !important; }
+
+html { scroll-behavior: smooth; }
+
+/* Ingichka, brendlashgan skroll-panel (Webkit + Firefox) */
+html { scrollbar-width: thin; scrollbar-color: var(--gold) #FAF8F3; }
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-track { background: #FAF8F3; }
+::-webkit-scrollbar-thumb { background: linear-gradient(180deg, #d8b646, var(--gold)); border-radius: 999px; border: 2px solid #FAF8F3; }
+::-webkit-scrollbar-thumb:hover { background: #b8911f; }
+
+/* Yumshoq, "porlaydigan" fokus ko'rsatkichi — qattiq chiziq o'rniga nozik
+   halqa, klaviatura orqali navigatsiya qulayligini saqlagan holda */
+a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 4px rgba(201, 162, 39, .35);
+  border-radius: inherit;
+}
+
+/* Barcha "pill" tugmalar uchun bir xil, silliqroq bosilish tuyg'usi */
+button, a { -webkit-tap-highlight-color: transparent; }
+.rounded-full.transition-colors,
+[data-open-booking],
+#nextBtn, #backBtn, #confirmBtn, #closeTicketBtn, #authSubmitBtn, #settingsSaveBtn {
+  transition: background-color .3s var(--ease-smooth), color .3s var(--ease-smooth),
+              transform .3s var(--ease-out-soft), box-shadow .3s var(--ease-out-soft), border-color .3s ease;
+  will-change: transform;
+}
+.rounded-full.transition-colors:hover,
+[data-open-booking]:hover,
+#nextBtn:hover, #confirmBtn:hover, #authSubmitBtn:hover, #settingsSaveBtn:hover {
+  transform: translateY(-1px);
+}
+.rounded-full.transition-colors:active,
+[data-open-booking]:active,
+#nextBtn:active, #backBtn:active, #confirmBtn:active, #closeTicketBtn:active, #authSubmitBtn:active, #settingsSaveBtn:active {
+  transform: scale(.98);
+}
+
+/* Asosiy oltin CTA tugmalar: hover paytida juda nozik, yumshoq porlash —
+   keskin "shine" chizig'isiz, faqat mayin soya kuchayadi */
+[data-open-booking] {
+  box-shadow: 0 8px 22px -14px rgba(201, 162, 39, .0);
+}
+[data-open-booking]:hover {
+  box-shadow: 0 16px 32px -14px rgba(201, 162, 39, .45);
+}
+
+/* Fixed header balandligiga mos scroll-offset — bo'lim sarlavhalari
+   navigatsiya orqali o'tilganda header ostida yashirinib qolmasligi uchun */
+#mening-bronlarim, #xizmatlar, #ustalar, #joylashuv, #aloqa {
+  scroll-margin-top: 88px;
+}
+
+body {
+  font-family: 'Manrope', sans-serif;
+  background: #FAF8F3;
+  color: #14231D;
+}
+
+h1, h2, h3, .font-display { font-family: 'Playfair Display', serif; }
+.font-mono { font-family: 'JetBrains Mono', monospace; }
+
+::selection { background: #C9A227; color: #07211A; }
+
+/* Scroll fade-in animatsiyasi */
+.reveal {
+  opacity: 0;
+  transform: translateY(28px) scale(.985);
+  transition: opacity .8s var(--ease-out-soft), transform .8s var(--ease-out-soft);
+}
+.reveal.show { opacity: 1; transform: translateY(0) scale(1); }
+
+/* Kartochka to'plamlarida ketma-ket (stagger) paydo bo'lish — faqat vizual,
+   IntersectionObserver mantig'iga tegmaydi, chunki .show baribir JS orqali
+   qo'shiladi; bu yerda faqat transition-delay beriladi. */
+#servicesGrid > .reveal, #mastersGrid > .reveal, #sharhlar .reveal.lift {
+  transition-delay: calc(var(--i, 0) * 70ms);
+}
+#servicesGrid > .reveal:nth-child(1) { --i: 0; } #servicesGrid > .reveal:nth-child(2) { --i: 1; }
+#servicesGrid > .reveal:nth-child(3) { --i: 2; } #servicesGrid > .reveal:nth-child(4) { --i: 3; }
+#servicesGrid > .reveal:nth-child(5) { --i: 4; } #servicesGrid > .reveal:nth-child(6) { --i: 5; }
+#mastersGrid > .reveal:nth-child(1) { --i: 0; } #mastersGrid > .reveal:nth-child(2) { --i: 1; }
+#mastersGrid > .reveal:nth-child(3) { --i: 2; } #mastersGrid > .reveal:nth-child(4) { --i: 3; }
+#sharhlar .reveal.lift:nth-child(1) { --i: 0; } #sharhlar .reveal.lift:nth-child(2) { --i: 1; }
+#sharhlar .reveal.lift:nth-child(3) { --i: 2; }
+
+/* TUZATISH: css/tailwind-build.css oldindan generatsiya qilingan statik
+   fayl bo'lgani uchun "border-emerald-950/8" klassi unda yo'q edi — natijada
+   barcha shu klassdan foydalanuvchi kartochka/chiziqlar Tailwind
+   preflight'ining standart kulrang chegarasiga (#e5e7eb) tushib qolardi,
+   brendning yashil-oltin uslubiga mos kelmasdi. Endi to'g'ri, juda nozik
+   yashil soyaga qaytariladi — chetlar deyarli sezilmaydi, "qirrasiz" tuyg'u. */
+.border-emerald-950\/8 { border-color: rgba(7, 33, 26, .06) !important; }
+
+/* Boshqa barcha chegaralar ham bir oz yumshatiladi — keskin chiziq o'rniga
+   nozik, deyarli fon bilan qo'shilib ketadigan chegara */
+.border-emerald-950\/10 { border-color: rgba(7, 33, 26, .07) !important; }
+.border-emerald-950\/15 { border-color: rgba(7, 33, 26, .1) !important; }
+.border-cream\/10 { border-color: rgba(250, 248, 243, .08) !important; }
+.hairline {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, #C9A227, transparent);
+}
+
+/* Signature element: chipta (boarding-pass) uslubidagi bron kartochkasi */
+.ticket {
+  position: relative;
+  background: linear-gradient(155deg, #0E4436 0%, #0B3B2E 55%, #093329 100%);
+  border-radius: 18px;
+  box-shadow: 0 25px 60px -22px rgba(7, 33, 26, .7), 0 2px 0 rgba(201, 162, 39, .15) inset;
+  overflow: hidden;
+}
+.ticket::before,
+.ticket::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 26px;
+  height: 26px;
+  background: #FAF8F3;
+  border-radius: 50%;
+  z-index: 2;
+}
+.ticket::before { left: -13px; }
+.ticket::after { right: -13px; }
+.ticket-perf { border-left: 2px dashed rgba(201, 162, 39, .5); }
+
+/* Hero'dagi imzo kartasi: juda sekin, deyarli sezilmas "nafas olish"
+   harakati — hech qanday burilish yoki yaltirash yo'q, faqat tinchlik */
+.ticket-float {
+  animation: ticket-drift 8s ease-in-out infinite;
+  transition: transform .5s var(--ease-out-soft), box-shadow .5s var(--ease-out-soft);
+}
+.ticket-float:hover { transform: translateY(-4px); box-shadow: 0 30px 70px -24px rgba(7, 33, 26, .75), 0 2px 0 rgba(201, 162, 39, .15) inset; }
+@keyframes ticket-drift {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-6px); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .ticket-float { animation: none; }
+}
+
+/* Bron tasdiqlanganda chiqadigan "muhr" belgisi */
+.ticket-stamp {
+  position: absolute;
+  top: 14px;
+  right: 22px;
+  border: 2.5px solid #C9A227;
+  color: #C9A227;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  padding: 5px 10px;
+  border-radius: 8px;
+  transform: rotate(8deg);
+  opacity: 0;
+  animation: stamp-in .35s ease .1s forwards;
+  pointer-events: none;
+}
+@keyframes stamp-in {
+  from { opacity: 0; transform: rotate(8deg) scale(1.6); }
+  to   { opacity: 1; transform: rotate(8deg) scale(1); }
+}
+
+/* Bron yuborilayotganda chiqadigan animatsion overlay — chiptaning o'zi
+   ustida, uning yumaloq burchaklarini "overflow:hidden" orqali meros
+   qilib oladi. Maqsad: 10-20 soniyaga cho'zilib ketsa ham mijozni
+   zeriktirmaslik — aylanuvchi halqa, "nafas oluvchi" nur, sirg'anuvchi
+   progress chizig'i va almashinuvchi matnlar. */
+.ticket-loading-overlay.hidden { display: none !important; }
+.ticket-loading-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  text-align: center;
+  padding: 24px;
+  background: linear-gradient(155deg, rgba(14, 68, 54, .97) 0%, rgba(9, 51, 41, .98) 55%, rgba(7, 33, 26, .99) 100%);
+  animation: ticket-loading-fade-in .25s ease both;
+}
+@keyframes ticket-loading-fade-in { from { opacity: 0; } to { opacity: 1; } }
+
+.ticket-loading-ring {
+  position: relative;
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid rgba(201, 162, 39, .22);
+}
+.ticket-loading-ring::before,
+.ticket-loading-ring::after {
+  content: "";
+  position: absolute;
+  inset: -2px;
+  border-radius: 50%;
+  border: 2px solid transparent;
+}
+.ticket-loading-ring::before {
+  border-top-color: #C9A227;
+  border-right-color: #C9A227;
+  animation: ticket-loading-spin 1.1s linear infinite;
+}
+.ticket-loading-ring::after {
+  border-bottom-color: rgba(201, 162, 39, .45);
+  animation: ticket-loading-spin 1.7s linear infinite reverse;
+}
+.ticket-loading-ring i {
+  color: #D9BB5C;
+  font-size: 21px;
+  animation: ticket-loading-icon-wiggle 2.2s ease-in-out infinite;
+}
+@keyframes ticket-loading-spin { to { transform: rotate(360deg); } }
+@keyframes ticket-loading-icon-wiggle {
+  0%, 100% { transform: rotate(0deg) scale(1); }
+  25%      { transform: rotate(-16deg) scale(1.05); }
+  75%      { transform: rotate(16deg) scale(1.05); }
+}
+
+.ticket-loading-text {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 13px;
+  letter-spacing: .03em;
+  color: #FAF8F3;
+  min-height: 18px;
+  max-width: 220px;
+  transition: opacity .2s ease;
+}
+.ticket-loading-text.is-swapping { opacity: 0; }
+
+.ticket-loading-bar {
+  width: 150px;
+  height: 4px;
+  border-radius: 999px;
+  background: rgba(250, 248, 243, .12);
+  overflow: hidden;
+}
+.ticket-loading-bar span {
+  display: block;
+  height: 100%;
+  width: 46%;
+  border-radius: 999px;
+  background: linear-gradient(90deg, transparent, #C9A227, transparent);
+  animation: ticket-loading-bar-slide 1.35s ease-in-out infinite;
+}
+@keyframes ticket-loading-bar-slide {
+  0%   { transform: translateX(-130%); }
+  100% { transform: translateX(310%); }
+}
+
+.ticket-loading-dots { display: flex; gap: 5px; }
+.ticket-loading-dots span {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: rgba(201, 162, 39, .6);
+  animation: ticket-loading-dot-bounce 1.2s ease-in-out infinite;
+}
+.ticket-loading-dots span:nth-child(2) { animation-delay: .15s; }
+.ticket-loading-dots span:nth-child(3) { animation-delay: .3s; }
+@keyframes ticket-loading-dot-bounce {
+  0%, 60%, 100% { transform: translateY(0); opacity: .5; }
+  30%           { transform: translateY(-5px); opacity: 1; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ticket-loading-ring::before,
+  .ticket-loading-ring::after,
+  .ticket-loading-ring i,
+  .ticket-loading-bar span,
+  .ticket-loading-dots span { animation: none; }
+}
+
+/* Vaqt slotlari uchun gorizontal scroll */
+.slot-scroll::-webkit-scrollbar { height: 6px; }
+.slot-scroll::-webkit-scrollbar-thumb { background: #C9A227; border-radius: 999px; }
+
+.slot-btn {
+  border-radius: 999px !important;
+  transition: all .25s var(--ease-out-soft);
+}
+.slot-btn:not(:disabled):hover { border-color: var(--gold); background: rgba(201, 162, 39, .08); }
+.slot-btn.selected { background: #C9A227; color: #07211A; border-color: #C9A227; }
+.slot-btn:disabled { opacity: .3; text-decoration: line-through; cursor: not-allowed; }
+.slot-btn:not(:disabled):active { transform: scale(.96); }
+
+.step-dot { transition: all .4s var(--ease-out-soft); }
+
+/* Sana tanlash: oy "tab" tugmalari (2-qadam) */
+#monthTabs { display: flex; gap: .5rem; margin-bottom: 1.25rem; }
+.month-tab {
+  flex: 1 1 0%;
+  text-align: center;
+  border: 1px solid rgba(7, 33, 26, .08);
+  border-radius: 999px;
+  padding: .75rem .75rem;
+  font-size: .875rem;
+  font-weight: 600;
+  color: rgba(7, 33, 26, .7);
+  background: rgba(7, 33, 26, .02);
+  transition: all .25s var(--ease-out-soft);
+  cursor: pointer;
+}
+.month-tab:hover { border-color: rgba(201, 162, 39, .5); background: rgba(201, 162, 39, .06); }
+.month-tab.selected { border-color: #C9A227; background: rgba(201, 162, 39, .12); color: #07211A; }
+
+/* Sana tanlash: kun kartochkalari (2-qadam), gorizontal skroll */
+#dayCardWrap {
+  display: flex;
+  gap: .625rem;
+  overflow-x: auto;
+  padding-bottom: .5rem;
+  margin-bottom: 1.75rem;
+}
+.day-card {
+  flex-shrink: 0;
+  min-width: 68px;
+  text-align: center;
+  border: 1px solid rgba(7, 33, 26, .1);
+  border-radius: 1.1rem;
+  padding: .75rem .95rem;
+  background: rgba(7, 33, 26, .02);
+  cursor: pointer;
+  transition: all .25s var(--ease-out-soft);
+}
+.day-card:hover { border-color: rgba(201, 162, 39, .55); background: rgba(201, 162, 39, .06); }
+.day-card.selected { background: #C9A227; color: #07211A; border-color: #C9A227; }
+.day-card-weekday { font-size: 10px; text-transform: uppercase; letter-spacing: .03em; opacity: .6; }
+.day-card-num { font-size: 1.125rem; font-weight: 700; line-height: 1.2; }
+.day-card-month { font-size: 10px; opacity: .6; }
+
+/* Kartochkalar: doim yumshoq soya bilan "suzib turgandek" his, hover'da
+   ozgina ko'tariladi — keskin chegara almashinuvisiz */
+.lift {
+  box-shadow: 0 2px 18px -8px rgba(11, 59, 46, .1);
+  transition: transform .45s var(--ease-out-soft), box-shadow .45s var(--ease-out-soft);
+}
+.lift:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 26px 55px -22px rgba(11, 59, 46, .3);
+}
+
+/* Barberlar bo'limidagi rasm — hover'da ozgina zoom, sokin va professional */
+#mastersGrid .aspect-\[3\/4\] img {
+  transition: transform .6s var(--ease-out-soft), filter .6s ease;
+}
+#mastersGrid .lift:hover img {
+  transform: scale(1.06);
+  filter: saturate(1.08);
+}
+
+/* Xizmat ikonkasi doirasi: hover paytida ozgina "pop" */
+#servicesGrid .lift .w-12.h-12 {
+  transition: background-color .3s ease, color .3s ease, transform .3s var(--ease-out-soft);
+}
+#servicesGrid .lift:hover .w-12.h-12 { transform: scale(1.08); }
+
+/* Hero ostidagi nozik "pastga aylantiring" ishorasi */
+.scroll-cue {
+  position: absolute;
+  left: 50%;
+  bottom: 28px;
+  transform: translateX(-50%);
+  width: 26px;
+  height: 42px;
+  border: 1.5px solid rgba(250, 248, 243, .3);
+  border-radius: 999px;
+  align-items: flex-start;
+  justify-content: center;
+  padding-top: 8px;
+  transition: border-color .3s ease;
+}
+.scroll-cue:hover { border-color: var(--gold); }
+.scroll-cue span {
+  width: 4px;
+  height: 8px;
+  border-radius: 999px;
+  background: var(--gold);
+  animation: scroll-cue-dot 1.8s ease-in-out infinite;
+}
+@keyframes scroll-cue-dot {
+  0%   { transform: translateY(0); opacity: 1; }
+  70%  { transform: translateY(14px); opacity: 0; }
+  71%  { transform: translateY(0); opacity: 0; }
+  100% { transform: translateY(0); opacity: 1; }
+}
+@media (prefers-reduced-motion: reduce) { .scroll-cue span { animation: none; } }
+
+/* MUHIM (mobil layout bugi tuzatildi): js/auth.js login holatini avval
+   to'g'ridan-to'g'ri Tailwind'ning "hidden" klassini olib tashlash/qo'shish
+   orqali boshqarardi. Lekin headerMyBookingsBtn va headerSettingsBtn kabi
+   elementlarda "hidden lg:flex" birgalikda ishlatilgan — ya'ni ular FAQAT
+   lg (>=1024px) ekranda ko'rinishi kerak edi. Login bo'lganda "hidden"
+   klassi butunlay olib tashlangach, mobil o'lchamda uni yashirib turadigan
+   birorta qoida qolmasdi ("lg:flex" faqat katta ekranda ishlaydi) — natijada
+   ikonka brauzer standart (inline) ko'rinishida mobil headerga "sizib
+   chiqib" qolardi. Endi login holati mustaqil ".auth-gate" klassi orqali
+   boshqariladi (!important bilan), u "hidden lg:flex" kabi responsive
+   klasslarga aslo taʼsir qilmaydi/ular bilan ziddiyatga kirmaydi. */
+.auth-gate { display: none !important; }
+
+/* Header holati o'zgarishi (scroll paytida) yumshoqroq bo'lsin */
+#siteHeader, #headerInner, .nav-link, #brandText {
+  transition: background-color .35s var(--ease-smooth), box-shadow .35s var(--ease-smooth),
+              padding .35s var(--ease-smooth), color .3s ease, border-color .3s ease;
+}
+
+/* Modal: backdrop + panel uchun silliq kirish animatsiyasi.
+   "hidden" klassi olib tashlanishi bilan display none -> flex ga o'tadi va
+   quyidagi keyframe animatsiyalar avtomatik qaytadan ishga tushadi. */
+#bookingModal { backdrop-filter: blur(6px); }
+#bookingModal:not(.hidden) #modalBackdrop,
+#authModal:not(.hidden) #authModalBackdrop,
+#settingsModal:not(.hidden) #settingsModalBackdrop {
+  animation: modal-backdrop-in .3s ease both;
+}
+#bookingModal:not(.hidden) > .relative > .bg-cream,
+#authModal:not(.hidden) > .relative > .bg-cream,
+#settingsModal:not(.hidden) > .relative > .bg-cream {
+  animation: modal-panel-in .38s var(--ease-out-soft) both;
+}
+@keyframes modal-backdrop-in { from { opacity: 0; } to { opacity: 1; } }
+@keyframes modal-panel-in {
+  from { opacity: 0; transform: translateY(18px) scale(.98); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+@media (prefers-reduced-motion: reduce) {
+  #bookingModal:not(.hidden) #modalBackdrop,
+  #authModal:not(.hidden) #authModalBackdrop,
+  #settingsModal:not(.hidden) #settingsModalBackdrop,
+  #bookingModal:not(.hidden) > .relative > .bg-cream,
+  #authModal:not(.hidden) > .relative > .bg-cream,
+  #settingsModal:not(.hidden) > .relative > .bg-cream { animation: none; }
+}
+
+/* Bron qadamlari orasidagi almashinuv juda yumshoq, sekin bo'lsin */
+.booking-step:not(.hidden) { animation: step-in .4s var(--ease-out-soft) both; }
+@keyframes step-in {
+  from { opacity: 0; transform: scale(.98); }
+  to   { opacity: 1; transform: scale(1); }
+}
+@media (prefers-reduced-motion: reduce) { .booking-step:not(.hidden) { animation: none; } }
+
+/* MUHIM: index.html'da #authModal va #settingsModal "z-[60]" (Tailwind
+   arbitrary value) klassidan foydalanadi, lekin css/tailwind-build.css
+   oldindan generatsiya qilingan statik fayl bo'lgani uchun bu klass unda
+   yo'q edi — natijada modallar z-index olmay, mobil "Navbatga yozilish"
+   suzuvchi tugmasi (z-30, bu klass mavjud) ustidan chiqib qolardi.
+   Shu yerda qo'lda tuzatiladi (bookingModal'ning z-50'idan ham baland,
+   chunki auth/settings booking oqimi ustiga ochiladi). */
+#authModal, #settingsModal { z-index: 60; }
+#authModal.hidden, #settingsModal.hidden { display: none; }
+
+/* MOBIL KLAVIATURA MOSLASHUVI (js/keyboard.js bilan birga ishlaydi):
+   --app-vh doim haqiqiy, klaviaturani hisobga oluvchi ko'rinadigan
+   balandlikka teng (JS orqali yangilanadi; JS hali ishlamagan bo'lsa yoki
+   xato bersa, 100vh'ga qaytamiz — modal baribir to'g'ri ko'rinadi).
+   Bularsiz "fixed inset-0" modal klaviatura chiqqanda ham eski to'liq
+   balandlikda qolib, pastki input klaviatura orqasida qolib ketishi mumkin
+   edi. Endi konteyner klaviatura balandligiga moslab qisqaradi va ichida
+   skroll qiladi — js/keyboard.js esa fokusdagi inputni shu skroll ichida
+   ko'rinadigan joyga chiqarib beradi. */
+:root { --app-vh: 100vh; }
+
+#bookingModal, #authModal, #settingsModal, #myBookingsModal {
+  height: var(--app-vh, 100vh);
+}
+#bookingModal > .relative,
+#authModal > .relative,
+#settingsModal > .relative,
+#myBookingsModal > .relative {
+  height: var(--app-vh, 100vh);
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.bg-noise {
+  background-image: radial-gradient(circle at 1px 1px, rgba(255, 255, 255, .07) 1px, transparent 0);
+  background-size: 22px 22px;
+}
+
+/* CTA chizig'i (oltin fon) uchun ozgina teksturaviy chuqurlik */
+section.bg-gold-500 {
+  position: relative;
+  overflow: hidden;
+}
+section.bg-gold-500::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(60% 140% at 85% 50%, rgba(7, 33, 26, .08), transparent 70%);
+  pointer-events: none;
+}
+section.bg-gold-500 > * { position: relative; }
+
+input[type="date"]::-webkit-calendar-picker-indicator {
+  filter: invert(1);
+  opacity: .7;
+  cursor: pointer;
+}
+
+.focus-gold:focus { outline: none; box-shadow: 0 0 0 4px rgba(201, 162, 39, .2); border-color: rgba(201, 162, 39, .6); }
+
+/* Telefon input o'raichi (+998 doim ko'rinadigan prefiks bilan) — input
+   o'ziga emas, o'rab turgan divga fokus ko'rinishini beradi, chunki
+   haqiqiy <input> endi shaffof va chegarasiz (dizayn bitta yaxlit
+   quti bo'lib ko'rinishi uchun). Fokus/touch holatida chegara/glow
+   chiqarilmaydi — dizayn talabiga ko'ra o'chirilgan. */
+.phone-input-wrap:focus-within { outline: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal { transition: none; opacity: 1; transform: none; }
+   }
+
+/* UI TUZATISH: mobilda suzuvchi "Navbatga yozilish" tugmasi (fixed,
+   bottom-5, sm:hidden) sahifa oxirigacha skroll qilinganda footerning
+   pastki qatori (mualliflik huquqi matni) ustidan chiqib, uni bosib
+   turardi va matnni to'liq o'qib bo'lmasdi. Faqat tugma ko'rinadigan
+   (640px dan kichik) ekranlarda footerga qo'shimcha pastki joy beramiz.
+   #aloqa ID selektori .pb-10 Tailwind klassidan ustun turishi uchun
+   ataylab shu yerda, class emas, ID orqali yoziladi. */
+@media (max-width: 639px) {
+  #aloqa { padding-bottom: 6.5rem; }
+}
+
+/* UI TUZATISH: #mastersGrid oldin qattiq "sm:grid-cols-2 lg:grid-cols-4"
+   klasslariga ega edi. Bu hozircha (data.js'da) faqat 1 ta barber
+   ro'yxatda bo'lgani uchun katta ekranlarda kartochka chap burchakda
+   yolg'iz qolib, o'ng tomonda 3 ustunlik ulkan bo'sh joy hosil qilardi —
+   bo'lim "buzilgandek" ko'rinardi. auto-fit + minmax bilan grid nechta
+   barber bo'lishidan qat'i nazar (1, 2, 3, 4...) o'zi moslashadi va
+   markazga tortiladi, kelajakda barberlar soni o'zgarsa ham kod
+   o'zgartirilmasa bo'ladi. */
+#mastersGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 260px));
+  justify-content: center;
+  gap: 1.75rem;
+}
+
+/* UI TUZATISH: #headerSettingsBtn faqat desktopda (>=1024px) ko'rinishi
+   kerak edi, lekin mijoz tizimga kirganda auth.js "hidden" klassini
+   butunlay olib tashlar edi (updateHeaderUI -> classList.toggle('hidden',
+   false)) — bu "lg:flex" responsive shartini ham yo'qqa chiqarib,
+   tugmani mobil/planshetda ham ko'rsatib qo'yardi. Bu qoida ekran
+   1024px dan kichik bo'lsa, "hidden" klassi bor-yo'qligidan qat'i
+   nazar, tugmani majburan yashiradi. */
+@media (max-width: 1023px) {
+  #headerSettingsBtn { display: none !important; }
+}
+
+/* "Mening bronlarim" dashboard bo'limi uchun qo'shimcha utility klasslar —
+   loyihada Tailwind CLI build vaqti ishga tushmagani (app.css statik
+   generatsiya qilingan) uchun qo'lda qo'shildi. */
+.pt-28 { padding-top: 7rem; }
+.pb-14 { padding-bottom: 3.5rem; }
+.col-span-full { grid-column: 1 / -1; }
+.shrink-0 { flex-shrink: 0; }
+.bg-cream\/6 { background-color: hsla(43, 41%, 97%, .06); }
+.text-red-400 { --tw-text-opacity: 1; color: rgb(248 113 113 / var(--tw-text-opacity, 1)); }
+.text-emerald-300 { --tw-text-opacity: 1; color: rgb(110 231 183 / var(--tw-text-opacity, 1)); }
+.bg-red-500\/10 { background-color: rgba(239, 68, 68, .1); }
+.bg-emerald-500\/10 { background-color: rgba(16, 185, 129, .1); }
+.border-red-400\/30 { border-color: rgba(248, 113, 113, .3); }
+.hover\:bg-red-500\/10:hover { background-color: rgba(239, 68, 68, .1); }
+@media (min-width: 768px) {
+  .md\:pt-32 { padding-top: 8rem; }
+  .md\:pb-16 { padding-bottom: 4rem; }
+}
+
+/* "Orqaga" tugmasi bron yuborilayotganda (backBtn.disabled=true) vizual
+   ravishda ham xiralashib, bosib bo'lmasligi aniq bilinsin. Xuddi shu holat
+   endi X (modalCloseBtn) tugmasiga ham qo'llanadi — aks holda u hech qanday
+   vizual o'zgarishsiz "bosilsa ham ishlamaydigan" tugmaday ko'rinib,
+   mijozga xatodek tuyulardi. */
+#backBtn:disabled, #modalCloseBtn:disabled { opacity: .35; pointer-events: none; }
+
+/* =============================================================================
+   FIX (2026-07-27): quyidagi PWA "Ilovani o'rnatish" suzuvchi tugmasi va iOS
+   o'rnatish yo'riqnomasi uchun stillar avval faqat css/styles.css faylida
+   bo'lib, o'sha fayl index.html'ga umuman ulanmagan edi (faqat app.css
+   ulangan). Natijada widget position:fixed'siz, stilsiz, to'liq kenglikda
+   chiqib, "Navbatga yozilish" tugmasi ustiga yopishib qolayotgan edi.
+   Endi shu qoidalar to'g'ridan-to'g'ri app.css'ga (haqiqatda ulangan
+   faylga) qo'shildi. ========================================================= */
+/* =============================================================================
+   PWA: suzuvchi (floating) "Ilovani o'rnatish" tugmasi + iOS uchun yo'riqnoma
+   ============================================================================= */
+.pwa-install-widget {
+  position: fixed;
+  right: 1.1rem;
+  bottom: 1.1rem;
+  z-index: 45;
+  display: flex;
+  align-items: center;
+  gap: .35rem;
+  opacity: 0;
+  transform: translateY(14px) scale(.94);
+  transition: opacity .3s ease, transform .3s ease;
+  pointer-events: none;
+}
+.pwa-install-widget--visible {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  pointer-events: auto;
+}
+@media (max-width: 639px) {
+  .pwa-install-widget { bottom: 6.25rem; right: .9rem; }
+}
+
+.pwa-install-btn {
+  display: flex;
+  align-items: center;
+  gap: .65rem;
+  background: linear-gradient(135deg, #0B3B2E, #07211A);
+  border: 1px solid rgba(201, 162, 39, .45);
+  color: #FAF8F3;
+  padding: .55rem .95rem .55rem .55rem;
+  border-radius: 999px;
+  box-shadow: 0 12px 28px -8px rgba(7, 33, 26, .55), 0 0 0 1px rgba(255,255,255,.02);
+  cursor: pointer;
+  animation: pwaFloat 3.2s ease-in-out infinite;
+}
+.pwa-install-btn:hover { border-color: #C9A227; }
+.pwa-install-btn:active { transform: scale(.97); }
+
+.pwa-install-icon {
+  width: 2.15rem;
+  height: 2.15rem;
+  border-radius: 999px;
+  background: #C9A227;
+  color: #07211A;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: .85rem;
+  flex-shrink: 0;
+}
+.pwa-install-text { display: flex; flex-direction: column; line-height: 1.15; text-align: left; }
+.pwa-install-title { font-size: .78rem; font-weight: 600; letter-spacing: .01em; }
+.pwa-install-sub { font-size: .66rem; color: rgba(250, 248, 243, .6); }
+
+.pwa-install-close {
+  width: 1.6rem;
+  height: 1.6rem;
+  min-width: 1.6rem;
+  border-radius: 999px;
+  background: rgba(7, 33, 26, .85);
+  color: rgba(250, 248, 243, .8);
+  border: 1px solid rgba(201, 162, 39, .3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: .6rem;
+  cursor: pointer;
+}
+.pwa-install-close:hover { color: #C9A227; }
+
+@keyframes pwaFloat {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-5px); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .pwa-install-btn { animation: none; }
+}
+
+/* iOS "Add to Home Screen" yo'riqnoma varag'i */
+.pwa-ios-sheet { position: fixed; inset: 0; z-index: 60; }
+.pwa-ios-sheet.hidden { display: none; }
+.pwa-ios-sheet-backdrop {
+  position: absolute; inset: 0;
+  background: rgba(7, 33, 26, .55);
+  backdrop-filter: blur(2px);
+  opacity: 0;
+  transition: opacity .2s ease;
+}
+.pwa-ios-sheet--visible .pwa-ios-sheet-backdrop { opacity: 1; }
+.pwa-ios-sheet-card {
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  transform: translate(-50%, 100%);
+  width: min(26rem, 92vw);
+  background: #FAF8F3;
+  color: #07211A;
+  border-radius: 1.25rem 1.25rem 0 0;
+  padding: 1.5rem 1.5rem 2rem;
+  box-shadow: 0 -20px 45px -12px rgba(7, 33, 26, .4);
+  transition: transform .28s ease;
+}
+@media (min-width: 640px) {
+  .pwa-ios-sheet-card {
+    bottom: auto; top: 50%;
+    transform: translate(-50%, -40%);
+    border-radius: 1.25rem;
+  }
+  .pwa-ios-sheet--visible .pwa-ios-sheet-card { transform: translate(-50%, -50%); }
+}
+.pwa-ios-sheet--visible .pwa-ios-sheet-card { transform: translate(-50%, 0); }
+.pwa-ios-sheet-title { font-family: 'Playfair Display', serif; font-size: 1.25rem; font-weight: 600; margin-bottom: 1rem; }
+.pwa-ios-sheet-steps { display: flex; flex-direction: column; gap: .85rem; font-size: .88rem; }
+.pwa-ios-sheet-steps li { display: flex; align-items: flex-start; gap: .65rem; line-height: 1.4; }
+.pwa-ios-sheet-steps i { color: #C9A227; margin-top: .2rem; width: 1.1rem; text-align: center; }
+.pwa-ios-sheet .pwa-install-close { position: absolute; top: .9rem; right: .9rem; background: rgba(7,33,26,.08); color: #07211A; border-color: rgba(7,33,26,.1); }
+
+/* ============================================================
+   QO'SHIMCHA UTILITY KLASSLAR — faqat install.html'da ishlatiladi
+   Eslatma: yuqoridagi Tailwind build faqat index.html'ni skanerlagan
+   edi, shu sababli install.html'da ishlatilgan ba'zi klasslar (masalan
+   pt-32, w-20, min-h-screen) compiled CSS'da yo'q edi — shu tufayli
+   header ostidagi logo "yopilib" ko'rinar edi. Quyida shu yetishmagan
+   klasslar qo'lda qo'shildi.
+   ============================================================ */
+.flex-none{flex:none}
+.items-start{align-items:flex-start}
+.gap-1\.5{gap:.375rem}
+.mr-1\.5{margin-right:.375rem}
+.mt-4{margin-top:1rem}
+.mb-10{margin-bottom:2.5rem}
+.p-4{padding:1rem}
+.pt-32{padding-top:8rem}
+.pb-24{padding-bottom:6rem}
+.w-8{width:2rem}
+.h-8{height:2rem}
+.w-20{width:5rem}
+.h-20{height:5rem}
+.min-h-screen{min-height:100vh}
+.bg-cream\/95{background-color:hsla(43,41%,97%,.95)}
+.bg-white\/60{background-color:rgba(255,255,255,.6)}
+.bg-emerald-950\/5{background-color:rgba(7,33,26,.05)}
+.space-y-4>:not([hidden])~:not([hidden]){--tw-space-y-reverse:0;margin-top:calc(1rem*(1 - var(--tw-space-y-reverse)));margin-bottom:calc(1rem*var(--tw-space-y-reverse))}
+
+/* ============================================================
+   TIL TANLASH (UZ/RU) — Sozlamalar oynasidagi toggle
+   ============================================================ */
+.lang-option{color:rgba(7,33,26,.5)}
+.lang-option.lang-active{background:#07211A;color:#F7F1E1}
