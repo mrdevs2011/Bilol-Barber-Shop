@@ -390,7 +390,6 @@ html { scrollbar-width: thin; scrollbar-color: var(--gold) #FAF8F3; }
 a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visible {
   outline: none;
   box-shadow: 0 0 0 4px rgba(201, 162, 39, .35);
-  border-radius: inherit;
 }
 
 /* Barcha "pill" tugmalar uchun bir xil, silliqroq bosilish tuyg'usi */
