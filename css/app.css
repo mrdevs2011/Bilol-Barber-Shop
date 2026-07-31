@@ -372,6 +372,9 @@
 .rounded-2xl { border-radius: 1.5rem !important; }
 .rounded-3xl { border-radius: 1.85rem !important; }
 .rounded-t-3xl { border-radius: 1.85rem 1.85rem 0 0 !important; }
+@media (min-width: 640px) {
+  .sm\:rounded-3xl { border-radius: 1.85rem !important; }
+}
 
 html { scroll-behavior: smooth; }
 

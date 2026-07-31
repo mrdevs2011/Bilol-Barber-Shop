@@ -20,6 +20,15 @@
 .rounded-3xl { border-radius: 1.85rem !important; }
 .rounded-t-3xl { border-radius: 1.85rem 1.85rem 0 0 !important; }
 
+/* rounded-t-3xl har doim (barcha ekranlarda) !important bilan ishlagani
+   uchun sm:rounded-3xl'ni (u faqat 640px+ da va !important'siz) yenga
+   olmasdi — natijada mobil "bottom sheet" uslubidagi modal desktopda ham
+   pastki burchaklari kesilgan holda qolar edi. 640px+ da to'liq
+   yumaloqlanishini qaytarib beramiz: */
+@media (min-width: 640px) {
+  .sm\:rounded-3xl { border-radius: 1.85rem !important; }
+}
+
 html { scroll-behavior: smooth; }
 
 /* Ingichka, brendlashgan skroll-panel (Webkit + Firefox) */
