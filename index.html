@@ -182,6 +182,53 @@
         <a href="#mening-bronlarim" id="headerMyBookingsBtn" data-auth-logged-in aria-label="Mening bronlarim" title="Mening bronlarim" data-i18n-title="nav.myBookings" class="hidden auth-gate lg:flex w-10 h-10 items-center justify-center rounded-full border border-emerald-900/20 nav-link hover:text-gold-500 hover:border-gold-500/40 transition-colors">
           <i class="fa-regular fa-calendar-check text-lg"></i>
         </a>
+        <div class="lang-switch-wrap" id="headerLangWrap">
+          <button type="button" id="headerLangBtn" aria-haspopup="true" aria-expanded="false" aria-controls="headerLangDropdown" aria-label="Til" data-i18n-title="settings.language" title="Til" class="lang-globe-btn nav-link">
+            <svg width="19" height="19" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.6"/>
+              <ellipse cx="12" cy="12" rx="4" ry="9" stroke="currentColor" stroke-width="1.6"/>
+              <path d="M3 12h18M4.5 7.5h15M4.5 16.5h15" stroke="currentColor" stroke-width="1.6"/>
+            </svg>
+          </button>
+          <div id="headerLangDropdown" class="lang-dropdown" role="menu">
+            <button type="button" data-lang-switch="uz" class="lang-dropdown-item" role="menuitem">
+              <span class="lang-flag" aria-hidden="true">
+                <svg viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                  <rect width="20" height="20" fill="#0099B5"/>
+                  <rect y="6" width="20" height="1.2" fill="#CE1126"/>
+                  <rect y="7.2" width="20" height="5.6" fill="#fff"/>
+                  <rect y="12.8" width="20" height="1.2" fill="#CE1126"/>
+                  <rect y="14" width="20" height="6" fill="#1EB53A"/>
+                  <circle cx="4.2" cy="3.4" r="2" fill="#fff"/>
+                  <circle cx="5" cy="3" r="1.7" fill="#0099B5"/>
+                </svg>
+              </span>
+              <span>O'zbekcha</span>
+            </button>
+            <button type="button" data-lang-switch="ru" class="lang-dropdown-item" role="menuitem">
+              <span class="lang-flag" aria-hidden="true">
+                <svg viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                  <rect width="20" height="6.67" fill="#fff"/>
+                  <rect y="6.67" width="20" height="6.67" fill="#0039A6"/>
+                  <rect y="13.34" width="20" height="6.66" fill="#D52B1E"/>
+                </svg>
+              </span>
+              <span>Русский</span>
+            </button>
+            <button type="button" data-lang-switch="en" class="lang-dropdown-item" role="menuitem">
+              <span class="lang-flag" aria-hidden="true">
+                <svg viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                  <rect width="20" height="20" fill="#00247D"/>
+                  <path d="M0,0 L20,20 M20,0 L0,20" stroke="#fff" stroke-width="4"/>
+                  <path d="M0,0 L20,20 M20,0 L0,20" stroke="#CF142B" stroke-width="1.6"/>
+                  <path d="M10,0 V20 M0,10 H20" stroke="#fff" stroke-width="6"/>
+                  <path d="M10,0 V20 M0,10 H20" stroke="#CF142B" stroke-width="3.2"/>
+                </svg>
+              </span>
+              <span>English</span>
+            </button>
+          </div>
+        </div>
         <button id="headerSettingsBtn" data-open-settings aria-label="Sozlamalar" title="Sozlamalar" data-i18n-title="nav.settings" class="hidden lg:flex w-10 h-10 items-center justify-center rounded-full border border-emerald-900/20 nav-link hover:text-gold-500 hover:border-gold-500/40 transition-colors">
           <i class="fa-solid fa-gear text-lg"></i>
         </button>
@@ -191,6 +238,49 @@
       </div>
     </div>
   </div>
+
+  <!-- Til almashtirish (header globus tugmasi) uchun uslublar — alohida
+       <style> ichida, chunki css/app.css qo'lda oldindan generatsiya
+       qilingan (purge qilingan) fayl va yangi qo'shilgan Tailwind
+       klasslarini o'z ichiga olmasligi mumkin (yuqoridagi "Sharhlar"
+       bo'limidagi izohga qarang — bu yerda ham xuddi shu sabab). -->
+  <style>
+    .lang-switch-wrap{position:relative;}
+    .lang-globe-btn{
+      width:2.5rem;height:2.5rem;display:flex;align-items:center;justify-content:center;
+      border-radius:9999px;border:1px solid rgba(11,59,46,.2);
+      background:transparent;cursor:pointer;padding:0;
+      transition:color .15s ease,border-color .15s ease;
+    }
+    .lang-globe-btn:hover,.lang-globe-btn.lang-open{color:#c9a227;border-color:rgba(201,162,39,.4);}
+    .lang-dropdown{
+      position:absolute;top:calc(100% + .625rem);right:0;min-width:11.5rem;
+      background:#FAF8F3;border:1px solid rgba(7,33,26,.1);border-radius:1rem;
+      box-shadow:0 20px 45px -14px rgba(7,33,26,.4);
+      padding:.375rem;display:flex;flex-direction:column;gap:.125rem;
+      opacity:0;visibility:hidden;transform:translateY(-6px);
+      transition:opacity .15s ease,transform .15s ease,visibility .15s;
+      z-index:55;
+    }
+    .lang-dropdown.show{opacity:1;visibility:visible;transform:translateY(0);}
+    .lang-dropdown-item{
+      display:flex;align-items:center;gap:.7rem;width:100%;text-align:left;
+      padding:.65rem .75rem;border-radius:.65rem;border:0;background:transparent;
+      font-size:.875rem;font-weight:600;color:rgba(7,33,26,.65);cursor:pointer;
+      font-family:inherit;transition:background-color .15s ease,color .15s ease;
+    }
+    .lang-dropdown-item:hover{background:rgba(7,33,26,.06);color:#07211A;}
+    .lang-dropdown-item.lang-active{background:#07211A;color:#F7F1E1;}
+    .lang-flag{
+      width:1.4rem;height:1.4rem;border-radius:9999px;overflow:hidden;
+      flex-shrink:0;display:block;border:1px solid rgba(7,33,26,.15);
+    }
+    .lang-dropdown-item.lang-active .lang-flag{border-color:rgba(247,241,225,.35);}
+    .lang-flag svg{display:block;width:100%;height:100%;}
+    @media (max-width:380px){
+      .lang-dropdown{right:-2.5rem;}
+    }
+  </style>
 
   <!-- Mobile menu -->
   <div id="mobileMenu" class="lg:hidden hidden bg-emerald-950 text-cream px-6 py-6 flex flex-col gap-5 font-medium">

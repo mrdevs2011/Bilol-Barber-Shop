@@ -4,7 +4,7 @@
 import { initSupabase, getSupabaseClient } from './api.js';
 import { renderServices, renderMasters } from './home.js';
 import { initBookingModal, openBooking } from './booking.js';
-import { initHeaderScroll, initMobileMenu, initRevealAnimations } from './ui.js';
+import { initHeaderScroll, initMobileMenu, initRevealAnimations, initHeaderLangDropdown } from './ui.js';
 import { initAuth } from './auth.js';
 import { initMyBookings } from './mybookings.js';
 import { initReviews } from './reviews.js';
@@ -52,6 +52,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   initBookingModal();
   initHeaderScroll();
   initMobileMenu();
+  initHeaderLangDropdown();
 
   // MUHIM: agar sahifaga to'g'ridan-to'g'ri /bron/ manzili bilan kirilsa
   // (masalan bilolbarber.vercel.app/bron/ havolasi orqali — Telegram bot,
