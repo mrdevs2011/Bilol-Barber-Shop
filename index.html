@@ -168,18 +168,18 @@
       </a>
 
       <nav class="hidden lg:flex items-center gap-9 font-medium text-sm tracking-wide" id="navLinks">
-        <a href="#xizmatlar" class="nav-link hover:text-gold-500 transition-colors" data-i18n="nav.services">Xizmatlar</a>
-        <a href="#ustalar" class="nav-link hover:text-gold-500 transition-colors" data-i18n="nav.masters">Barberlar</a>
-        <a href="#sharhlar" class="nav-link hover:text-gold-500 transition-colors" data-i18n="nav.reviews">Sharhlar</a>
-        <a href="#joylashuv" class="nav-link hover:text-gold-500 transition-colors" data-i18n="nav.location">Joylashuv</a>
-        <a href="#aloqa" class="nav-link hover:text-gold-500 transition-colors" data-i18n="nav.contact">Aloqa</a>
+        <a href="#services" class="nav-link hover:text-gold-500 transition-colors" data-i18n="nav.services">Xizmatlar</a>
+        <a href="#masters" class="nav-link hover:text-gold-500 transition-colors" data-i18n="nav.masters">Barberlar</a>
+        <a href="#reviews" class="nav-link hover:text-gold-500 transition-colors" data-i18n="nav.reviews">Sharhlar</a>
+        <a href="#location" class="nav-link hover:text-gold-500 transition-colors" data-i18n="nav.location">Joylashuv</a>
+        <a href="#contact" class="nav-link hover:text-gold-500 transition-colors" data-i18n="nav.contact">Aloqa</a>
       </nav>
 
       <div class="flex items-center gap-3">
         <button data-open-booking class="hidden lg:inline-flex items-center gap-2 bg-gold-500 hover:bg-gold-600 text-emerald-950 font-semibold text-sm px-5 py-2.5 rounded-full transition-colors">
           <i class="fa-regular fa-calendar-check"></i> <span data-i18n="cta.book">Navbatga yozilish</span>
         </button>
-        <a href="#mening-bronlarim" id="headerMyBookingsBtn" data-auth-logged-in aria-label="Mening bronlarim" title="Mening bronlarim" data-i18n-title="nav.myBookings" class="hidden auth-gate lg:flex w-10 h-10 items-center justify-center rounded-full border border-emerald-900/20 nav-link hover:text-gold-500 hover:border-gold-500/40 transition-colors">
+        <a href="#my-bookings" id="headerMyBookingsBtn" data-auth-logged-in aria-label="Mening bronlarim" title="Mening bronlarim" data-i18n-title="nav.myBookings" class="hidden auth-gate lg:flex w-10 h-10 items-center justify-center rounded-full border border-emerald-900/20 nav-link hover:text-gold-500 hover:border-gold-500/40 transition-colors">
           <i class="fa-regular fa-calendar-check text-lg"></i>
         </a>
         <div class="lang-switch-wrap" id="headerLangWrap">
@@ -284,12 +284,12 @@
 
   <!-- Mobile menu -->
   <div id="mobileMenu" class="lg:hidden hidden bg-emerald-950 text-cream px-6 py-6 flex flex-col gap-5 font-medium">
-    <a href="#xizmatlar" class="mobile-link hover:text-gold-400" data-i18n="nav.services">Xizmatlar</a>
-    <a href="#ustalar" class="mobile-link hover:text-gold-400" data-i18n="nav.masters">Barberlar</a>
-    <a href="#sharhlar" class="mobile-link hover:text-gold-400" data-i18n="nav.reviews">Sharhlar</a>
-    <a href="#joylashuv" class="mobile-link hover:text-gold-400" data-i18n="nav.location">Joylashuv</a>
-    <a href="#aloqa" class="mobile-link hover:text-gold-400" data-i18n="nav.contact">Aloqa</a>
-    <a href="#mening-bronlarim" data-auth-logged-in class="auth-gate mobile-link text-left hover:text-gold-400">
+    <a href="#services" class="mobile-link hover:text-gold-400" data-i18n="nav.services">Xizmatlar</a>
+    <a href="#masters" class="mobile-link hover:text-gold-400" data-i18n="nav.masters">Barberlar</a>
+    <a href="#reviews" class="mobile-link hover:text-gold-400" data-i18n="nav.reviews">Sharhlar</a>
+    <a href="#location" class="mobile-link hover:text-gold-400" data-i18n="nav.location">Joylashuv</a>
+    <a href="#contact" class="mobile-link hover:text-gold-400" data-i18n="nav.contact">Aloqa</a>
+    <a href="#my-bookings" data-auth-logged-in class="auth-gate mobile-link text-left hover:text-gold-400">
       <i class="fa-regular fa-calendar-check mr-1.5"></i> <span data-i18n="nav.myBookings">Mening bronlarim</span>
     </a>
     <button data-open-settings class="mobile-link text-left hover:text-gold-400">
@@ -301,7 +301,7 @@
 <!-- ================= MENING BRONLARIM (DASHBOARD) =================
      Login qilgan mijoz saytga kirishi bilan, hech qanday modal ochmasdan,
      o'z bronlarini shu yerda — bosh sahifaning yuqori qismida — ko'radi. -->
-<section id="mening-bronlarim" data-auth-logged-in class="auth-gate bg-emerald-950 text-cream pt-28 pb-14 md:pt-32 md:pb-16">
+<section id="my-bookings" data-auth-logged-in class="auth-gate bg-emerald-950 text-cream pt-28 pb-14 md:pt-32 md:pb-16">
   <div class="max-w-7xl mx-auto px-5 md:px-8">
     <div class="flex items-center justify-between gap-3 mb-6">
       <div>
@@ -339,7 +339,7 @@
         <button data-open-booking class="inline-flex items-center gap-2 bg-gold-500 hover:bg-gold-600 text-emerald-950 font-semibold px-7 py-4 rounded-full transition-colors">
           <span data-i18n="cta.chooseTime">Vaqtni tanlash</span> <i class="fa-solid fa-arrow-right text-sm"></i>
         </button>
-        <a href="#xizmatlar" class="inline-flex items-center gap-2 border border-cream/25 hover:border-gold-400 text-cream font-medium px-7 py-4 rounded-full transition-colors" data-i18n="cta.viewServices">
+        <a href="#services" class="inline-flex items-center gap-2 border border-cream/25 hover:border-gold-400 text-cream font-medium px-7 py-4 rounded-full transition-colors" data-i18n="cta.viewServices">
           Xizmatlarni ko'rish
         </a>
       </div>
@@ -392,13 +392,13 @@
     </div>
   </div>
 
-  <a href="#xizmatlar" class="scroll-cue hidden sm:flex" aria-hidden="true">
+  <a href="#services" class="scroll-cue hidden sm:flex" aria-hidden="true">
     <span></span>
   </a>
 </section>
 
 <!-- ================= XIZMATLAR ================= -->
-<section id="xizmatlar" class="max-w-7xl mx-auto px-5 md:px-8 py-24 md:py-32">
+<section id="services" class="max-w-7xl mx-auto px-5 md:px-8 py-24 md:py-32">
   <div class="max-w-2xl mb-16 reveal">
     <span class="text-gold-600 text-xs tracking-[0.25em] uppercase font-semibold" data-i18n="services.eyebrow">Narxnoma</span>
     <h2 class="font-display text-3xl md:text-5xl font-semibold mt-3 mb-5" data-i18n="services.title">Xizmatlar va narxlar</h2>
@@ -409,7 +409,7 @@
 </section>
 
 <!-- ================= USTALAR ================= -->
-<section id="ustalar" class="bg-emerald-900 text-cream py-24 md:py-32">
+<section id="masters" class="bg-emerald-900 text-cream py-24 md:py-32">
   <div class="max-w-7xl mx-auto px-5 md:px-8">
     <div class="max-w-2xl mb-16 reveal">
       <span class="text-gold-400 text-xs tracking-[0.25em] uppercase font-semibold" data-i18n="masters.eyebrow">Jamoamiz</span>
@@ -421,7 +421,7 @@
 </section>
 
 <!-- ================= SHARHLAR ================= -->
-<section id="sharhlar" class="max-w-7xl mx-auto px-5 md:px-8 py-24 md:py-32">
+<section id="reviews" class="max-w-7xl mx-auto px-5 md:px-8 py-24 md:py-32">
   <div class="max-w-2xl mb-16 reveal">
     <span class="text-gold-600 text-xs tracking-[0.25em] uppercase font-semibold" data-i18n="reviews.eyebrow">Mijozlar fikri</span>
     <h2 class="font-display text-3xl md:text-5xl font-semibold mt-3 mb-5" data-i18n="reviews.title">Bizga ishonishadi</h2>
@@ -524,7 +524,7 @@
       <p class="text-cream/50 text-xs mt-5 leading-relaxed" data-i18n="footer.hoursNote">Bayram kunlari ish jadvali o'zgarishi mumkin, iltimos oldindan qo'ng'iroq qiling.</p>
     </div>
 
-    <div id="joylashuv">
+    <div id="location">
       <h4 class="font-display text-lg font-semibold mb-5" data-i18n="footer.locationTitle">Joylashuv</h4>
       <p class="text-cream/60 text-sm leading-relaxed mb-4" data-i18n="footer.address">Andijon sh., Bobur ko'chasi, 12-uy</p>
       <a href="https://maps.google.com/?cid=1076203736938571400" target="_blank" rel="noopener" class="inline-flex items-center gap-2 text-gold-400 text-sm font-medium hover:text-gold-300 transition-colors">
@@ -532,7 +532,7 @@
       </a>
     </div>
 
-    <div id="aloqa">
+    <div id="contact">
       <h4 class="font-display text-lg font-semibold mb-5" data-i18n="footer.contactTitle">Aloqa</h4>
       <ul class="text-cream/60 text-sm space-y-3">
         <li class="flex items-center gap-2.5"><i class="fa-solid fa-phone text-gold-400 w-4"></i> <a href="tel:+998983114311" class="hover:text-gold-300 transition-colors">+998 98 311 43 11</a></li>

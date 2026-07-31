@@ -68,7 +68,7 @@ button, a { -webkit-tap-highlight-color: transparent; }
 
 /* Fixed header balandligiga mos scroll-offset — bo'lim sarlavhalari
    navigatsiya orqali o'tilganda header ostida yashirinib qolmasligi uchun */
-#mening-bronlarim, #xizmatlar, #ustalar, #joylashuv, #aloqa {
+#my-bookings, #services, #masters, #location, #contact {
   scroll-margin-top: 88px;
 }
 
@@ -118,7 +118,7 @@ h1, h2, h3, .font-display { font-family: 'Playfair Display', serif; }
 /* Kartochka to'plamlarida ketma-ket (stagger) paydo bo'lish — faqat vizual,
    IntersectionObserver mantig'iga tegmaydi, chunki .show baribir JS orqali
    qo'shiladi; bu yerda faqat transition-delay beriladi. */
-#servicesGrid > .reveal, #mastersGrid > .reveal, #sharhlar .reveal.lift {
+#servicesGrid > .reveal, #mastersGrid > .reveal, #reviews .reveal.lift {
   transition-delay: calc(var(--i, 0) * 70ms);
 }
 #servicesGrid > .reveal:nth-child(1) { --i: 0; } #servicesGrid > .reveal:nth-child(2) { --i: 1; }
@@ -126,8 +126,8 @@ h1, h2, h3, .font-display { font-family: 'Playfair Display', serif; }
 #servicesGrid > .reveal:nth-child(5) { --i: 4; } #servicesGrid > .reveal:nth-child(6) { --i: 5; }
 #mastersGrid > .reveal:nth-child(1) { --i: 0; } #mastersGrid > .reveal:nth-child(2) { --i: 1; }
 #mastersGrid > .reveal:nth-child(3) { --i: 2; } #mastersGrid > .reveal:nth-child(4) { --i: 3; }
-#sharhlar .reveal.lift:nth-child(1) { --i: 0; } #sharhlar .reveal.lift:nth-child(2) { --i: 1; }
-#sharhlar .reveal.lift:nth-child(3) { --i: 2; }
+#reviews .reveal.lift:nth-child(1) { --i: 0; } #reviews .reveal.lift:nth-child(2) { --i: 1; }
+#reviews .reveal.lift:nth-child(3) { --i: 2; }
 
 /* TUZATISH: css/tailwind-build.css oldindan generatsiya qilingan statik
    fayl bo'lgani uchun "border-emerald-950/8" klassi unda yo'q edi — natijada
@@ -535,7 +535,7 @@ input[type="date"]::-webkit-calendar-picker-indicator {
    pastki qatori (mualliflik huquqi matni) ustidan chiqib, uni bosib
    turardi va matnni to'liq o'qib bo'lmasdi. Faqat tugma ko'rinadigan
    (640px dan kichik) ekranlarda footerga qo'shimcha pastki joy beramiz.
-   #aloqa endi footer emas, "Aloqa" ustuniga tegishli bo'lgani uchun,
+   #contact endi footer emas, "Aloqa" ustuniga tegishli bo'lgani uchun,
    footer'ning o'zi uchun #site-footer ID selektoridan foydalanamiz —
    bu ham .pb-10 Tailwind klassidan ustun turadi. */
 @media (max-width: 639px) {
