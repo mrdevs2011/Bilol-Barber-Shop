@@ -8,12 +8,12 @@ import { t } from './i18n.js';
 export function renderServices() {
   const grid = document.getElementById('servicesGrid');
   grid.innerHTML = SERVICES.map(s => `
-    <div class="reveal lift group bg-white rounded-2xl border border-emerald-950/8 p-6 cursor-pointer focus-gold" data-service-card="${s.id}" role="button" tabindex="0" aria-label="${pickLang(s.name, s.name_ru)} xizmatiga bron qilish">
+    <div class="reveal lift group bg-white rounded-2xl border border-emerald-950/8 p-6 cursor-pointer focus-gold" data-service-card="${s.id}" role="button" tabindex="0" aria-label="${pickLang(s.name, s.name_ru, s.name_en)} xizmatiga bron qilish">
       <div class="w-12 h-12 rounded-full bg-emerald-900 text-gold-400 flex items-center justify-center mb-5 group-hover:bg-gold-500 group-hover:text-emerald-950 transition-colors">
         <i class="fa-solid ${s.icon}"></i>
       </div>
-      <h3 class="font-display text-lg font-semibold mb-1.5">${pickLang(s.name, s.name_ru)}</h3>
-      <p class="text-sm text-emerald-950/55 leading-relaxed mb-5">${pickLang(s.desc, s.desc_ru)}</p>
+      <h3 class="font-display text-lg font-semibold mb-1.5">${pickLang(s.name, s.name_ru, s.name_en)}</h3>
+      <p class="text-sm text-emerald-950/55 leading-relaxed mb-5">${pickLang(s.desc, s.desc_ru, s.desc_en)}</p>
       <div class="flex items-center justify-between pt-4 border-t border-emerald-950/8">
         <span class="text-xs font-mono text-emerald-950/50"><i class="fa-regular fa-clock mr-1"></i>${s.duration} ${t('services.minutes')}</span>
         <span class="font-display font-semibold text-emerald-800">${money(s.price)}</span>
@@ -44,12 +44,12 @@ export function renderMasters() {
   grid.innerHTML = MASTERS.map(m => `
     <div class="reveal lift bg-emerald-950/40 border border-cream/10 rounded-2xl overflow-hidden">
       <div class="aspect-[3/4] overflow-hidden">
-        <img src="${m.img}" alt="${pickLang(m.name, m.name_ru)}" class="w-full h-full object-cover" loading="lazy">
+        <img src="${m.img}" alt="${pickLang(m.name, m.name_ru, m.name_en)}" class="w-full h-full object-cover" loading="lazy">
       </div>
       <div class="p-5">
-        <h3 class="font-display text-lg font-semibold">${pickLang(m.name, m.name_ru)}</h3>
+        <h3 class="font-display text-lg font-semibold">${pickLang(m.name, m.name_ru, m.name_en)}</h3>
         <p class="text-gold-400 text-xs tracking-wide uppercase mt-1">${m.role}</p>
-        <p class="text-cream/50 text-sm mt-2">${pickLang(m.exp, m.exp_ru)}</p>
+        <p class="text-cream/50 text-sm mt-2">${pickLang(m.exp, m.exp_ru, m.exp_en)}</p>
       </div>
     </div>
   `).join('');

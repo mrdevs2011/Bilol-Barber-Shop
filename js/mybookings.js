@@ -30,12 +30,12 @@ function statusLabel(status) {
  */
 function localizedServiceName(b) {
   const svc = SERVICES.find(s => s.id === b.service_id);
-  return svc ? pickLang(svc.name, svc.name_ru) : b.service_name;
+  return svc ? pickLang(svc.name, svc.name_ru, svc.name_en) : b.service_name;
 }
 
 function localizedMasterName(b) {
   const m = MASTERS.find(x => x.id === b.master_id);
-  return m ? pickLang(m.name, m.name_ru) : b.master_name;
+  return m ? pickLang(m.name, m.name_ru, m.name_en) : b.master_name;
 }
 
 // MUHIM: bu qiymat sql/PATCH_round5_client_cancel_booking.sql dagi

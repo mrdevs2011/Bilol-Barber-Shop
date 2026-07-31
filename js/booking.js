@@ -270,7 +270,7 @@ function renderModalServiceList() {
     <button type="button" data-service-id="${s.id}"
       class="service-opt text-left border rounded-xl px-4 py-3.5 transition-colors ${state.serviceId === s.id ? 'border-gold-500 bg-gold-500/10' : 'border-emerald-950/12 hover:border-emerald-950/30'}">
       <div class="flex items-center justify-between mb-1">
-        <span class="font-semibold text-sm">${pickLang(s.name, s.name_ru)}</span>
+        <span class="font-semibold text-sm">${pickLang(s.name, s.name_ru, s.name_en)}</span>
         <i class="fa-solid ${s.icon} text-emerald-800/50 text-sm"></i>
       </div>
       <div class="flex items-center gap-3 text-xs text-emerald-950/50 font-mono">
@@ -306,8 +306,8 @@ function renderModalMasterList() {
   wrap.innerHTML = list.map(m => `
     <button type="button" data-master-id="${m.id}"
       class="master-opt text-center border rounded-xl p-3 transition-colors ${state.masterId === m.id ? 'border-gold-500 bg-gold-500/10' : 'border-emerald-950/12 hover:border-emerald-950/30'}">
-      <img src="${m.img}" class="w-14 h-14 rounded-full object-cover mx-auto mb-2" alt="${pickLang(m.name, m.name_ru)}">
-      <div class="text-xs font-semibold leading-tight">${pickLang(m.name, m.name_ru).split(' ')[0]}</div>
+      <img src="${m.img}" class="w-14 h-14 rounded-full object-cover mx-auto mb-2" alt="${pickLang(m.name, m.name_ru, m.name_en)}">
+      <div class="text-xs font-semibold leading-tight">${pickLang(m.name, m.name_ru, m.name_en).split(' ')[0]}</div>
     </button>
   `).join('');
 
@@ -502,8 +502,8 @@ function renderSummary() {
   const service = SERVICES.find(s => s.id === state.serviceId);
   const master = MASTERS.find(m => m.id === state.masterId);
 
-  document.getElementById('sumService').textContent = (service && pickLang(service.name, service.name_ru)) || '—';
-  document.getElementById('sumMaster').textContent = master ? `${t('ticket.barberPrefix')}: ${pickLang(master.name, master.name_ru)}` : '—';
+  document.getElementById('sumService').textContent = (service && pickLang(service.name, service.name_ru, service.name_en)) || '—';
+  document.getElementById('sumMaster').textContent = master ? `${t('ticket.barberPrefix')}: ${pickLang(master.name, master.name_ru, master.name_en)}` : '—';
   document.getElementById('sumDate').textContent = formatDateUz(state.date);
   document.getElementById('sumTime').textContent = state.time || '—';
   document.getElementById('sumClient').textContent = state.name || '—';
