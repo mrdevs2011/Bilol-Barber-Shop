@@ -151,6 +151,44 @@ const nbSubmitBtn     = document.getElementById('nbSubmitBtn');
 let nbSelectedTime    = null;
 let nbEditingId       = null; // null = yangi bron qo'shish, aks holda shu ID'dagi bronni tahrirlash
 
+// ---------------------------------------------------------------------------
+// Chap sidebar (desktop, #viewSwitch) sticky holatda header'dan pastroqda
+// turishi kerak — CSS'da bu masofa --admin-header-h o'zgaruvchisidan
+// olinadi (qarang: admin/index.html, #viewSwitch.view-switch{top:...}).
+// Header balandligi doim bir xil emas (masalan "Yangi bron"/"Chiqish"
+// tugmalari sig'may qolganda .header-row ikkinchi qatorga tushib ketadi),
+// shuning uchun qattiq raqam o'rniga haqiqiy balandlikni ResizeObserver
+// bilan doim kuzatib, CSS o'zgaruvchisini yangilab turamiz — aks holda
+// sidebar eski (kichikroq) masofada "yopishib" qolib, header'ning
+// ustiga chiqib ketardi.
+const adminHeaderEl = document.getElementById('adminHeader');
+if (adminHeaderEl) {
+  let syncAdminHeaderHeightQueued = false;
+  const syncAdminHeaderHeight = () => {
+    syncAdminHeaderHeightQueued = false;
+    // Math.ceil: butun piksel qiymat — kasr piksel (masalan 87.6px) sticky
+    // "top" sifatida ishlatilganda ba'zi brauzerlarda 1px atrofida
+    // "titrash" (jitter)ga sabab bo'lishi mumkin edi.
+    const h = Math.ceil(adminHeaderEl.getBoundingClientRect().height);
+    document.documentElement.style.setProperty('--admin-header-h', `${h}px`);
+  };
+  // requestAnimationFrame bilan navbatga qo'yamiz — ResizeObserver bir
+  // zumda bir necha marta chaqirilib qolsa ham, CSS o'zgaruvchisi faqat
+  // keyingi render freym'da, bittagina marta yangilanadi (repaint'larni
+  // qisqartirib, scroll paytidagi "sal qimirlash"ni yo'qotadi).
+  const queueSyncAdminHeaderHeight = () => {
+    if (syncAdminHeaderHeightQueued) return;
+    syncAdminHeaderHeightQueued = true;
+    requestAnimationFrame(syncAdminHeaderHeight);
+  };
+  syncAdminHeaderHeight();
+  if (typeof ResizeObserver !== 'undefined') {
+    new ResizeObserver(queueSyncAdminHeaderHeight).observe(adminHeaderEl);
+  } else {
+    window.addEventListener('resize', queueSyncAdminHeaderHeight);
+  }
+}
+
 const moodBanner = document.getElementById('moodBanner');
 const moodLine1  = document.getElementById('moodLine1');
 const moodLine2  = document.getElementById('moodLine2');

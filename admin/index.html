@@ -752,6 +752,11 @@
          qo'yilgan edi — lekin header'ning o'zi static bo'lgani uchun u
          scroll qilinganda yo'qolib, o'sha joyda bo'sh joy qolardi). */
       position:sticky; top:0; z-index:5;
+      /* Scroll paytida sticky pozitsiya qattiq (jitter'siz) tursin deb
+         GPU'ga alohida qatlam sifatida composite qildiramiz — aks holda
+         ba'zi brauzerlarda sticky elementlar scroll chog'ida 1px atrofida
+         "titrab" ko'rinishi mumkin. */
+      transform:translateZ(0); backface-visibility:hidden;
     }
     .header-row{max-width:none;}
 
@@ -759,17 +764,32 @@
        kerakli tor joyni oladi; ustiga hover qilinganda esa Supabase
        leftbar'idagi kabi kengayib, nomlari bilan kontent ustiga chiqadi
        (grid ustunini o'zgartirmaydi, shuning uchun kontent joyidan
-       siljimaydi — sidebar shunchaki uning ustiga "suzib chiqadi"). */
+       siljimaydi — sidebar shunchaki uning ustiga "suzib chiqadi").
+
+       MUHIM: tepadan masofa qattiq "88px" emas, balki --admin-header-h
+       CSS o'zgaruvchisidan olinadi (admin.js'dagi ResizeObserver shu
+       qiymatni header'ning HAQIQIY balandligiga qarab doim yangilab
+       turadi). Aks holda header ikki qatorga tushib qolganda (masalan,
+       "Yangi bron"/"Chiqish" tugmalari sig'may wrap bo'lganda) sidebar
+       hali ham eski 88px'da "yopishib" qolib, header'ning ustiga
+       chiqib ketardi.
+
+       Sidebar ham xuddi header kabi translateZ(0) bilan alohida GPU
+       qatlamiga chiqarilgan — ikkalasi ham sticky bo'lgani uchun,
+       birontasi composite qatlamda bo'lmasa, brauzer scroll chog'ida
+       ularni qayta-qayta repaint qilishi va bu "sal qimirlash" (jitter)
+       sifatida ko'rinishi mumkin edi. */
     #viewSwitch.view-switch{
       grid-area:nav;
-      position:sticky; top:88px; bottom:auto; left:auto; right:auto; align-self:start;
-      height:calc(100vh - 88px); overflow-y:auto; overflow-x:hidden;
+      position:sticky; top:var(--admin-header-h, 88px); bottom:auto; left:auto; right:auto; align-self:start;
+      height:calc(100vh - var(--admin-header-h, 88px)); overflow-y:auto; overflow-x:hidden;
       max-width:none; margin:0; padding:22px 10px 24px;
       flex-direction:column; align-items:stretch; gap:4px;
       background:var(--panel); border-right:1px solid var(--line); border-top:none;
       box-shadow:none; z-index:30;
       width:76px; transition:width .16s ease, padding .16s ease, box-shadow .16s ease;
       white-space:nowrap;
+      transform:translateZ(0); backface-visibility:hidden;
     }
     #viewSwitch.view-switch:hover,
     #viewSwitch.view-switch:focus-within{
@@ -865,7 +885,7 @@
 
 <!-- DASHBOARD -->
 <div id="dashView" class="hidden">
-  <header class="admin-header">
+  <header class="admin-header" id="adminHeader">
     <div class="header-row">
       <div class="brand">
         <div class="brand-mark"><i class="fa-solid fa-scissors"></i></div>
