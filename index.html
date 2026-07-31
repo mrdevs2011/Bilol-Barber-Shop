@@ -500,9 +500,18 @@
   </div>
 </section>
 
-<!-- ================= FOOTER / ALOQA / JOYLASHUV ================= -->
+<!-- ================= FOOTER / ALOQA / JOYLASHUV =================
+     MUHIM (anchor-scroll tuzatildi): "Joylashuv" va "Aloqa" oldin 4 ustunli
+     grid'da bir qatorda YONMA-YON turardi — ikkalasi ham bir xil vertikal
+     balandlikda bo'lgani uchun #location va #contact havolalari FARQSIZ
+     bitta joyga (bir xil scroll pozitsiyasiga) olib borardi (chunki
+     brauzer havola bo'yicha faqat VERTIKAL scroll qiladi, gorizontal farq
+     hisobga olinmaydi). Endi ular 3-ustunli grid ichida BITTA ustunda
+     USTMA-UST joylashtirilgan — shu sabab #contact endi #location'dan
+     pastroqda (Joylashuv blokining balandligicha), ikkala havola ham
+     aniq, boshqa-boshqa joyga olib boradi. -->
 <footer id="site-footer" class="bg-emerald-950 text-cream pt-20 pb-10">
-  <div class="max-w-7xl mx-auto px-5 md:px-8 grid md:grid-cols-4 gap-12 mb-16">
+  <div class="max-w-7xl mx-auto px-5 md:px-8 grid md:grid-cols-3 gap-12 mb-16">
     <div>
       <div class="flex items-center gap-2.5 mb-5">
         <img src="assets/logo-header.png" alt="BILOL BARBER" width="40" height="40" class="w-10 h-10 rounded-full object-cover">
@@ -524,21 +533,23 @@
       <p class="text-cream/50 text-xs mt-5 leading-relaxed" data-i18n="footer.hoursNote">Bayram kunlari ish jadvali o'zgarishi mumkin, iltimos oldindan qo'ng'iroq qiling.</p>
     </div>
 
-    <div id="location">
-      <h4 class="font-display text-lg font-semibold mb-5" data-i18n="footer.locationTitle">Joylashuv</h4>
-      <p class="text-cream/60 text-sm leading-relaxed mb-4" data-i18n="footer.address">Andijon sh., Bobur ko'chasi, 12-uy</p>
-      <a href="https://maps.google.com/?cid=1076203736938571400" target="_blank" rel="noopener" class="inline-flex items-center gap-2 text-gold-400 text-sm font-medium hover:text-gold-300 transition-colors">
-        <i class="fa-solid fa-map-location-dot"></i> <span data-i18n="footer.viewMap">Xaritada ko'rish</span>
-      </a>
-    </div>
+    <div class="flex flex-col gap-10">
+      <div id="location">
+        <h4 class="font-display text-lg font-semibold mb-5" data-i18n="footer.locationTitle">Joylashuv</h4>
+        <p class="text-cream/60 text-sm leading-relaxed mb-4" data-i18n="footer.address">Andijon sh., Bobur ko'chasi, 12-uy</p>
+        <a href="https://maps.google.com/?cid=1076203736938571400" target="_blank" rel="noopener" class="inline-flex items-center gap-2 text-gold-400 text-sm font-medium hover:text-gold-300 transition-colors">
+          <i class="fa-solid fa-map-location-dot"></i> <span data-i18n="footer.viewMap">Xaritada ko'rish</span>
+        </a>
+      </div>
 
-    <div id="contact">
-      <h4 class="font-display text-lg font-semibold mb-5" data-i18n="footer.contactTitle">Aloqa</h4>
-      <ul class="text-cream/60 text-sm space-y-3">
-        <li class="flex items-center gap-2.5"><i class="fa-solid fa-phone text-gold-400 w-4"></i> <a href="tel:+998983114311" class="hover:text-gold-300 transition-colors">+998 98 311 43 11</a></li>
-        <li class="flex items-center gap-2.5"><i class="fa-solid fa-envelope text-gold-400 w-4"></i> <a href="mailto:bilolbarber.uz@gmail.com" class="hover:text-gold-300 transition-colors">bilolbarber.uz@gmail.com</a></li>
-        <li class="flex items-center gap-2.5"><i class="fa-brands fa-telegram text-gold-400 w-4"></i> <a href="https://t.me/bilolxonoff" target="_blank" rel="noopener noreferrer" class="hover:text-gold-300 transition-colors">t.me/bilolxonoff</a></li>
-      </ul>
+      <div id="contact">
+        <h4 class="font-display text-lg font-semibold mb-5" data-i18n="footer.contactTitle">Aloqa</h4>
+        <ul class="text-cream/60 text-sm space-y-3">
+          <li class="flex items-center gap-2.5"><i class="fa-solid fa-phone text-gold-400 w-4"></i> <a href="tel:+998983114311" class="hover:text-gold-300 transition-colors">+998 98 311 43 11</a></li>
+          <li class="flex items-center gap-2.5"><i class="fa-solid fa-envelope text-gold-400 w-4"></i> <a href="mailto:bilolbarber.uz@gmail.com" class="hover:text-gold-300 transition-colors">bilolbarber.uz@gmail.com</a></li>
+          <li class="flex items-center gap-2.5"><i class="fa-brands fa-telegram text-gold-400 w-4"></i> <a href="https://t.me/bilolxonoff" target="_blank" rel="noopener noreferrer" class="hover:text-gold-300 transition-colors">t.me/bilolxonoff</a></li>
+        </ul>
+      </div>
     </div>
   </div>
 
