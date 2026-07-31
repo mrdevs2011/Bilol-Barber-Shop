@@ -1145,3 +1145,35 @@ input[type="date"]::-webkit-calendar-picker-indicator {
    ============================================================ */
 .lang-option{color:rgba(7,33,26,.5)}
 .lang-option.lang-active{background:#07211A;color:#F7F1E1}
+/* ============================================================
+   TUZATISH (index.html): yuqoridagi Tailwind build faqat oldingi
+   versiyani skanerlagan edi, shu sababli keyinroq index.html'ga
+   qo'shilgan ba'zi klasslar compiled CSS'da yo'q edi — eng jiddiysi:
+   "lg:inline-flex" yo'qligi sababli header'dagi asosiy "Navbatga
+   yozilish" CTA tugmasi hech qanday ekranda ko'rinmas edi (har doim
+   .hidden'dagi display:none'da qolib ketardi). Quyida shu yetishmagan
+   klasslar qo'lda qo'shildi.
+   ============================================================ */
+.bg-transparent{background-color:transparent}
+.border-0{border-width:0}
+.min-w-0{min-width:0px}
+.outline-none{outline:2px solid transparent;outline-offset:2px}
+.break-words{overflow-wrap:break-word}
+.select-none{-webkit-user-select:none;user-select:none}
+.p-1{padding:.25rem}
+.p-2{padding:.5rem}
+.mt-10{margin-top:2.5rem}
+.pb-6{padding-bottom:1.5rem}
+.text-emerald-950\/70{color:rgba(7,33,26,.7)}
+.text-red-300{color:#fca5a5}
+.bg-red-950\/40{background-color:rgba(69,10,10,.4)}
+.hover\:border-gold-500\/40:hover{border-color:rgba(201,162,39,.4)}
+.hover\:underline:hover{text-decoration:underline}
+.hover\:text-gold-600:hover{color:#8A6B17}
+.z-\[60\]{z-index:60}
+@media (min-width:640px){
+  .sm\:max-w-sm{max-width:24rem}
+}
+@media (min-width:1024px){
+  .lg\:inline-flex{display:inline-flex}
+}

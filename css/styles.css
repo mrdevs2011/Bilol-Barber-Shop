@@ -699,3 +699,37 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 .pwa-ios-sheet-steps li { display: flex; align-items: flex-start; gap: .65rem; line-height: 1.4; }
 .pwa-ios-sheet-steps i { color: #C9A227; margin-top: .2rem; width: 1.1rem; text-align: center; }
 .pwa-ios-sheet .pwa-install-close { position: absolute; top: .9rem; right: .9rem; background: rgba(7,33,26,.08); color: #07211A; border-color: rgba(7,33,26,.1); }
+
+/* =============================================================================
+   TUZATISH: css/tailwind-build.css oldindan qo'lda generatsiya qilingan
+   (purge qilingan) statik fayl, va HTML'ga keyinroq qo'shilgan quyidagi
+   klasslar unda umuman yo'q edi — natijada ular hech qanday effekt
+   bermas edi. ENG JIDDIYSI: "lg:inline-flex" yo'qligi sababli header'dagi
+   asosiy "Navbatga yozilish" CTA tugmasi hech qanday ekranda ko'rinmas
+   edi (har doim .hidden'dagi display:none'da qolib ketardi).
+   ============================================================================= */
+.bg-transparent { background-color: transparent; }
+.border-0 { border-width: 0; }
+.min-w-0 { min-width: 0px; }
+.outline-none { outline: 2px solid transparent; outline-offset: 2px; }
+.break-words { overflow-wrap: break-word; }
+.select-none { -webkit-user-select: none; user-select: none; }
+.p-1 { padding: .25rem; }
+.p-2 { padding: .5rem; }
+.mt-10 { margin-top: 2.5rem; }
+.pb-6 { padding-bottom: 1.5rem; }
+.text-emerald-950\/70 { color: rgba(7, 33, 26, .7); }
+.text-red-300 { color: #fca5a5; }
+.bg-red-950\/40 { background-color: rgba(69, 10, 10, .4); }
+.hover\:border-gold-500\/40:hover { border-color: rgba(201, 162, 39, .4); }
+.hover\:underline:hover { text-decoration: underline; }
+/* .text-gold-600 ustidagi kontrast tuzatishi bilan bir xil to'qroq
+   soyadan foydalaniladi (yuqoridagi izohga qarang) */
+.hover\:text-gold-600:hover { color: #8A6B17; }
+.z-\[60\] { z-index: 60; }
+@media (min-width: 640px) {
+  .sm\:max-w-sm { max-width: 24rem; }
+}
+@media (min-width: 1024px) {
+  .lg\:inline-flex { display: inline-flex; }
+}
