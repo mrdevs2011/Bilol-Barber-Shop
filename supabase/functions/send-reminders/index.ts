@@ -44,14 +44,17 @@ const SB_URL = Deno.env.get("SB_URL")!;
 const SB_SERVICE_ROLE_KEY = Deno.env.get("SB_SERVICE_ROLE_KEY")!;
 
 // -----------------------------------------------------------------------------
-// TIL (uz/ru) — sql/PATCH_round16_client_lang.sql orqali bookings.client_lang
-// ustunida saqlangan, mijoz saytda tanlagan til. Rus mijozga faqat ruscha,
-// o'zbek mijozga faqat o'zbekcha eslatma yuboriladi.
+// TIL (uz/ru/en) — sql/PATCH_round16_client_lang.sql (va EN uchun
+// sql/PATCH_round19_add_english.sql) orqali bookings.client_lang ustunida
+// saqlangan, mijoz saytda tanlagan til. Rus mijozga faqat ruscha, ingliz
+// mijozga faqat inglizcha, o'zbek mijozga faqat o'zbekcha eslatma yuboriladi.
 // -----------------------------------------------------------------------------
-type Lang = "uz" | "ru";
+type Lang = "uz" | "ru" | "en";
 
 function pickLang(value: unknown): Lang {
-  return value === "ru" ? "ru" : "uz";
+  if (value === "ru") return "ru";
+  if (value === "en") return "en";
+  return "uz";
 }
 
 const STR = {
@@ -74,6 +77,16 @@ const STR = {
     service: "✂️ <b>Услуга:</b>",
     barber: "🧑‍🦱 <b>Барбер:</b>",
     footer: "Ждём вас! 💈",
+  },
+  en: {
+    minuteWord: "min",
+    hourWord: "h",
+    title: "⏰ <b>Reminder!</b>",
+    body: (whenPhrase: string, time: string) =>
+      `In ${whenPhrase} (at <b>${time}</b>) you have an appointment at Bilol Barber.`,
+    service: "✂️ <b>Service:</b>",
+    barber: "🧑‍🦱 <b>Barber:</b>",
+    footer: "See you soon! 💈",
   },
 } as const;
 

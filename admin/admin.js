@@ -20,26 +20,33 @@ initAdminPWA();
 // qoladi va sayt avtomatik o'zbekcha matnga qaytadi (js/data.js -> pickLang()),
 // ya'ni saqlash jarayoni hech qachon bloklanmaydi.
 // ---------------------------------------------------------------------------
-async function autoTranslateToRu(text) {
+async function autoTranslateTo(text, target) {
   const trimmed = (text || '').trim();
   if (!trimmed) return null;
   try {
     const res = await fetch('/api/translate', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ text: trimmed }),
+      body: JSON.stringify({ text: trimmed, target }),
     });
     const data = await res.json().catch(() => null);
     if (!res.ok || !data?.ok || !data.translated) {
-      console.warn("Avtomatik tarjima muvaffaqiyatsiz:", data?.error || res.status);
+      console.warn(`Avtomatik tarjima (${target}) muvaffaqiyatsiz:`, data?.error || res.status);
       return null;
     }
     return data.translated;
   } catch (err) {
-    console.warn('Avtomatik tarjima xatolik:', err);
+    console.warn(`Avtomatik tarjima (${target}) xatolik:`, err);
     return null;
   }
 }
+async function autoTranslateToRu(text) { return autoTranslateTo(text, 'ru'); }
+// EN qo'shildi: ism uchun translit.js kabi harf almashtirish EN'ga mos
+// kelmaydi (inglizcha yozuv lotin alifbosida, o'zbekcha lotin nomlar bilan
+// deyarli bir xil ko'rinadi) — shu sababli nom uchun ham xuddi tavsif kabi
+// /api/translate orqali haqiqiy tarjima qilinadi (masalan xizmat nomlari
+// uchun kerak: "Soqol shakllantirish" -> "Beard shaping").
+async function autoTranslateToEn(text) { return autoTranslateTo(text, 'en'); }
 
 let supabaseClient = null;
 let currentBookings = [];
@@ -1979,6 +1986,9 @@ staffForm?.addEventListener('submit', async (e) => {
     // ma'no tarjimasi talab qiladi, shuning uchun /api/translate chaqiriladi.
     const nameRu = uzLatinToCyrillic(name) || null;
     const descriptionRu = description ? await autoTranslateToRu(description) : null;
+    // EN: ism o'zbekcha lotin yozuvida qoladi (inglizchada ham shunday
+    // o'qiladi, transliteratsiya kerak emas) — faqat tavsif tarjima qilinadi.
+    const descriptionEn = description ? await autoTranslateToEn(description) : null;
 
     let photoUrl = null;
     const oldPhotoUrl = stEditingId ? allStaffRows.find(m => String(m.id) === String(stEditingId))?.photo_url : null;
@@ -1992,7 +2002,7 @@ staffForm?.addEventListener('submit', async (e) => {
     }
 
     if (stEditingId) {
-      const patch = { name, name_ru: nameRu, description, description_ru: descriptionRu, active: stActive.checked };
+      const patch = { name, name_ru: nameRu, description, description_ru: descriptionRu, description_en: descriptionEn, active: stActive.checked };
       if (photoUrl) patch.photo_url = photoUrl;
       const { error } = await supabaseClient.from('masters').update(patch).eq('id', stEditingId);
       if (error) throw error;
@@ -2005,7 +2015,7 @@ staffForm?.addEventListener('submit', async (e) => {
       let id = slugify(name);
       if (allStaffRows.some(m => String(m.id) === id)) id = `${id}_${Math.floor(Math.random() * 1000)}`;
       const { error } = await supabaseClient.from('masters').insert({
-        id, name, name_ru: nameRu, description, description_ru: descriptionRu, active: stActive.checked, photo_url: photoUrl,
+        id, name, name_ru: nameRu, description, description_ru: descriptionRu, description_en: descriptionEn, active: stActive.checked, photo_url: photoUrl,
       });
       if (error) throw error;
     }
@@ -2155,15 +2165,16 @@ serviceForm?.addEventListener('submit', async (e) => {
     // haqiqiy tarjima (/api/translate) ishlatiladi — xuddi ustalar tavsifi
     // kabi (yuqoridagi autoTranslateToRu'ga qarang).
     const nameRu = await autoTranslateToRu(name);
+    const nameEn = await autoTranslateToEn(name);
     if (svEditingId) {
       const { error } = await supabaseClient.from('services')
-        .update({ name, name_ru: nameRu, price, duration, active: svActive.checked })
+        .update({ name, name_ru: nameRu, name_en: nameEn, price, duration, active: svActive.checked })
         .eq('id', svEditingId);
       if (error) throw error;
     } else {
       let id = slugify(name);
       if (allServiceRows.some(s => String(s.id) === id)) id = `${id}_${Math.floor(Math.random() * 1000)}`;
-      const { error } = await supabaseClient.from('services').insert({ id, name, name_ru: nameRu, price, duration, active: svActive.checked });
+      const { error } = await supabaseClient.from('services').insert({ id, name, name_ru: nameRu, name_en: nameEn, price, duration, active: svActive.checked });
       if (error) throw error;
     }
 

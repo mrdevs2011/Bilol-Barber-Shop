@@ -65,15 +65,18 @@ const SB_SERVICE_ROLE_KEY = Deno.env.get("SB_SERVICE_ROLE_KEY")!;
 const WEBHOOK_SECRET = Deno.env.get("TELEGRAM_WEBHOOK_SECRET")!;
 
 // -----------------------------------------------------------------------------
-// TIL (uz/ru) — mijoz saytda tanlagan til sql/PATCH_round16_client_lang.sql
-// orqali bookings.client_lang ustunida saqlanadi. Bu funksiya o'sha ustunni
-// o'qib, mijozga aynan o'sha tilda javob yozadi (rus mijoz — faqat ruscha,
-// o'zbek mijoz — faqat o'zbekcha; ikkalasi hech qachon aralashmaydi).
+// TIL (uz/ru/en) — mijoz saytda tanlagan til sql/PATCH_round16_client_lang.sql
+// (va EN uchun sql/PATCH_round19_add_english.sql) orqali bookings.client_lang
+// ustunida saqlanadi. Bu funksiya o'sha ustunni o'qib, mijozga aynan o'sha
+// tilda javob yozadi (rus mijoz — faqat ruscha, ingliz mijoz — faqat
+// inglizcha, o'zbek mijoz — faqat o'zbekcha; hech qachon aralashmaydi).
 // -----------------------------------------------------------------------------
-type Lang = "uz" | "ru";
+type Lang = "uz" | "ru" | "en";
 
 function pickLang(value: unknown): Lang {
-  return value === "ru" ? "ru" : "uz";
+  if (value === "ru") return "ru";
+  if (value === "en") return "en";
+  return "uz";
 }
 
 const STR = {
@@ -104,6 +107,20 @@ const STR = {
     price: "💰 <b>Цена:</b>",
     currency: "сум",
     footer: "Отправим автоматическое напоминание сюда примерно за 2 часа до вашей записи. Ждём вас! 💈",
+  },
+  en: {
+    notFound: "Booking not found or an error occurred. Please try again on the website.",
+    linkedNoData: "✅ Thank you! The booking is linked, but the details couldn't be read.",
+    title: "🎉 <b>Booking confirmed!</b>",
+    service: "✂️ <b>Service:</b>",
+    barber: "🧑‍🦱 <b>Barber:</b>",
+    date: "📅 <b>Date:</b>",
+    time: "⏰ <b>Time:</b>",
+    duration: "⏱ <b>Duration:</b>",
+    durationUnit: "min",
+    price: "💰 <b>Price:</b>",
+    currency: "so'm",
+    footer: "We'll send an automatic reminder here about 2 hours before your appointment. See you soon! 💈",
   },
 } as const;
 

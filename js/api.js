@@ -215,8 +215,8 @@ function localizeRowForClient(row) {
   const mst = MASTERS.find(m => m.id === row.master_id);
   return {
     ...row,
-    service_name: svc ? pickLang(svc.name, svc.name_ru) : row.service_name,
-    master_name: mst ? pickLang(mst.name, mst.name_ru) : row.master_name,
+    service_name: svc ? pickLang(svc.name, svc.name_ru, svc.name_en) : row.service_name,
+    master_name: mst ? pickLang(mst.name, mst.name_ru, mst.name_en) : row.master_name,
   };
 }
 
@@ -453,11 +453,12 @@ export async function submitBookingToBackend({ service, master, date, time, name
   row.user_id = user.id;
 
   // MUHIM (til sizib chiqmasligi uchun): mijoz saytda tanlagan tilni
-  // ('uz'/'ru') bronga yozib qo'yamiz — backend (telegram-webhook,
+  // ('uz'/'ru'/'en') bronga yozib qo'yamiz — backend (telegram-webhook,
   // send-reminders Edge Function'lari) shu ustunni o'qib, mijozga aynan
-  // o'sha tilda javob yozadi. sql/PATCH_round16_client_lang.sql'ni
-  // ishlatmasdan turib bu ustun mavjud bo'lmasa, insert xato beradi —
-  // shu patch albatta ishga tushirilishi kerak.
+  // o'sha tilda javob yozadi. sql/PATCH_round16_client_lang.sql va
+  // sql/PATCH_round19_add_english.sql'ni ishlatmasdan turib bu ustun
+  // 'en' qiymatini qabul qilmaydi — shu patchlar albatta ishga
+  // tushirilishi kerak.
   row.client_lang = getLang();
 
   let inserted, error;

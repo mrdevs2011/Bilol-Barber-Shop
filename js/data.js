@@ -31,14 +31,17 @@ const DEFAULT_MASTERS = [
 ];
 
 /**
- * 2-bosqich: xizmat/barber nomi va tavsifi kabi bazadan keladigan (statik
- * i18n.js jadvalida yo'q) matnlar uchun. RU tanlangan bo'lsa va ruscha
- * varianti kiritilgan bo'lsa — o'shani, aks holda har doim mavjud bo'lgan
- * asosiy (uz) matnni qaytaradi, shu sababli sayt hech qachon bo'sh joy
- * ko'rsatmaydi.
+ * 2-bosqich (+ EN qo'shildi): xizmat/barber nomi va tavsifi kabi bazadan
+ * keladigan (statik i18n.js jadvalida yo'q) matnlar uchun. RU yoki EN
+ * tanlangan bo'lsa va shu tildagi varianti kiritilgan bo'lsa — o'shani,
+ * aks holda har doim mavjud bo'lgan asosiy (uz) matnni qaytaradi, shu
+ * sababli sayt hech qachon bo'sh joy ko'rsatmaydi.
  */
-export function pickLang(uzText, ruText) {
-  return (getLang() === 'ru' && ruText) ? ruText : uzText;
+export function pickLang(uzText, ruText, enText) {
+  const lang = getLang();
+  if (lang === 'ru' && ruText) return ruText;
+  if (lang === 'en' && enText) return enText;
+  return uzText;
 }
 
 // `export let` — ES modullarda "live binding": data.js bu qiymatlarni
@@ -71,8 +74,10 @@ export async function loadCatalog(supabase) {
         id: s.id,
         name: s.name,
         name_ru: s.name_ru || '',
+        name_en: s.name_en || '',
         desc: s.description || '',
         desc_ru: s.description_ru || '',
+        desc_en: s.description_en || '',
         duration: s.duration,
         price: s.price,
         icon: 'fa-scissors',
@@ -85,9 +90,11 @@ export async function loadCatalog(supabase) {
         id: m.id,
         name: m.name,
         name_ru: m.name_ru || '',
+        name_en: m.name_en || '',
         role: "Barber",
         exp: m.description || '',
         exp_ru: m.description_ru || '',
+        exp_en: m.description_en || '',
         img: m.photo_url || 'assets/masters/barber.jpg',
         specialties: allServiceIds,
       }));

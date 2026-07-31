@@ -1,5 +1,5 @@
 // =============================================================================
-// I18N: sayt interfeysini o'zbek (uz) va rus (ru) tillari orasida almashtirish.
+// I18N: sayt interfeysini o'zbek (uz), rus (ru) va ingliz (en) tillari orasida almashtirish.
 //
 // Ishlash tartibi:
 //  - Tanlangan til localStorage'da ("bilol:lang") saqlanadi, shu sabab
@@ -19,7 +19,7 @@
 // =============================================================================
 
 const STORAGE_KEY = 'bilol:lang';
-const SUPPORTED = ['uz', 'ru'];
+const SUPPORTED = ['uz', 'ru', 'en'];
 const DEFAULT_LANG = 'uz';
 
 const DICT = {
@@ -478,26 +478,257 @@ const DICT = {
     'srv.rateLimitPhone': 'Вы недавно уже отправляли запись. Пожалуйста, повторите попытку через несколько минут.',
     'srv.rateLimitGlobal': 'Сейчас слишком много запросов. Пожалуйста, повторите попытку через несколько минут.',
   },
+
+  en: {
+    'nav.services': 'Services',
+    'nav.masters': 'Barbers',
+    'nav.reviews': 'Reviews',
+    'nav.location': 'Location',
+    'nav.contact': 'Contact',
+    'nav.myBookings': 'My Bookings',
+    'nav.settings': 'Settings',
+    'cta.book': 'Book Now',
+    'cta.newBooking': 'New Booking',
+    'cta.chooseTime': 'Choose Time',
+    'cta.viewServices': 'View Services',
+
+    'dashboard.eyebrow': 'Personal Account',
+    'dashboard.title': 'My Bookings',
+    'dashboard.empty': "You don't have any bookings yet.",
+    'dashboard.cancelBtn': 'Cancel Booking',
+    'dashboard.tooLate': 'The cancellation window has passed (at least 2 hours notice is required). Please contact the administrator.',
+    'dashboard.cancelConfirm': 'Confirm cancellation of this booking?',
+    'dashboard.cancelError': 'Error cancelling the booking.',
+    'dashboard.loadError': 'Error loading bookings',
+
+    'status.new': 'New',
+    'status.confirmed': 'Confirmed',
+    'status.done': 'Completed',
+    'status.no_show': 'No-show',
+    'status.cancelled': 'Cancelled',
+
+    'countdown.day': 'd',
+    'countdown.hour': 'h',
+    'countdown.minute': 'min',
+    'countdown.left': 'left',
+    'countdown.startingNow': 'Starting now',
+
+    'hero.badge': "Andijan's trusted men's barber shop",
+    'hero.title1': 'Boost your',
+    'hero.title2': 'confidence',
+    'hero.titleEm': 'with our barbers',
+    'hero.title3': '',
+    'hero.subtitle': 'A team of experienced barbers for haircuts, beard grooming, and shaving — quality service at a convenient time and a fair price.',
+    'stats.experience': 'years of experience',
+    'stats.masters': 'expert barbers',
+    'stats.rating': 'customer rating',
+
+    'ticket.previewLabel': 'Booking ticket',
+    'ticket.previewService': 'Fade / design haircut',
+    'ticket.previewBarber': 'Barber: Alisher Yusupov',
+    'ticket.previewDate': 'July 24, Thursday',
+    'ticket.previewDuration': '50 min',
+    'ticket.previewPrice': "60,000 so'm",
+    'ticket.dateLabel': 'Date',
+    'ticket.timeLabel': 'Time',
+    'ticket.durationLabel': 'Duration',
+    'ticket.summaryLabel': 'Booking summary',
+    'ticket.confirmedLabel': 'Booking confirmed',
+    'ticket.confirmedStamp': 'Confirmed',
+    'ticket.codeLabel': 'Booking code',
+    'ticket.clientLabel': 'Client',
+    'ticket.phoneLabel': 'Phone',
+    'ticket.barberPrefix': 'Barber',
+    'ticket.newLabel': 'New booking',
+
+    // ---- Currency ----
+    'currency.sum': "so'm",
+
+    // ---- Error messages (auth / booking) ----
+    'err.connection': 'Connection error. Please refresh the page.',
+    'err.loginFirst': 'Please sign in to your account first.',
+    'err.invalidPhone': 'Please enter a valid phone number.',
+    'err.nameTooShort': 'Name must be at least 3 characters.',
+    'err.passwordTooShort': 'Password must be at least 6 characters.',
+    'err.phoneAlreadyRegistered': 'This phone number is already registered. Please sign in via "Login".',
+    'err.signupIncomplete': 'Registration was not completed. If this is your first time, please contact the administrator (Supabase setup required).',
+    'err.wrongCredentials': 'Incorrect phone number or password.',
+    'err.phoneUsedByAnotherAccount': 'This phone number is already used by another account.',
+    'err.bookLoginRequired': 'Please sign in to your account before booking.',
+    'err.slotTaken': 'Sorry, this time slot was just taken. Please choose another time.',
+    'err.accountBlocked': 'Your account is temporarily blocked (due to repeated no-shows). Please contact the administrator.',
+    'err.genericServer': 'A server error occurred. Please try again shortly.',
+    'err.sessionExpired': 'Your session has expired (the app may have been in the background for a while). Please refresh the page and try again.',
+    'err.networkMobile': 'The internet connection was lost. Please check your Wi-Fi or mobile data and try again.',
+    'a11y.menu': 'Menu',
+    'a11y.close': 'Close',
+
+    // ---- Services section ----
+    'services.eyebrow': 'Price list',
+    'services.title': 'Services & Prices',
+    'services.subtitle': 'Select a service to open the booking window right away — duration and price are shown upfront.',
+    'services.minutes': 'min',
+    'services.minutesShort': 'min',
+
+    // ---- Masters section ----
+    'masters.eyebrow': 'Our Team',
+    'masters.title': 'Professional Barbers',
+    'masters.subtitle': "Each of them has years of experience in their craft and is loved by our clients.",
+
+    // ---- Reviews section ----
+    'reviews.eyebrow': 'Client Feedback',
+    'reviews.title': 'Trusted by Our Clients',
+    'reviews.subtitle': 'Every client\u2019s opinion matters to us — here are some of their reviews.',
+    'reviews.empty': 'No approved reviews yet — be the first to share your feedback!',
+    'reviews.formTitle': 'Leave a Review',
+    'reviews.formHint': 'Your review will appear on this page after it has been checked.',
+    'reviews.placeholder': 'Write your feedback about the service...',
+    'reviews.submit': 'Submit',
+    'reviews.submitting': 'Submitting...',
+    'reviews.loginPrompt': 'Sign in to your account to leave a review',
+    'reviews.instagramCta': 'See more reviews and results on Instagram',
+    'reviews.regular': 'Regular client',
+    'reviews.new': 'New client',
+    'reviews.errNoRating': 'Please give a star rating first.',
+    'reviews.errTooShort': 'Review text is too short.',
+    'reviews.errConnection': 'Connection error. Please refresh the page.',
+    'reviews.errPrefix': 'Error',
+    'reviews.success': 'Thank you! Your review has been submitted — it will appear here once approved by the admin.',
+
+    // ---- Why us ----
+    'why.title1': 'Premium Products',
+    'why.desc1': "We work only with certified, high-quality professional men's grooming products.",
+    'why.title2': 'Experienced Barbers',
+    'why.desc2': 'Our team regularly takes skill-development courses and applies modern techniques.',
+    'why.title3': 'Fast Online Booking',
+    'why.desc3': 'Choose a convenient time in just a few clicks — no need to wait in line.',
+
+    // ---- Footer ----
+    'footer.tagline': "Reliable grooming is our strength. Premium barber shop services for men.",
+    'footer.hoursTitle': 'Working Hours',
+    'footer.hoursWeekday': 'Mon – Sat',
+    'footer.hoursSunday': 'Sunday',
+    'footer.hoursNote': 'Hours may vary on holidays, please call ahead.',
+    'footer.locationTitle': 'Location',
+    'footer.address': 'Andijan, Bobur Street, 12',
+    'footer.viewMap': 'View on Map',
+    'footer.contactTitle': 'Contact',
+    'footer.copyright': '\u00a9 2026 BILOL BARBER. All rights reserved.',
+    'footer.installApp': 'Install App',
+    'footer.builtWith': 'Built with an online booking system',
+
+    // ---- Booking modal ----
+    'booking.modalTitle': 'Book an Appointment',
+    'booking.step1': 'Step 1 / 3 — Service & Barber',
+    'booking.step2': 'Step 2 / 3 — Date & Time',
+    'booking.step3': 'Step 3 / 3 — Confirmation',
+    'booking.chooseService': 'Choose a service',
+    'booking.chooseMaster': 'Choose a barber',
+    'booking.chooseDate': 'Choose a date',
+    'booking.chooseTime': 'Choose an available time',
+    'booking.bookedHint': 'Booked times are shown greyed out and disabled.',
+    'booking.back': 'Back',
+    'booking.next': 'Continue',
+    'booking.confirm': 'Book',
+    'booking.close': 'Close',
+    'booking.chooseDateFirst': 'Please choose a date first.',
+    'booking.chooseDateValid': 'Please choose a valid date.',
+    'booking.checkingSlots': 'Checking available times...',
+    'booking.dayOff': "This barber doesn't work on this date.",
+    'booking.chooseOtherDay': 'Please choose another date or barber.',
+    'booking.slotPast': 'This time has already passed',
+    'booking.slotTaken': 'This time is taken (overlaps with another booking)',
+    'booking.errChooseService': 'Please choose a service.',
+    'booking.errChooseMaster': 'Please choose a barber.',
+    'booking.errMasterMismatch': "The selected barber doesn't offer this service. Please choose another barber.",
+    'booking.errChooseDate': 'Please choose a date.',
+    'booking.errChooseTime': 'Please choose an available time.',
+    'booking.errProfileMissing': 'No name or phone number found in your profile. Please fill them in under "Settings" first.',
+    'booking.errBotBlocked': 'Something went wrong. Please refresh the page and try again.',
+    'booking.sending': 'Sending...',
+    'booking.success': "Booking confirmed! We'll get in touch with you soon.",
+    'booking.errGeneric': 'Something went wrong',
+    'booking.errRetry': 'Please try again or contact us by phone.',
+    'booking.reminderCta': 'Get a free reminder on Telegram',
+    'booking.loading1': 'Checking availability...',
+    'booking.loading2': 'Reserving your spot...',
+    'booking.loading3': "Updating the barber's schedule...",
+    'booking.loading4': 'Preparing a message for the administrator...',
+    'booking.loading5': 'Preparing your ticket...',
+    'booking.loading6': 'Almost there...',
+
+    // ---- Settings (profile) modal ----
+    'settings.title': 'Settings',
+    'settings.subtitle': 'Update your name and phone number',
+    'settings.nameLabel': 'Your name',
+    'settings.phoneLabel': 'Your phone number',
+    'settings.save': 'Save',
+    'settings.saved': 'Your details have been saved.',
+    'settings.logout': 'Log out',
+    'settings.language': 'Language',
+
+    // ---- Auth modal ----
+    'auth.loginTitle': 'Log In',
+    'auth.registerTitle': 'Sign Up',
+    'auth.subtitle': 'Sign in to your account to book an appointment',
+    'auth.nameLabel': 'Your name',
+    'auth.phoneLabel': 'Your phone number',
+    'auth.passwordLabel': 'Password',
+    'auth.passwordHint': 'At least 6 characters',
+    'auth.loginBtn': 'Log In',
+    'auth.registerBtn': 'Sign Up',
+    'auth.noAccount': "Don't have an account?",
+    'auth.haveAccount': 'Already have an account?',
+    'auth.installApp': 'Install the app on your phone',
+    'auth.blockedMsg': 'Your account is temporarily blocked due to repeated no-shows. Please contact the administrator.',
+
+    // ---- Meta (browser tab / social preview) ----
+    'meta.title': 'BILOL BARBER — Online Booking',
+    'meta.description': "BILOL BARBER — a modern men's barber shop. Online booking, services, and barbers.",
+    'meta.ogLocale': 'en_US',
+
+    // ---- Translated SERVER (Postgres trigger) messages ----
+    'srv.dayOff': "This barber doesn't work on this date. Please choose another date or barber.",
+    'srv.masterBusyRange': 'Sorry, the barber is busy during this time slot. Please choose another time.',
+    'srv.pastTime': 'This time has already passed. Please choose a time in the future.',
+    'srv.tooFarFuture': 'This booking time is too far in the future (bookings cannot be made more than 90 days ahead).',
+    'srv.tooManyActive': 'You already have 2 active bookings. Please cancel one or wait for them to be completed before making a new one.',
+    'srv.bookingNotFound': 'Booking not found.',
+    'srv.notYourBooking': "You don't have permission to cancel this booking.",
+    'srv.cannotCancelNow': 'This booking can no longer be cancelled.',
+    'srv.cancelTooLate': 'A booking can only be cancelled at least 2 hours before it starts. Please contact the administrator.',
+    'srv.reviewBlocked': 'A blocked account cannot leave reviews.',
+    'srv.invalidCatalog': 'The selected service or barber was not found. Please refresh the page and try again.',
+    'srv.invalidName': 'The name entered is invalid. Please enter your full name.',
+    'srv.invalidPhone': 'The phone number entered is invalid.',
+    'srv.pastDate': 'You cannot book a past date. Please choose a date in the future.',
+    'srv.rateLimitPhone': 'You recently submitted a booking. Please try again in a few minutes.',
+    'srv.rateLimitGlobal': 'Too many requests right now. Please try again in a few minutes.',
+  },
 };
 
 // Sana formatlash uchun kun/oy nomlari (data.js va booking.js shu yerdan oladi)
 const DAYS_LONG = {
   uz: ['Yakshanba', 'Dushanba', 'Seshanba', 'Chorshanba', 'Payshanba', 'Juma', 'Shanba'],
   ru: ['Воскресенье', 'Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота'],
+  en: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
 };
 const DAYS_SHORT = {
   uz: ['Yak', 'Dush', 'Sesh', 'Chor', 'Pay', 'Juma', 'Shan'],
   ru: ['Вс', 'Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб'],
+  en: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
 };
 const MONTHS = {
   uz: ['yanvar', 'fevral', 'mart', 'aprel', 'may', 'iyun', 'iyul', 'avgust', 'sentabr', 'oktabr', 'noyabr', 'dekabr'],
   ru: ['января', 'февраля', 'марта', 'апреля', 'мая', 'июня', 'июля', 'августа', 'сентября', 'октября', 'ноября', 'декабря'],
+  en: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
 };
 // Oy tab tugmalari uchun bosh harfli shakl (ru holatida ham xuddi shu so'z ishlatiladi,
 // negizi grammatik jihatdan farq qilishi mumkin bo'lsa-da, tab yorlig'i uchun yetarli)
 const MONTHS_NOMINATIVE = {
   uz: ['Yanvar', 'Fevral', 'Mart', 'Aprel', 'May', 'Iyun', 'Iyul', 'Avgust', 'Sentabr', 'Oktabr', 'Noyabr', 'Dekabr'],
   ru: ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'],
+  en: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
 };
 
 let currentLang = null;
@@ -633,7 +864,7 @@ export function setLang(lang) {
   document.dispatchEvent(new CustomEvent('bilol:langchange', { detail: { lang } }));
 }
 
-/** Til almashtirish tugmalarini ([data-lang-switch="uz|ru"]) ulaydi. */
+/** Til almashtirish tugmalarini ([data-lang-switch="uz|ru|en"]) ulaydi. */
 export function initLangSwitchers() {
   document.querySelectorAll('[data-lang-switch]').forEach(btn => {
     btn.addEventListener('click', () => setLang(btn.dataset.langSwitch));

@@ -1,7 +1,8 @@
 // =============================================================================
 // Vercel Serverless Function: /api/translate
-// Admin panelida xizmat/xodim TAVSIFINI (description) o'zbekchadan ruschaga
-// avtomatik tarjima qilish uchun — TO'LIQ SERVER TARAFIDA.
+// Admin panelida xizmat/xodim TAVSIFINI (description) o'zbekchadan ruscha
+// yoki inglizchaga (`target: 'ru' | 'en'`, sukut bo'yicha 'ru') avtomatik
+// tarjima qilish uchun — TO'LIQ SERVER TARAFIDA.
 //
 // HECH QANDAY API KALIT TALAB QILINMAYDI — faqat ochiq kodli / bepul
 // tarjima xizmatlaridan foydalaniladi:
@@ -19,6 +20,10 @@
 // =============================================================================
 
 const MAX_TEXT_LEN = 500;
+// Qo'llab-quvvatlanadigan maqsad tillar (manba har doim 'uz'). Yangi til
+// qo'shilganda shu ro'yxatga ham kiritish kerak.
+const SUPPORTED_TARGETS = ['ru', 'en'];
+const DEFAULT_TARGET = 'ru';
 
 // Bir nechta Lingva ko'zgu (mirror) instance — biri ishlamay qolsa, keyingisi
 // sinab ko'riladi. Ro'yxat https://github.com/thedaviddelta/lingva-translate
@@ -40,8 +45,8 @@ async function fetchWithTimeout(url, options = {}, timeoutMs = 8000) {
 }
 
 // 1) MyMemory — https://api.mymemory.translated.net (bepul, keysiz)
-async function translateWithMyMemory(text) {
-  const url = `https://api.mymemory.translated.net/get?q=${encodeURIComponent(text)}&langpair=uz|ru`;
+async function translateWithMyMemory(text, target) {
+  const url = `https://api.mymemory.translated.net/get?q=${encodeURIComponent(text)}&langpair=uz|${target}`;
   const res = await fetchWithTimeout(url);
   if (!res.ok) throw new Error(`MyMemory HTTP ${res.status}`);
   const data = await res.json();
@@ -56,11 +61,11 @@ async function translateWithMyMemory(text) {
 
 // 2) Lingva Translate — https://github.com/thedaviddelta/lingva-translate
 //    (Google Translate'ning ochiq kodli, keysiz veb-muqobili)
-async function translateWithLingva(text) {
+async function translateWithLingva(text, target) {
   let lastErr;
   for (const base of LINGVA_INSTANCES) {
     try {
-      const url = `${base}/api/v1/uz/ru/${encodeURIComponent(text)}`;
+      const url = `${base}/api/v1/uz/${target}/${encodeURIComponent(text)}`;
       const res = await fetchWithTimeout(url);
       if (!res.ok) throw new Error(`Lingva (${base}) HTTP ${res.status}`);
       const data = await res.json();
@@ -110,24 +115,29 @@ export default async function handler(req, res) {
     return res.status(429).json({ ok: false, error: "Juda ko'p so'rov, birozdan keyin urinib ko'ring." });
   }
 
-  const { text } = req.body || {};
+  const { text, target } = req.body || {};
   if (!text || typeof text !== 'string' || !text.trim()) {
     return res.status(400).json({ ok: false, error: 'text kerak' });
   }
   if (text.length > MAX_TEXT_LEN) {
     return res.status(400).json({ ok: false, error: 'Matn juda uzun' });
   }
+  // MUHIM (EN qo'shildi): oldin faqat uz->ru ishlardi, endi admin panel
+  // description_en uchun ham shu endpoint'ga murojaat qiladi — shuning
+  // uchun ixtiyoriy `target` maydoni qo'shildi ('ru' | 'en'). Berilmasa,
+  // eski xatti-harakat saqlanib qoladi (ru).
+  const lang = SUPPORTED_TARGETS.includes(target) ? target : DEFAULT_TARGET;
   const trimmed = text.trim();
 
   // Avval MyMemory, ishlamasa Lingva — ikkalasi ham bepul va API kalit
   // talab qilmaydi, shu sabab hech qanday Environment Variable kerak emas.
   try {
-    const translated = await translateWithMyMemory(trimmed);
+    const translated = await translateWithMyMemory(trimmed, lang);
     return res.status(200).json({ ok: true, translated, provider: 'mymemory' });
   } catch (myMemoryErr) {
     console.warn('MyMemory tarjima xatolik, Lingva sinab ko\'rilmoqda:', myMemoryErr);
     try {
-      const translated = await translateWithLingva(trimmed);
+      const translated = await translateWithLingva(trimmed, lang);
       return res.status(200).json({ ok: true, translated, provider: 'lingva' });
     } catch (lingvaErr) {
       console.error('Lingva ham ishlamadi:', lingvaErr);
