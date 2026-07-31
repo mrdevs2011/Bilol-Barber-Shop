@@ -47,7 +47,6 @@ const MIN_CANCEL_NOTICE_MS = 2 * 60 * 60 * 1000;
 let cachedBookings = [];
 let countdownTimer = null;
 
-function section() { return document.getElementById('my-bookings'); }
 function listEl() { return document.getElementById('myBookingsList'); }
 
 function bookingDateTime(b) {

@@ -49,7 +49,6 @@ function friendlyErrorMessage(rawMessage, context) {
 }
 
 let currentProfile = null; // { id, phone, full_name, no_show_count, blocked } | null
-let pendingCallback = null;
 
 // BUG FIX: initAuth() Supabase'dan sessiyani tekshirishi ASINXRON (tarmoq
 // so'rovi bo'lishi mumkin) va main.js uni "await" qilmasdan chaqiradi (sahifa
@@ -183,10 +182,6 @@ function toPseudoEmail(digits) {
 
 export function getCurrentProfile() {
   return currentProfile;
-}
-
-export function isLoggedIn() {
-  return !!currentProfile;
 }
 
 async function loadProfile(userId) {
@@ -343,14 +338,7 @@ export async function requireAuth(onSuccess) {
     onSuccess();
     return;
   }
-  pendingCallback = onSuccess;
   openAuthModal('login');
-}
-
-function consumePendingCallback() {
-  const cb = pendingCallback;
-  pendingCallback = null;
-  if (cb) cb();
 }
 
 /* ---------------------------------------------------------------------------
@@ -376,7 +364,6 @@ function updateAuthInstallBtn() {
 function closeAuthModal() {
   authModal().classList.add('hidden');
   document.body.style.overflow = '';
-  pendingCallback = null;
   document.getElementById('authError').classList.add('hidden');
 }
 

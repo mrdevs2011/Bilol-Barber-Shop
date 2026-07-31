@@ -516,7 +516,7 @@ function renderSummary() {
    Bepul Telegram eslatma: mijozni botga yo'naltiradigan tugma.
    Mijoz "Start" bossa, botimiz (sql/reminders.sql + Edge Function orqali)
    uning chat_id'sini shu bronga bog'laydi va navbatidan ~2 soat oldin
-   avtomatik eslatma yuboradi. To'liq sozlash: REMINDERS_SETUP.md.
+   avtomatik eslatma yuboradi. To'liq sozlash: docs/REMINDERS_SETUP.md.
 --------------------------------------------------------------------------- */
 function renderReminderButton(bookingId) {
   const wrap = document.getElementById('reminderCta');

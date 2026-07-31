@@ -798,12 +798,12 @@ const SERVER_ERROR_PATTERNS = [
   [/endi bekor qilib bo.lmaydi/i, 'srv.cannotCancelNow'],
   [/kamida 2 soat qolganda bekor/i, 'srv.cancelTooLate'],
   [/bloklangan hisob sharh/i, 'srv.reviewBlocked'],
-  // MUHIM: bazadagi haqiqiy (schema_dump.sql) trigger "Noma'lum ... xizmat/
+  // MUHIM: bazadagi haqiqiy (sql/schema_dump.sql) trigger "Noma'lum ... xizmat/
   // barber" deb yozadi, eski sql/catalog_validation_and_limits.sql patch
   // faylida esa "Noto'g'ri ... xizmat/barber" — ikkalasi ham ishlab
   // turgan bo'lishi mumkin bo'lgani uchun ikkalasi ham tanib olinadi.
   [/(noto.g.ri|noma.lum) yoki mavjud bo.lmagan/i, 'srv.invalidCatalog'],
-  // Quyidagi 5 tasi bookings_before_insert() trigger'idan (schema_dump.sql)
+  // Quyidagi 5 tasi bookings_before_insert() trigger'idan (sql/schema_dump.sql)
   // — 1-bosqich auditda o'tkazib yuborilgan, chunki o'sha vaqtda faqat
   // sql/*.sql patch fayllari ko'rib chiqilgan edi, ammo shu trigger
   // bazada HAQIQATDA ishlab turibdi va bron yuborishda tez-tez uchrashi
