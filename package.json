@@ -5,5 +5,8 @@
   "description": "Bilol Barber Shop — statik sayt + Vercel serverless (notify-admin) + Supabase (auth, bookings, edge functions).",
   "scripts": {
     "build": "node scripts/generate-config.js"
+  },
+  "dependencies": {
+    "web-push": "^3.6.7"
   }
 }

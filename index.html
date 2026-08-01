@@ -98,6 +98,7 @@
 <meta name="apple-mobile-web-app-title" content="Bilol Barber">
 
 <!-- Eng ko'p ishlatiladigan shriftlarni oldindan yuklash (LCP/matn chaqnashini tezlashtirish uchun) -->
+<link rel="preload" as="image" href="assets/logo-header.png" fetchpriority="high">
 <link rel="preload" as="font" type="font/woff2" href="assets/fonts/manrope-latin-400-normal.woff2" crossorigin>
 <link rel="preload" as="font" type="font/woff2" href="assets/fonts/manrope-latin-600-normal.woff2" crossorigin>
 <link rel="preload" as="font" type="font/woff2" href="assets/fonts/playfair-display-latin-600-normal.woff2" crossorigin>
@@ -151,12 +152,111 @@
   .review-login-btn:hover{color:#a9821c;}
 </style>
 
+<!-- ================= SPLASH SCREEN =================
+     Ma'lumot (kesh yoki Supabase'dan) tayyor bo'lguncha ko'rsatiladigan
+     yuklanish ekrani. #app-splash boshqa hamma narsadan OLDIN, <body>ning
+     eng boshida joylashadi va shu <style> ichida (app.css'ni kutmasdan)
+     darhol uslublanadi — shu sababli sahifa ochilishi bilanoq, hech qanday
+     "yalang'och" (uslubsiz) HTML ko'rinishi yoki chaqnash bo'lmaydi.
+     js/main.js ichidagi hideSplash() katalog tayyor bo'lganda uni yumshoq
+     (fade) tarzda yashiradi. -->
+<style>
+  #app-splash{
+    position:fixed; inset:0; z-index:9999;
+    display:flex; align-items:center; justify-content:center;
+    background:radial-gradient(130% 130% at 18% 0%, #0e4b3a 0%, #07211a 55%, #051510 100%);
+    transition:opacity .5s ease, visibility .5s ease;
+  }
+  #app-splash.app-splash--hide{ opacity:0; visibility:hidden; pointer-events:none; }
+  .app-splash-content{
+    display:flex; flex-direction:column; align-items:center; gap:1.1rem;
+    animation:app-splash-rise .8s cubic-bezier(.22,1,.36,1) both;
+    padding:0 1.5rem; text-align:center;
+  }
+  @keyframes app-splash-rise{
+    from{ opacity:0; transform:translateY(14px) scale(.97); }
+    to{ opacity:1; transform:translateY(0) scale(1); }
+  }
+  .app-splash-mark{ position:relative; width:96px; height:96px; display:flex; align-items:center; justify-content:center; }
+  .app-splash-logo{
+    width:78px; height:78px; border-radius:9999px; object-fit:cover; position:relative; z-index:2;
+    box-shadow:0 0 0 1px rgba(201,162,39,.4), 0 18px 40px -14px rgba(0,0,0,.65);
+  }
+  .app-splash-ring{ position:absolute; inset:0; width:96px; height:96px; }
+  .app-splash-ring circle{
+    fill:none; stroke:#c9a227; stroke-width:2.5; stroke-linecap:round;
+    stroke-dasharray:78 214; transform-origin:50% 50%;
+    animation:app-splash-spin 1.3s linear infinite; opacity:.9;
+  }
+  @keyframes app-splash-spin{ to{ transform:rotate(360deg); } }
+  .app-splash-brand{
+    font-family:'Playfair Display', Georgia, serif; font-weight:600;
+    font-size:1.4rem; letter-spacing:.16em; color:#faf8f3; text-transform:uppercase;
+  }
+  .app-splash-brand span{ color:#c9a227; }
+  .app-splash-tagline{ font-size:.78rem; letter-spacing:.04em; color:rgba(250,248,243,.5); font-family:'Manrope', sans-serif; }
+  @media (prefers-reduced-motion: reduce){
+    .app-splash-content{ animation:none; }
+    .app-splash-ring circle{ animation:none; }
+  }
+  /* ---- Splash: internet yo'q holati (kesh ham topilmagan) ---- */
+  #app-splash.app-splash--offline .app-splash-ring{ display:none; }
+  .app-splash-offline{ display:none; flex-direction:column; align-items:center; gap:.9rem; }
+  #app-splash.app-splash--offline .app-splash-offline{ display:flex; }
+  #app-splash.app-splash--offline .app-splash-tagline{ display:none; }
+  .app-splash-offline-icon{ font-size:1.6rem; color:#c9a227; }
+  .app-splash-offline-text{ font-size:.82rem; color:rgba(250,248,243,.75); font-family:'Manrope', sans-serif; text-align:center; max-width:230px; line-height:1.4; }
+  .app-splash-retry-btn{
+    font-family:'Manrope', sans-serif; font-size:.78rem; font-weight:600; letter-spacing:.02em;
+    color:#1c2b23; background:#c9a227; border:none; border-radius:999px; padding:.55rem 1.3rem;
+    cursor:pointer; transition:filter .2s ease;
+  }
+  .app-splash-retry-btn:hover{ filter:brightness(1.08); }
+
+  /* ---- Doimiy "internet yo'q" banner ---- */
+  #offline-banner{
+    position:fixed; top:0; inset-inline:0; z-index:60; display:flex; align-items:center; justify-content:center;
+    gap:.5rem; padding:.55rem 1rem; font-family:'Manrope', sans-serif; font-size:.8rem; font-weight:600;
+    color:#3a2a06; background:#f3c94f; text-align:center;
+    transform:translateY(-100%); transition:transform .35s cubic-bezier(.22,1,.36,1);
+  }
+  #offline-banner.offline-banner--show{ transform:translateY(0); }
+  #offline-banner i{ font-size:.85rem; }
+</style>
+
 <!-- Supabase JS client (lokal UMD build, global "supabase" obyektini beradi) -->
 <script src="js/vendor/supabase.js" defer></script>
 
 </head>
 
 <body class="bg-cream text-emerald-950 antialiased">
+
+<!-- ================= SPLASH SCREEN =================
+     js/main.js: katalog (kesh yoki Supabase) tayyor bo'lgach hideSplash()
+     chaqirilib, bu blok yumshoq fade bilan yashiriladi va DOM'dan olib
+     tashlanadi. -->
+<div id="app-splash" role="status" aria-live="polite">
+  <div class="app-splash-content">
+    <div class="app-splash-mark">
+      <img src="assets/logo-header.png" alt="" width="78" height="78" class="app-splash-logo" fetchpriority="high">
+      <svg class="app-splash-ring" viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="50" r="46"></circle></svg>
+    </div>
+    <div class="app-splash-brand">BILOL <span>BARBER</span></div>
+    <div class="app-splash-tagline" data-i18n="splash.loading">Yuklanmoqda&hellip;</div>
+    <!-- Kesh yo'q va internet yo'q holatida ko'rinadi (js/offline.js) -->
+    <div class="app-splash-offline">
+      <i class="fa-solid fa-wifi app-splash-offline-icon" aria-hidden="true"></i>
+      <div class="app-splash-offline-text" data-i18n="offline.splashText">Internet aloqasi yo'q. Ulanishni tekshirib, qaytadan urinib ko'ring.</div>
+      <button type="button" id="splashRetryBtn" class="app-splash-retry-btn" data-i18n="offline.retry">Qayta urinish</button>
+    </div>
+  </div>
+</div>
+
+<!-- Doimiy "internet yo'q" banneri (js/offline.js orqali boshqariladi) -->
+<div id="offline-banner" role="status" aria-live="polite">
+  <i class="fa-solid fa-wifi" aria-hidden="true"></i>
+  <span data-i18n="offline.banner">Internet aloqasi yo'q — ma'lumotlar eskirgan bo'lishi mumkin</span>
+</div>
 
 <!-- ================= HEADER ================= -->
 <header id="siteHeader" class="fixed top-0 inset-x-0 z-40 transition-all duration-300">
@@ -712,6 +812,20 @@
           </button>
           <button type="button" data-lang-switch="en" class="lang-option flex-1 py-2.5 rounded-lg text-sm font-semibold transition-colors">
             EN
+          </button>
+        </div>
+
+        <div id="pushToggleRow" class="flex items-center justify-between gap-3 mb-6 bg-white border border-emerald-950/15 rounded-xl px-4 py-3.5">
+          <div class="pr-2">
+            <p class="text-sm font-semibold" data-i18n="settings.pushLabel">Push xabarnomalar</p>
+            <p id="pushToggleStatus" class="text-xs text-emerald-950/50 mt-0.5" data-i18n="settings.pushHint">
+              Navbat vaqti yaqinlashganda bildirishnoma oling
+            </p>
+          </div>
+          <button type="button" id="pushToggleBtn" role="switch" aria-checked="false" aria-label="Push xabarnomalar"
+            data-i18n-aria-label="settings.pushLabel"
+            class="push-toggle shrink-0 w-12 h-7 rounded-full bg-emerald-950/15 relative transition-colors">
+            <span class="push-toggle-dot absolute top-0.5 left-0.5 w-6 h-6 rounded-full bg-white shadow transition-transform"></span>
           </button>
         </div>
       </div>

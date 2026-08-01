@@ -24,6 +24,9 @@ const DEFAULT_LANG = 'uz';
 
 const DICT = {
   uz: {
+    // ---- Splash ekrani (sahifa ochilganda ma'lumot yuklanayotganda) ----
+    'splash.loading': 'Yuklanmoqda\u2026',
+
     // ---- Navigatsiya / header ----
     'nav.services': 'Xizmatlar',
     'nav.masters': 'Barberlar',
@@ -110,6 +113,9 @@ const DICT = {
     'err.genericServer': 'Server xatoligi yuz berdi. Iltimos, birozdan so\u2019ng qayta urinib ko\u2019ring.',
     'err.sessionExpired': 'Sessiyangiz muddati tugagan (uzoq vaqt fon rejimida qolgan bo\u2019lishi mumkin). Iltimos, sahifani yangilab, qaytadan urinib ko\u2019ring.',
     'err.networkMobile': 'Internet aloqasi uzilib qoldi. Wi-Fi yoki mobil internetni tekshirib, qaytadan urinib ko\u2019ring.',
+    'offline.banner': 'Internet aloqasi yo\u2019q \u2014 ma\u2019lumotlar eskirgan bo\u2019lishi mumkin',
+    'offline.splashText': 'Internet aloqasi yo\u2019q. Ulanishni tekshirib, qaytadan urinib ko\u2019ring.',
+    'offline.retry': 'Qayta urinish',
     'a11y.menu': 'Menyu',
     'a11y.close': 'Yopish',
 
@@ -216,6 +222,10 @@ const DICT = {
     'settings.saved': 'Ma\u2019lumotlar saqlandi.',
     'settings.logout': 'Chiqish',
     'settings.language': 'Til',
+    'settings.pushLabel': 'Push xabarnomalar',
+    'settings.pushHint': 'Navbat vaqti yaqinlashganda bildirishnoma oling',
+    'settings.pushOn': 'Yoqilgan \u2014 eslatmalar shu qurilmaga keladi',
+    'settings.pushBlocked': 'Bildirishnomalar brauzer sozlamalarida bloklangan',
 
     // ---- Auth modali ----
     'auth.loginTitle': 'Kirish',
@@ -261,6 +271,8 @@ const DICT = {
   },
 
   ru: {
+    'splash.loading': 'Загрузка\u2026',
+
     'nav.services': 'Услуги',
     'nav.masters': 'Барберы',
     'nav.reviews': 'Отзывы',
@@ -341,6 +353,9 @@ const DICT = {
     'err.genericServer': 'Произошла ошибка сервера. Пожалуйста, попробуйте немного позже.',
     'err.sessionExpired': 'Срок вашей сессии истёк (возможно, приложение долго было в фоновом режиме). Обновите страницу и попробуйте снова.',
     'err.networkMobile': 'Соединение с интернетом прервалось. Проверьте Wi-Fi или мобильный интернет и попробуйте снова.',
+    'offline.banner': 'Нет подключения к интернету — данные могут быть устаревшими',
+    'offline.splashText': 'Нет подключения к интернету. Проверьте соединение и попробуйте снова.',
+    'offline.retry': 'Повторить',
     'a11y.menu': 'Меню',
     'a11y.close': 'Закрыть',
 
@@ -440,6 +455,10 @@ const DICT = {
     'settings.saved': 'Данные сохранены.',
     'settings.logout': 'Выйти',
     'settings.language': 'Язык',
+    'settings.pushLabel': 'Push-уведомления',
+    'settings.pushHint': 'Получайте напоминание перед вашей записью',
+    'settings.pushOn': 'Включено \u2014 напоминания будут приходить на это устройство',
+    'settings.pushBlocked': 'Уведомления заблокированы в настройках браузера',
 
     'auth.loginTitle': 'Вход',
     'auth.registerTitle': 'Регистрация',
@@ -480,6 +499,8 @@ const DICT = {
   },
 
   en: {
+    'splash.loading': 'Loading\u2026',
+
     'nav.services': 'Services',
     'nav.masters': 'Barbers',
     'nav.reviews': 'Reviews',
@@ -560,6 +581,9 @@ const DICT = {
     'err.genericServer': 'A server error occurred. Please try again shortly.',
     'err.sessionExpired': 'Your session has expired (the app may have been in the background for a while). Please refresh the page and try again.',
     'err.networkMobile': 'The internet connection was lost. Please check your Wi-Fi or mobile data and try again.',
+    'offline.banner': 'No internet connection — data may be outdated',
+    'offline.splashText': 'No internet connection. Please check your connection and try again.',
+    'offline.retry': 'Retry',
     'a11y.menu': 'Menu',
     'a11y.close': 'Close',
 
@@ -666,6 +690,10 @@ const DICT = {
     'settings.saved': 'Your details have been saved.',
     'settings.logout': 'Log out',
     'settings.language': 'Language',
+    'settings.pushLabel': 'Push notifications',
+    'settings.pushHint': 'Get a reminder before your appointment',
+    'settings.pushOn': 'On \u2014 reminders will be sent to this device',
+    'settings.pushBlocked': 'Notifications are blocked in browser settings',
 
     // ---- Auth modal ----
     'auth.loginTitle': 'Log In',

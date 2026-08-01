@@ -310,25 +310,40 @@ async function notifyTelegram(row) {
     const res = await fetchWithTimeout('/api/notify-admin', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ caption, photoBase64, bookingId: row.id }),
+      body: JSON.stringify({
+        caption,
+        photoBase64,
+        bookingId: row.id,
+        clientName: row.client_name,
+        serviceName: row.service_name,
+        bookingDate: row.booking_date,
+        bookingTime: row.booking_time,
+      }),
     }, NOTIFY_TIMEOUT_MS);
     const result = await res.json();
     if (!result.ok) {
       console.warn('Telegram rasm yuborilmadi, matnga tushyapmiz:', result.description || result.error);
-      await notifyTelegramTextOnly(caption, row.id);
+      await notifyTelegramTextOnly(caption, row.id, row);
     }
   } catch (err) {
     console.warn('Bron kartasi rasmini generatsiya qilishda xatolik, matnga tushyapmiz:', err);
-    await notifyTelegramTextOnly(caption, row.id);
+    await notifyTelegramTextOnly(caption, row.id, row);
   }
 }
 
-async function notifyTelegramTextOnly(text, bookingId) {
+async function notifyTelegramTextOnly(text, bookingId, row) {
   try {
     const res = await fetchWithTimeout('/api/notify-admin', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ caption: text, bookingId }),
+      body: JSON.stringify({
+        caption: text,
+        bookingId,
+        clientName: row?.client_name,
+        serviceName: row?.service_name,
+        bookingDate: row?.booking_date,
+        bookingTime: row?.booking_time,
+      }),
     }, NOTIFY_TIMEOUT_MS);
     const result = await res.json();
     if (!result.ok) console.warn('Telegram xabari yuborilmadi:', result.description || result.error);

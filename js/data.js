@@ -51,6 +51,130 @@ export function pickLang(uzText, ruText, enText) {
 export let SERVICES = DEFAULT_SERVICES;
 export let MASTERS = DEFAULT_MASTERS;
 
+// =============================================================================
+// KATALOG KESHI (localStorage): oldin SERVICES/MASTERS har safar sahifa
+// ochilganda Supabase'dan QAYTA so'ralar edi — hatto ma'lumot bir kun oldin
+// bilan bir xil bo'lsa ham, mijoz har kirganda "bo'sh -> skeleton -> tarmoq
+// javobi" bosqichlarini qayta-qayta ko'rardi. Endi "stale-while-revalidate"
+// mantig'i: oxirgi muvaffaqiyatli javob localStorage'ga saqlanadi va
+// keyingi tashrifda DARHOL (tarmoqni kutmasdan) ishlatiladi, shu bilan
+// birga fonda Supabase'dan yangisi so'raladi — agar farq bo'lsa, kartochkalar
+// jimgina (foydalanuvchi bilmasdan) yangilanadi. Versiya raqami (v1) — agar
+// kelajakda saqlanadigan maydonlar tarkibi o'zgarsa, eski keshni chalkashtirib
+// yubormaslik uchun kalitni almashtirish kifoya.
+const CATALOG_CACHE_KEY = 'bilol:catalog:v1';
+
+/** Oxirgi saqlangan katalogni localStorage'dan o'qib, SERVICES/MASTERS'ga
+ * darhol (sinxron, tarmoqsiz) tadbiq qiladi. Kesh topilsa true, bo'lmasa
+ * false qaytaradi — chaqiruvchi shu orqali skeleton kerakmi yoki yo'qmi
+ * qaror qiladi. */
+export function hydrateCatalogFromCache() {
+  try {
+    const raw = localStorage.getItem(CATALOG_CACHE_KEY);
+    if (!raw) return false;
+    const cached = JSON.parse(raw);
+    if (!cached || !Array.isArray(cached.services) || !Array.isArray(cached.masters)) return false;
+    if (!cached.services.length || !cached.masters.length) return false;
+    SERVICES = cached.services;
+    MASTERS = cached.masters;
+    return true;
+  } catch (e) {
+    // localStorage yo'q, bloklangan yoki JSON buzilgan — jimgina e'tibor bermaymiz
+    return false;
+  }
+}
+
+function saveCatalogCache() {
+  try {
+    localStorage.setItem(CATALOG_CACHE_KEY, JSON.stringify({ services: SERVICES, masters: MASTERS, savedAt: Date.now() }));
+  } catch (e) { /* kvota to'lgan yoki bloklangan bo'lishi mumkin — jim o'tkazamiz */ }
+}
+
+// =============================================================================
+// TEZKOR "O'ZGARISHNI TEKSHIRISH" (versiya imzosi): to'liq loadCatalog()
+// har doim BARCHA ustunlarni (nom — 3 tilda, tavsif — 3 tilda, narx,
+// davomiylik, rasm manzili) yuklaydi. Sahifa/panel ochilgan sari shuni
+// qayta-qayta so'rash trafikni behuda sarflaydi, chunki 99% holatda admin
+// hech narsa o'zgartirmagan bo'ladi. Shu sabab avval FAQAT id+active+
+// updated_at (sql/PATCH_round20_catalog_version_check.sql orqali qo'shilgan,
+// bir necha bayt/qator) so'raladi va "imzo" (signature) tuziladi. Agar bu
+// imzo oxirgi saqlangan bilan bir xil bo'lsa — hech narsa o'zgarmagan,
+// to'liq ma'lumot qayta yuklanmaydi, kesh ishlatiladi. Farq bo'lsa (yoki
+// oldin hech qachon tekshirilmagan bo'lsa) — to'liq loadCatalog() chaqiriladi.
+const CATALOG_VERSION_KEY = 'bilol:catalog:version:v1';
+
+function readCachedVersion() {
+  try { return localStorage.getItem(CATALOG_VERSION_KEY); } catch (e) { return null; }
+}
+function saveCachedVersion(sig) {
+  try { localStorage.setItem(CATALOG_VERSION_KEY, sig); } catch (e) { /* jim o'tkazamiz */ }
+}
+
+/** Qator ro'yxatini (id+active+updated_at) tartiblab, bitta qatorli
+ * "imzo" satriga aylantiradi — tartib farq qilsa ham (masalan `order by`
+ * natijasi turlicha kelsa ham) natija bir xil bo'lishi uchun saralanadi. */
+function buildSignature(rows) {
+  return rows
+    .map((r) => `${r.id}:${r.active ? 1 : 0}:${r.updated_at || ''}`)
+    .sort()
+    .join('|');
+}
+
+/** Faqat id/active/updated_at ustunlarini so'raydi (nom, tavsif, narx,
+ * rasm — YO'Q) — shu sababli javob hajmi to'liq so'rovdan o'nlab marta
+ * kichik bo'ladi. Tarmoq/RLS xatosi bo'lsa null qaytaradi (chaqiruvchi bu
+ * holatda "xavfsiz tomonga" — to'liq yuklashga — o'tadi). */
+async function fetchCatalogSignature(supabase) {
+  try {
+    const [svcRes, mstRes] = await Promise.all([
+      supabase.from('services').select('id,active,updated_at'),
+      supabase.from('masters').select('id,active,updated_at'),
+    ]);
+    if (svcRes.error || mstRes.error) return null;
+    return `${buildSignature(svcRes.data || [])}::${buildSignature(mstRes.data || [])}`;
+  } catch (e) {
+    return null;
+  }
+}
+
+/**
+ * Sahifa (mijoz sayti) va admin panel ochilganda ishlatiladigan "aqlli"
+ * yuklash. Ikkalasi ham shu bitta funksiyani chaqiradi — shu sabab
+ * tekshiruv mantig'i bir joyda, ikki marta yozilmaydi.
+ *
+ * 1) Eng yengil so'rov bilan joriy holat imzosi olinadi (tez, kam trafik).
+ * 2) Agar bu imzo localStorage'dagi oxirgisi bilan BIR XIL bo'lsa —
+ *    hech narsa o'zgarmagan, to'liq ma'lumot QAYTA so'ralmaydi (kesh
+ *    ishlatilaveradi). Supabase'ga to'liq borib-kelish shu holatda
+ *    umuman bo'lmaydi.
+ * 3) Farq bo'lsa (yoki avval tekshirilmagan, yoki tekshiruv o'zi xato
+ *    bergan bo'lsa) — to'liq loadCatalog() chaqiriladi va yangi imzo
+ *    saqlanadi.
+ *
+ * @param {object} supabase
+ * @param {boolean} hasLocalCache — chaqiruvchida SERVICES/MASTERS allaqachon
+ *   (hydrateCatalogFromCache orqali) keshdan to'ldirilganmi. False bo'lsa,
+ *   imzolar mos kelsa ham baribir to'liq yuklanadi — chunki solishtiradigan
+ *   hech narsa yo'q.
+ * @returns {Promise<boolean>} true = to'liq ma'lumot qayta yuklandi/yangilandi
+ */
+export async function loadCatalogSmart(supabase, hasLocalCache) {
+  if (!supabase) return false;
+
+  const newSig = await fetchCatalogSignature(supabase);
+  const oldSig = readCachedVersion();
+
+  if (hasLocalCache && newSig !== null && newSig === oldSig) {
+    // Imzo bir xil — servis/xodim ro'yxatida (nom, narx, tavsif, rasm,
+    // active holati) HECH NARSA o'zgarmagan. To'liq so'rovni tejaymiz.
+    return false;
+  }
+
+  await loadCatalog(supabase);
+  if (newSig !== null) saveCachedVersion(newSig);
+  return true;
+}
+
 /**
  * Supabase'dan xizmatlar va xodimlar (faqat active=true) ro'yxatini
  * yuklab, SERVICES/MASTERS'ni yangilaydi. main.js (mijoz sayti) va
@@ -99,6 +223,9 @@ export async function loadCatalog(supabase) {
         specialties: allServiceIds,
       }));
     }
+
+    // Muvaffaqiyatli javobni keyingi tashrif uchun saqlab qo'yamiz
+    saveCatalogCache();
   } catch (e) {
     console.warn("Katalogni Supabase'dan yuklashda xato, standart ro'yxat ishlatiladi:", e);
   }

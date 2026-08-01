@@ -7,6 +7,7 @@ import { submitBookingToBackend, fetchBookedSlots, fetchMasterTimeOff } from './
 import { TELEGRAM_BOT_USERNAME } from './config.js';
 import { requireAuth, getCurrentProfile, toFullPhone } from './auth.js';
 import { t, getMonthNames, getWeekdayNames } from './i18n.js';
+import { isOnline } from './offline.js';
 
 const modal = () => document.getElementById('bookingModal');
 
@@ -551,6 +552,21 @@ let isSubmitting = false;
 
 async function submitBooking() {
   if (isSubmitting) return;
+
+  // Internet yo'q — so'rovni umuman yubormaymiz (foydalanuvchini behuda
+  // "yuborilyapti" holatida kutdirib, keyin xato bilan qaytarish o'rniga
+  // darhol aniq va tushunarli xabar beramiz).
+  if (!isOnline()) {
+    const statusEl = document.getElementById('submitStatus');
+    if (statusEl) {
+      statusEl.classList.remove('hidden');
+      statusEl.className = 'text-sm mb-2 text-red-600 font-semibold';
+      statusEl.textContent = t('err.networkMobile');
+    } else {
+      alert(t('err.networkMobile'));
+    }
+    return;
+  }
 
   if (!state.name || !state.phone) {
     alert(t('booking.errProfileMissing'));

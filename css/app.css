@@ -462,6 +462,45 @@ h1, h2, h3, .font-display { font-family: 'Playfair Display', serif; }
 
 ::selection { background: #C9A227; color: #07211A; }
 
+/* =============================================================================
+   SKELETON: #servicesGrid / #mastersGrid ma'lumot (Supabase) kelguncha
+   ko'rsatiladigan joy-tutuvchi kartochkalar (js/home.js: renderServicesSkeleton,
+   renderMastersSkeleton).
+
+   MUHIM (1:1 o'lcham talabi): .skel-card haqiqiy kartochka bilan bir xil
+   tashqi klasslarni ishlatadi (bg-white/rounded-2xl/border/p-6 va h.k. —
+   yuqoridagi tailwind-build.css'dan), shu sabab bu yerda faqat ICHIDAGI
+   "suyak" bloklar (.skel-block) uchun stil kerak — konteyner o'lchami
+   allaqachon haqiqiy kartochka bilan teng. Har bir .skel-line balandligi
+   JS'da inline style orqali mos matn elementining aniq shrift+line-height
+   qiymatiga (masalan .text-lg = 28px) teng qilib beriladi — shu sababli
+   ma'lumot kelib almashtirilganda kartochka balandligi o'zgarmaydi (CLS=0). */
+.skel-block {
+  background: linear-gradient(100deg,
+    rgba(7, 33, 26, .06) 25%,
+    rgba(7, 33, 26, .13) 37%,
+    rgba(7, 33, 26, .06) 63%);
+  background-size: 400% 100%;
+  animation: skel-shimmer 1.6s ease-in-out infinite;
+}
+/* Qorong'i fon (Ustalar bo'limi, #mastersGrid) uchun teskari kontrast */
+.skel-block--dark {
+  background: linear-gradient(100deg,
+    rgba(250, 248, 243, .08) 25%,
+    rgba(250, 248, 243, .18) 37%,
+    rgba(250, 248, 243, .08) 63%);
+  background-size: 400% 100%;
+}
+.skel-line { border-radius: 5px; }
+@keyframes skel-shimmer {
+  0%   { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+.skel-card { pointer-events: none; }
+@media (prefers-reduced-motion: reduce) {
+  .skel-block { animation: none; background-position: 50% 0; }
+}
+
 /* Scroll fade-in animatsiyasi */
 .reveal {
   opacity: 0;

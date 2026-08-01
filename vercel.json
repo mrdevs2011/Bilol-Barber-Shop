@@ -4,6 +4,8 @@
   "rewrites": [
     { "source": "/install", "destination": "/install/index.html" },
     { "source": "/admin/install", "destination": "/admin/install/index.html" },
+    { "source": "/booking", "destination": "/index.html" },
+    { "source": "/booking/", "destination": "/index.html" },
     { "source": "/bron", "destination": "/index.html" },
     { "source": "/bron/", "destination": "/index.html" },
     { "source": "/admin/today", "destination": "/admin/index.html" },

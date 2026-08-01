@@ -40,6 +40,9 @@ const SUPABASE_URL = process.env.SUPABASE_URL;
 const SUPABASE_ANON_KEY = process.env.SUPABASE_ANON_KEY;
 const ADMIN_EMAIL = process.env.ADMIN_EMAIL || 'admin@bilolbarber.uz';
 const TELEGRAM_BOT_USERNAME = process.env.TELEGRAM_BOT_USERNAME || 'bilolbarber_navbat_bot';
+// Ixtiyoriy: sozlanmagan bo'lsa Push funksiyasi shunchaki o'zini yashiradi
+// (mavjud sozlamalarni buzmaydi), boshqa hech narsaga ta'sir qilmaydi.
+const VAPID_PUBLIC_KEY = process.env.VAPID_PUBLIC_KEY || '';
 
 const output = `// =============================================================================
 // AVTOMATIK GENERATSIYA QILINGAN FAYL — QO'LDA TAHRIRLAMANG!
@@ -58,6 +61,11 @@ export const TELEGRAM_BOT_USERNAME = ${JSON.stringify(TELEGRAM_BOT_USERNAME)};
 // Admin panel (/admin) uchun: Supabase Authentication -> Users bo'limida
 // shu email bilan foydalanuvchi yarating va parol belgilang.
 export const ADMIN_EMAIL = ${JSON.stringify(ADMIN_EMAIL)};
+
+// Web Push uchun VAPID PUBLIC kalit (sir emas). PRIVATE kalit faqat
+// Vercel/Supabase server sozlamalarida saqlanadi. Generatsiya qilish:
+//   npx web-push generate-vapid-keys
+export const VAPID_PUBLIC_KEY = ${JSON.stringify(VAPID_PUBLIC_KEY)};
 `;
 
 const outPath = path.join(__dirname, '..', 'js', 'config.js');

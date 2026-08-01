@@ -18,3 +18,9 @@ export const SUPABASE_URL = "";
 export const SUPABASE_ANON_KEY = "";
 export const TELEGRAM_BOT_USERNAME = "bilolbarber_navbat_bot";
 export const ADMIN_EMAIL = "admin@bilolbarber.uz";
+
+// Web Push uchun VAPID PUBLIC kalit — sir emas (xuddi SUPABASE_ANON_KEY
+// kabi brauzerda ochiq bo'lishi mumkin), PushManager.subscribe() shuni
+// ishlatadi. Haqiqiy himoya PRIVATE kalit orqali (faqat serverda, hech
+// qachon brauzerga chiqmaydi).
+export const VAPID_PUBLIC_KEY = "";

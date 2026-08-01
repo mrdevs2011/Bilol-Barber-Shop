@@ -449,6 +449,9 @@ function openSettingsModal() {
   document.getElementById('settingsSuccess').classList.add('hidden');
   settingsModal().classList.remove('hidden');
   document.body.style.overflow = 'hidden';
+  // js/push.js shu hodisani eshitib, Push tugmasi holatini (yoqilgan/
+  // o'chirilgan) modal har ochilganda qayta tekshiradi.
+  document.dispatchEvent(new CustomEvent('bilol:settingsopen'));
 }
 
 function closeSettingsModal() {

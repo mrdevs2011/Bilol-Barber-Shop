@@ -39,6 +39,8 @@
 //   supabase functions deploy send-reminders --no-verify-jwt
 // =============================================================================
 
+import { configureWebPush, sendWebPushToMany, type PushSubscriptionRow } from "../_shared/webpush.ts";
+
 const TELEGRAM_BOT_TOKEN = Deno.env.get("TELEGRAM_REMINDER_BOT_TOKEN")!;
 const SB_URL = Deno.env.get("SB_URL")!;
 const SB_SERVICE_ROLE_KEY = Deno.env.get("SB_SERVICE_ROLE_KEY")!;
@@ -153,6 +155,25 @@ function buildReminderHtml(
   );
 }
 
+// Push bildirishnomalar oddiy matn (HTML teglarsiz) bo'lishi kerak —
+// Telegram uchun yozilgan <b> teglarini olib tashlaymiz.
+function stripHtml(s: string): string {
+  return s.replace(/<\/?[a-z]+>/gi, "");
+}
+
+function buildReminderPush(
+  minutesLeft: number,
+  b: { service_name: string; master_name: string; booking_time: string; client_lang?: unknown },
+) {
+  const lang = pickLang(b.client_lang);
+  const s = STR[lang];
+  const whenPhrase = formatMinutesLeft(minutesLeft, lang);
+  return {
+    title: stripHtml(s.title),
+    body: stripHtml(s.body(whenPhrase, b.booking_time)),
+  };
+}
+
 // -----------------------------------------------------------------------------
 // Asosiy handler
 // -----------------------------------------------------------------------------
@@ -218,6 +239,33 @@ Deno.serve(async (_req) => {
       }
     }
 
+    // Xuddi shu mijozlar (user_id) uchun Web Push obunalarini ham olib
+    // kelamiz (Telegram'dan mustaqil kanal — is_admin=false, chunki bu
+    // mijoz obunalari, admin push notify-admin.js orqali alohida yuboriladi).
+    const pushSubsByUser = new Map<string, PushSubscriptionRow[]>();
+    const webPushReady = configureWebPush();
+    if (webPushReady && userIds.length > 0) {
+      const pushRes = await fetch(
+        `${SB_URL}/rest/v1/push_subscriptions?select=id,user_id,endpoint,p256dh,auth&is_admin=eq.false&user_id=in.(${userIds.join(",")})`,
+        {
+          headers: {
+            apikey: SB_SERVICE_ROLE_KEY,
+            Authorization: `Bearer ${SB_SERVICE_ROLE_KEY}`,
+          },
+        },
+      );
+      if (pushRes.ok) {
+        const rows: Array<PushSubscriptionRow & { user_id: string }> = await pushRes.json();
+        for (const row of rows) {
+          const list = pushSubsByUser.get(row.user_id) ?? [];
+          list.push(row);
+          pushSubsByUser.set(row.user_id, list);
+        }
+      } else {
+        console.error("push_subscriptions so'rovi muvaffaqiyatsiz:", await pushRes.text());
+      }
+    }
+
     const now = Date.now();
     let sent = 0;
     let failed = 0;
@@ -257,7 +305,9 @@ Deno.serve(async (_req) => {
       if (b.user_id) {
         for (const cid of subscribersByUser.get(b.user_id) ?? []) chatIds.add(cid);
       }
-      if (chatIds.size === 0) continue; // bu mijoz hech qanday Telegram'ga ulanmagan
+      const pushSubs = b.user_id ? pushSubsByUser.get(b.user_id) ?? [] : [];
+
+      if (chatIds.size === 0 && pushSubs.length === 0) continue; // hech qanday kanalga ulanmagan
 
       const html = buildReminderHtml(minutesLeft, b);
 
@@ -270,6 +320,24 @@ Deno.serve(async (_req) => {
           successCount++;
         } catch (err) {
           console.error(`Booking #${b.id} (bosqich ${target.stage}) -> chat ${cid} ga yuborilmadi:`, err);
+        }
+      }
+
+      // Web Push — Telegram'dan mustaqil ikkinchi kanal (telefon
+      // yopiq/qulflangan bo'lsa ham, PWA o'rnatilgan bo'lsa ishlaydi).
+      if (pushSubs.length > 0) {
+        const pushPayload = {
+          ...buildReminderPush(minutesLeft, b),
+          tag: `reminder-${b.id}-${target.stage}`,
+          url: "/#my-bookings",
+        };
+        const { sent: pushSent, staleIds } = await sendWebPushToMany(pushSubs, pushPayload);
+        successCount += pushSent;
+        if (staleIds.length > 0) {
+          await fetch(`${SB_URL}/rest/v1/push_subscriptions?id=in.(${staleIds.join(",")})`, {
+            method: "DELETE",
+            headers: { apikey: SB_SERVICE_ROLE_KEY, Authorization: `Bearer ${SB_SERVICE_ROLE_KEY}` },
+          }).catch(() => {});
         }
       }
 
