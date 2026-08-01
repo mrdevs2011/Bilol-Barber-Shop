@@ -1216,3 +1216,19 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 @media (min-width:1024px){
   .lg\:inline-flex{display:inline-flex}
 }
+
+/* "Push xabarnomalar" almashtirgichi (#pushToggleBtn, index.html) uchun
+   yetishmayotgan utility klasslar — app.css statik (bir marta qo'lda)
+   generatsiya qilingani uchun keyinroq qo'shilgan bu klasslar build'ga
+   kirmay qolgan va natijada switch o'lchamsiz (ko'rinmas) bo'lib qolgan
+   edi. */
+.h-7{height:1.75rem}
+.w-6{width:1.5rem}
+.h-6{height:1.5rem}
+.top-0\.5{top:.125rem}
+.left-0\.5{left:.125rem}
+.shadow{--tw-shadow:0 1px 3px 0 rgba(0,0,0,.1),0 1px 2px -1px rgba(0,0,0,.1);--tw-shadow-colored:0 1px 3px 0 var(--tw-shadow-color),0 1px 2px -1px var(--tw-shadow-color);box-shadow:var(--tw-ring-offset-shadow,0 0 #0000),var(--tw-ring-shadow,0 0 #0000),var(--tw-shadow)}
+.translate-x-5{--tw-translate-x:1.25rem;transform:translate(var(--tw-translate-x),var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y))}
+.transition-transform{transition-property:transform;transition-timing-function:cubic-bezier(.4,0,.2,1);transition-duration:.15s}
+.bg-emerald-700{--tw-bg-opacity:1;background-color:rgb(20 92 67/var(--tw-bg-opacity,1))}
+
