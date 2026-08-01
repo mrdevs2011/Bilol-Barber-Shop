@@ -211,8 +211,160 @@ function toast(message, type = 'info') {
 }
 
 // =============================================================================
-// ASOSIY RENDER FUNKSIYASI
+// KPI HISOBLASH
 // =============================================================================
+
+/** Berilgan bronlar massividan KPI (Key Performance Indicators) hisoblaydi.
+ *  Qaytaradi: {revenue, totalBookings, avgCheck, cancelRate, noShowRate, busiestDay, busiestDayCount}
+ *
+ *  Status mantig'i (qo'llanmada aytilgan):
+ *  - Tushum: faqat 'done' bronlar narxlari
+ *  - Jami bronlar: 'cancelled' BO'LMAGAN bronlar
+ *  - Bekor qilish %: cancelled / (jami + cancelled) × 100
+ *  - No-show %: no_show / (done + no_show) × 100 (faqat "kelishi kerak bo'lganlar" orasida)
+ */
+function computeKpis(bookings) {
+  if (!bookings || bookings.length === 0) {
+    return {
+      revenue: 0,
+      totalBookings: 0,
+      avgCheck: 0,
+      cancelRate: 0,
+      noShowRate: 0,
+      busiestDay: '—',
+      busiestDayCount: 0,
+    };
+  }
+
+  let revenue = 0;
+  let doneCount = 0;
+  let cancelledCount = 0;
+  let noShowCount = 0;
+  const dayCountMap = {}; // hafta kuni -> bron soni
+  const dayNames = ['Yakshanba', 'Dushanba', 'Seshanba', 'Chorshanba', "Payshanba", 'Juma', 'Shanba'];
+
+  // Ma'lumotni ishlov berish
+  bookings.forEach(booking => {
+    const status = booking.status || '';
+    const price = booking.price || 0;
+
+    if (status === 'done') {
+      revenue += price;
+      doneCount++;
+    }
+
+    if (status === 'cancelled') {
+      cancelledCount++;
+    }
+
+    if (status === 'no_show') {
+      noShowCount++;
+    }
+
+    // Eng band kun hisoblash
+    if (booking.booking_date) {
+      try {
+        const dateObj = new Date(booking.booking_date + 'T00:00:00Z');
+        const dayIndex = dateObj.getUTCDay();
+        const dayName = dayNames[dayIndex] || 'Noma\'lum';
+        dayCountMap[dayName] = (dayCountMap[dayName] || 0) + 1;
+      } catch (e) {
+        // Sana parse xatosi — o'tkazib yuboramiz
+      }
+    }
+  });
+
+  // Jami bronlar (bekor qilingan BO'LMAGAN)
+  const totalBookings = bookings.filter(b => b.status !== 'cancelled').length;
+
+  // O'rtacha chek
+  const avgCheck = doneCount > 0 ? Math.round(revenue / doneCount) : 0;
+
+  // Bekor qilish % = cancelled / (jami + cancelled) × 100
+  const totalWithCancelled = totalBookings + cancelledCount;
+  const cancelRate = totalWithCancelled > 0
+    ? Math.round((cancelledCount / totalWithCancelled) * 100)
+    : 0;
+
+  // No-show % = no_show / (done + no_show) × 100
+  // (faqat kelishi kerak bo'lgan bronlar orasida)
+  const noShowDenominator = doneCount + noShowCount;
+  const noShowRate = noShowDenominator > 0
+    ? Math.round((noShowCount / noShowDenominator) * 100)
+    : 0;
+
+  // Eng band kun (hafta kuni)
+  let busiestDay = '—';
+  let busiestDayCount = 0;
+  if (Object.keys(dayCountMap).length > 0) {
+    const sorted = Object.entries(dayCountMap).sort((a, b) => b[1] - a[1]);
+    busiestDay = sorted[0][0];
+    busiestDayCount = sorted[0][1];
+  }
+
+  return {
+    revenue,
+    totalBookings,
+    avgCheck,
+    cancelRate,
+    noShowRate,
+    busiestDay,
+    busiestDayCount,
+  };
+}
+
+/** KPI kartalarni DOM'da to'ldiradi va yangilaydi. */
+function updateKpiCards(kpis, comments) {
+  // Jami tushum
+  const revenueEl = document.getElementById('statsRevenue');
+  const revenueCountEl = document.getElementById('statsRevenueCount');
+  if (revenueEl) {
+    // money() funksiyasi admin.js'da ishlatiladi — hozircha oddiy format
+    const formattedRevenue = kpis.revenue.toLocaleString() + ' so\'m';
+    revenueEl.textContent = formattedRevenue;
+    revenueCountEl.textContent = kpis.totalBookings > 0
+      ? `${kpis.totalBookings} ta bron`
+      : '—';
+  }
+
+  // Jami bronlar
+  const totalEl = document.getElementById('statsTotalBookings');
+  if (totalEl) {
+    totalEl.textContent = kpis.totalBookings || '—';
+  }
+
+  // O'rtacha chek
+  const avgEl = document.getElementById('statsAvgCheck');
+  if (avgEl) {
+    avgEl.textContent = kpis.avgCheck > 0
+      ? kpis.avgCheck.toLocaleString() + ' so\'m'
+      : '—';
+  }
+
+  // Bekor qilish %
+  const cancelEl = document.getElementById('statsCancelRate');
+  if (cancelEl) {
+    cancelEl.textContent = kpis.cancelRate + '%';
+  }
+
+  // No-show %
+  const noShowEl = document.getElementById('statsNoShowRate');
+  if (noShowEl) {
+    noShowEl.textContent = kpis.noShowRate + '%';
+  }
+
+  // Eng band kun
+  const busiestDayEl = document.getElementById('statsBusiestDay');
+  const busiestDayCountEl = document.getElementById('statsBusiestDayCount');
+  if (busiestDayEl) {
+    busiestDayEl.textContent = kpis.busiestDay;
+  }
+  if (busiestDayCountEl) {
+    busiestDayCountEl.textContent = kpis.busiestDayCount > 0
+      ? `${kpis.busiestDayCount} ta bron`
+      : '—';
+  }
+}
 
 /** Statistika sahifasini yangilaydi: ma'lumot yuklash, KPI hisoblash, grafiklar chizish.
  *  admin.js da global 'supabaseClient' ishlatiladi. */
@@ -255,7 +407,15 @@ export async function renderStatsPanel(rangeOrCustom = 'today') {
 
   console.log('Yuklangan bronlar:', bookings.length);
   console.log('Yuklangan kommentlar:', comments.length);
-  // Keyingi bosqichlarda KPI hisoblash va grafiklar chizish qo'shiladi
+
+  // ===== STEP 3: KPI hisoblash =====
+  const kpis = computeKpis(bookings);
+  console.log('KPI:', kpis);
+
+  // KPI kartalarni yangilash
+  updateKpiCards(kpis, comments);
+
+  // Keyingi bosqichlarda grafiklar chizish qo'shiladi (STEP 4+)
 }
 
 /** Statistika bo'limini birinchi marta initsializatsiya qiladi:
