@@ -1856,22 +1856,24 @@ document.getElementById('commentsList')?.addEventListener('click', async (e) => 
 // Nav tugmasidagi qizil raqamli belgi — nechta sharh moderatsiya kutayotganini
 // ko'rsatadi (admin "Sharhlar" bo'limini ochmasdan ham darhol bilishi uchun).
 async function refreshCommentsBadge() {
-  const badge = document.getElementById('commentsPendingBadge');
-  if (!badge || !supabaseClient) return;
+  const badges = document.querySelectorAll('.comments-pending-badge');
+  if (!badges.length || !supabaseClient) return;
   const { count, error } = await supabaseClient
     .from('comments')
     .select('id', { count: 'exact', head: true })
     .eq('status', 'pending');
   if (error) return;
   const dot = document.getElementById('moreMenuDot');
-  if (count > 0) {
-    badge.textContent = String(count);
-    badge.classList.remove('hidden');
-    dot?.classList.remove('hidden');
-  } else {
-    badge.classList.add('hidden');
-    dot?.classList.add('hidden');
-  }
+  badges.forEach(badge => {
+    if (count > 0) {
+      badge.textContent = String(count);
+      badge.classList.remove('hidden');
+    } else {
+      badge.classList.add('hidden');
+    }
+  });
+  if (count > 0) dot?.classList.remove('hidden');
+  else dot?.classList.add('hidden');
 }
 
 // ---------------------------------------------------------------------------

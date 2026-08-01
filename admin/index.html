@@ -623,6 +623,10 @@
   .view-switch-btn i{font-size:16.5px;}
   .view-switch-btn:hover{background:var(--canvas); border-color:transparent;}
   .view-switch-btn.active{background:transparent; color:var(--brass-deep); border-color:transparent;}
+  /* Mobil/planshetda pastki tab-bar'ga faqat 3 ta asosiy bo'lim sig'adi —
+     qolganlari (Tahrirlash/Bloklanganlar/Sharhlar) shu kenglikda
+     header'dagi "..." tugmasi orqali ochiladigan modalga ko'chirilgan. */
+  .view-switch-btn--more{display:none;}
   #viewStaff.hidden, #viewBookings.hidden, #viewDash.hidden{display:none;}
 
   /* ---------- Dashboard ---------- */
@@ -853,6 +857,13 @@
   @media (min-width:1024px){
     body{overflow-x:visible; padding-bottom:0;}
 
+    /* Desktop'da sidebar'ga barcha bo'limlar bemalol sig'adi, shuning
+       uchun mobil'da yashirilgan qo'shimcha tugmalarni qaytaramiz va
+       ularni "Boshqa bo'limlar" modaliga yo'naltiruvchi header tugmasini
+       (endi keraksiz) yashiramiz. */
+    .view-switch-btn--more{display:flex;}
+    #moreMenuBtn{display:none;}
+
     #dashView{
       display:grid;
       grid-template-columns:76px minmax(0,1fr);
@@ -1046,11 +1057,20 @@
     <button type="button" class="view-switch-btn active" data-view="dash" aria-current="page" title="Bugun"><i class="fa-solid fa-house" aria-hidden="true"></i> <span class="vsb-label">Bugun</span></button>
     <button type="button" class="view-switch-btn" data-view="bookings" title="Bronlar"><i class="fa-solid fa-calendar-check" aria-hidden="true"></i> <span class="vsb-label">Bronlar</span></button>
     <button type="button" class="view-switch-btn" data-view="stats" title="Statistika"><i class="fa-solid fa-chart-pie" aria-hidden="true"></i> <span class="vsb-label">Statistika</span></button>
+    <!-- Quyidagi 3 tasi faqat DESKTOP'da (sidebar'da joy yetarli bo'lganda)
+         ko'rinadi — mobil/planshet pastki tab-bar'ida bular o'rniga
+         header'dagi "..." tugmasi (#moreMenuBtn) orqali ochiladigan modal
+         ishlatiladi (qarang: #moreMenuModal). -->
+    <button type="button" class="view-switch-btn view-switch-btn--more" data-view="staff" title="Tahrirlash"><i class="fa-solid fa-user-gear" aria-hidden="true"></i> <span class="vsb-label">Tahrirlash</span></button>
+    <button type="button" class="view-switch-btn view-switch-btn--more" data-view="blocked" title="Bloklanganlar"><i class="fa-solid fa-ban" aria-hidden="true"></i> <span class="vsb-label">Bloklanganlar</span></button>
+    <button type="button" class="view-switch-btn view-switch-btn--more" data-view="comments" title="Sharhlar"><i class="fa-solid fa-comment-dots" aria-hidden="true"></i> <span class="vsb-label">Sharhlar</span> <span class="hidden vsb-badge comments-pending-badge" style="background:var(--red); color:#fff; font-size:10.5px; font-weight:700; border-radius:999px; padding:1px 6px; margin-left:4px;">0</span></button>
   </nav>
 
-  <!-- "Boshqa bo'limlar" — har kuni ishlatilmaydigan bo'limlar shu yerga
-       ko'chirildi (pastki tab-bar band bo'lib ketmasligi uchun). Header'dagi
-       "..." tugmasi (#moreMenuBtn) bosilganda ochiladi. -->
+  <!-- "Boshqa bo'limlar" — MOBIL/PLANSHET uchun: har kuni ishlatilmaydigan
+       bo'limlar pastki tab-bar'dan olib tashlanib shu modalga ko'chirildi
+       (bottombar band bo'lib ketmasligi uchun). Desktop'da sidebar'ga
+       barchasi sig'adi, shuning uchun bu modal (va uni ochuvchi header
+       tugmasi) faqat max-width:1023px'da ko'rinadi. -->
   <div id="moreMenuModal" class="modal-overlay hidden">
     <div class="modal-card" style="max-width:380px;">
       <div class="modal-head">
@@ -1073,7 +1093,7 @@
         <button type="button" class="more-menu-item" data-view="comments">
           <i class="fa-solid fa-comment-dots" aria-hidden="true"></i>
           <span>Sharhlar</span>
-          <span id="commentsPendingBadge" class="hidden vsb-badge" style="background:var(--red); color:#fff; font-size:10.5px; font-weight:700; border-radius:999px; padding:1px 6px;">0</span>
+          <span class="hidden vsb-badge comments-pending-badge" style="background:var(--red); color:#fff; font-size:10.5px; font-weight:700; border-radius:999px; padding:1px 6px;">0</span>
           <i class="fa-solid fa-chevron-right more-menu-chevron" aria-hidden="true"></i>
         </button>
       </div>
