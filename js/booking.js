@@ -482,9 +482,14 @@ async function renderTimeSlots() {
     }
     const isDisabled = isBooked || isPast;
     const isSelected = state.time === slotTime;
+    // Faqat boshlanish vaqti emas, balki "boshlanish - tugash" oralig'ini
+    // ko'rsatamiz — shunda mijoz uzunroq xizmat (masalan 60 daqiqa) tanlaganda
+    // nega bitta bron ikkita slotni band qilib qo'yishi tushunarli bo'ladi.
+    const endMinutes = toMinutes(slotTime) + currentDuration;
+    const endLabel = `${String(Math.floor(endMinutes / 60)).padStart(2, '0')}:${String(endMinutes % 60).padStart(2, '0')}`;
     return `<button type="button" data-time="${slotTime}" ${isDisabled ? 'disabled' : ''} ${isPast && !isBooked ? `title="${t('booking.slotPast')}"` : (isBooked && !isPast ? `title="${t('booking.slotTaken')}"` : '')}
       class="slot-btn font-mono text-sm border rounded-lg px-3.5 py-2.5 ${isSelected ? 'selected' : 'border-emerald-950/15 hover:border-gold-500'}">
-      ${slotTime}
+      ${slotTime} - ${endLabel}
     </button>`;
   }).join('');
 
@@ -499,6 +504,16 @@ async function renderTimeSlots() {
 /* ---------------------------------------------------------------------------
    4-qadam: Xulosa (chipta)
 --------------------------------------------------------------------------- */
+// "14:00" + 30 (daqiqa) → "14:00 - 14:30". Davomiylik noma'lum bo'lsa,
+// 30 daqiqalik standart slot deb hisoblanadi.
+function formatTimeRange(startTime, durationMin) {
+  const [h, m] = startTime.split(':').map(Number);
+  const startMin = h * 60 + m;
+  const endMin = startMin + (durationMin || 30);
+  const endLabel = `${String(Math.floor(endMin / 60)).padStart(2, '0')}:${String(endMin % 60).padStart(2, '0')}`;
+  return `${startTime} - ${endLabel}`;
+}
+
 function renderSummary() {
   const service = SERVICES.find(s => s.id === state.serviceId);
   const master = MASTERS.find(m => m.id === state.masterId);
@@ -506,7 +521,7 @@ function renderSummary() {
   document.getElementById('sumService').textContent = (service && pickLang(service.name, service.name_ru, service.name_en)) || '—';
   document.getElementById('sumMaster').textContent = master ? `${t('ticket.barberPrefix')}: ${pickLang(master.name, master.name_ru, master.name_en)}` : '—';
   document.getElementById('sumDate').textContent = formatDateUz(state.date);
-  document.getElementById('sumTime').textContent = state.time || '—';
+  document.getElementById('sumTime').textContent = state.time ? formatTimeRange(state.time, service?.duration) : '—';
   document.getElementById('sumClient').textContent = state.name || '—';
   document.getElementById('sumPhone').textContent = state.phone || '—';
   document.getElementById('sumDuration').textContent = service ? `${service.duration} ${t('services.minutes')}` : '—';
