@@ -7,7 +7,7 @@ import { initAdminPWA } from './pwa.js';
 import { uzLatinToCyrillic } from './translit.js';
 import { initOfflineBanner, isOnline } from '../js/offline.js';
 import { isPushSupported, isPushSubscribed, subscribeToPush, unsubscribeFromPush } from '../js/push.js';
-import { renderStats, initStatsView } from './stats.js';
+import { renderStatsPanel, initStatsView } from './stats.js';
 
 // Admin panelni PWA sifatida o'rnatish uchun Service Worker'ni ro'yxatdan
 // o'tkazadi (mijozlar saytidagidan alohida o'rnatilganlik belgisi bilan —
@@ -1565,7 +1565,7 @@ function activateView(view, { pushUrl = true } = {}) {
   }
   if (view === 'stats') {
     // Statistika bo'limi: sana oralig'ini belgilab, ma'lumot yuklash va tahlilni boshlash
-    renderStats(currentStatsRange);
+    renderStatsPanel(currentStatsRange);
   }
   if (view === 'dash') {
     // Bugungi ustalar holati va navbat — darhol yangilab ko'rsatamiz

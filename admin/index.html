@@ -1612,8 +1612,9 @@
 <div id="toastHost"></div>
 
 <script src="/js/vendor/supabase.js"></script>
-<!-- Chart.js: grafiklar uchun (statistika bo'limi) — admin.js dan OLDIN yuklanishi kerak -->
-<script src="https://cdn.jsdelivr.net/npm/chart.js@4/dist/chart.umd.min.js"></script>
+<!-- Chart.js: grafiklar uchun (statistika bo'limi) — admin.js dan OLDIN yuklanishi kerak
+     .min.js versiyasi ishlatiladi (map file yo'q, CSP muammosini oldini olish uchun) -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.min.js"></script>
 <script type="module" src="/admin/admin.js"></script>
 <!-- Eslatma: kesh muammosi vercel.json orqali server darajasida hal qilingan
      (Cache-Control: no-cache, must-revalidate) — bu yerda qo'lda versiya
