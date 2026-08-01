@@ -101,6 +101,9 @@ function initSupabase() {
         },
       });
 
+      // Stats modul uchun window'ga expose qilish
+      window.supabaseClient = supabaseClient;
+
       // Kutilmagan sessiya uzilishi (masalan token yangilanmadi, tablet
       // uzoq vaqt uxlab yotgandan keyin uyg'onganda) — agar bu xodimning
       // o'zi "Chiqish" bosishi bilan bo'lmagan bo'lsa, eslab qolingan

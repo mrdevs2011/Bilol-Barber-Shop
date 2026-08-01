@@ -369,9 +369,15 @@ function updateKpiCards(kpis, comments) {
 /** Statistika sahifasini yangilaydi: ma'lumot yuklash, KPI hisoblash, grafiklar chizish.
  *  admin.js da global 'supabaseClient' ishlatiladi. */
 export async function renderStatsPanel(rangeOrCustom = 'today') {
-  // Supabase clientini admin.js dan olamiz (u global o'zgaruvchi)
-  const globalScope = window;
-  const supabaseClient = globalScope.supabaseClient || window.supabaseClient;
+  // Chart.js yuklanganmi tekshirish
+  if (typeof Chart === 'undefined') {
+    console.error('Chart.js yuklanmadi');
+    toast('Grafiklar uchun kutubxona yuklanmadi. Brauzer konsolini tekshiring.', 'error');
+    return;
+  }
+
+  // Supabase clientini window'dan olamiz (admin.js tomonidan expose qilingan)
+  const supabaseClient = window.supabaseClient;
 
   if (!supabaseClient) {
     console.error('Supabase client topilmadi');
