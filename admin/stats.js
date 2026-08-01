@@ -366,6 +366,143 @@ function updateKpiCards(kpis, comments) {
   }
 }
 
+// =============================================================================
+// GRAFIKLAR CHIZISH (Chart.js)
+// =============================================================================
+
+/** Berilgan bronlar ma'lumotidan kunlik/haftalik tushum grafigi ma'lumotini tayyorlaydi.
+ *  Oraliq 60 kundan uzun bo'lsa — haftalik guruhlash, aks holda — kunlik.
+ *  Qaytaradi: {labels: [...], data: [...]}
+ */
+function prepareRevenueChartData(bookings, dateRange) {
+  const labels = [];
+  const revenueData = [];
+
+  // Sana oralig'i davomini hisoblash
+  const fromDate = new Date(dateRange.from + 'T00:00:00Z');
+  const toDate = new Date(dateRange.to + 'T23:59:59Z');
+  const daysCount = Math.ceil((toDate - fromDate) / (1000 * 60 * 60 * 24)) + 1;
+
+  // 60 kundan uzun bo'lsa, haftalik guruhlash; aks holda kunlik
+  const isWeekly = daysCount > 60;
+
+  if (isWeekly) {
+    // Haftalik guruhlash
+    const weeklyData = {}; // "2024-W32" -> revenue
+    
+    bookings.forEach(booking => {
+      if (booking.status !== 'done') return; // Faqat bajarilganlar
+
+      try {
+        const date = new Date(booking.booking_date + 'T00:00:00Z');
+        // ISO hafta raqamini hisoblash
+        const jan4 = new Date(date.getUTCFullYear(), 0, 4);
+        const msPerDay = 24 * 60 * 60 * 1000;
+        const weekNum = Math.ceil(((date - jan4) / msPerDay) + jan4.getUTCDay() + 1) / 7;
+        const weekKey = `${date.getUTCFullYear()}-W${String(weekNum).padStart(2, '0')}`;
+        
+        weeklyData[weekKey] = (weeklyData[weekKey] || 0) + (booking.price || 0);
+      } catch (e) {
+        // Sana parse xatosi
+      }
+    });
+
+    // Sortilangan haftalik aroliq
+    const sortedWeeks = Object.entries(weeklyData)
+      .sort((a, b) => a[0].localeCompare(b[0]));
+
+    sortedWeeks.forEach(([week, revenue]) => {
+      labels.push(week);
+      revenueData.push(revenue);
+    });
+  } else {
+    // Kunlik guruhlash
+    const dailyData = {}; // "2024-08-15" -> revenue
+
+    bookings.forEach(booking => {
+      if (booking.status !== 'done') return; // Faqat bajarilganlar
+
+      const dateKey = booking.booking_date;
+      if (dateKey) {
+        dailyData[dateKey] = (dailyData[dateKey] || 0) + (booking.price || 0);
+      }
+    });
+
+    // Sortilangan kunlar
+    const sortedDays = Object.entries(dailyData)
+      .sort((a, b) => a[0].localeCompare(b[0]));
+
+    sortedDays.forEach(([day, revenue]) => {
+      // Tarix formatini o'zbekchaga: "15-Aug" yoki faqat "15"
+      const dateObj = new Date(day + 'T00:00:00Z');
+      const dayNum = dateObj.getUTCDate();
+      const monthNum = dateObj.getUTCMonth();
+      const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+      labels.push(`${dayNum}-${monthNames[monthNum]}`);
+      revenueData.push(revenue);
+    });
+  }
+
+  return { labels, data: revenueData };
+}
+
+/** Tushum grafigini Chart.js bilan chizadi (bar chart). */
+function drawRevenueChart(bookings, dateRange) {
+  const canvas = document.getElementById('statsRevenueChart');
+  if (!canvas) return;
+
+  // Mavjud chart instance'ni o'chirish (agar bor bo'lsa)
+  if (window.revenueChartInstance) {
+    window.revenueChartInstance.destroy();
+  }
+
+  const chartData = prepareRevenueChartData(bookings, dateRange);
+
+  if (chartData.labels.length === 0) {
+    canvas.style.display = 'none';
+    return;
+  }
+
+  canvas.style.display = 'block';
+
+  window.revenueChartInstance = new Chart(canvas, {
+    type: 'bar',
+    data: {
+      labels: chartData.labels,
+      datasets: [
+        {
+          label: 'Tushum (so\'m)',
+          data: chartData.data,
+          backgroundColor: 'var(--brass)', // #C9A227
+          borderColor: 'var(--brass-deep)', // #8A6A18
+          borderWidth: 1,
+          borderRadius: 4,
+          tension: 0.1,
+        },
+      ],
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: true,
+      plugins: {
+        legend: {
+          display: false,
+        },
+      },
+      scales: {
+        y: {
+          beginAtZero: true,
+          ticks: {
+            callback: function (value) {
+              return value.toLocaleString() + ' so\'m';
+            },
+          },
+        },
+      },
+    },
+  });
+}
+
 /** Statistika sahifasini yangilaydi: ma'lumot yuklash, KPI hisoblash, grafiklar chizish.
  *  admin.js da global 'supabaseClient' ishlatiladi. */
 export async function renderStatsPanel(rangeOrCustom = 'today') {
@@ -421,7 +558,10 @@ export async function renderStatsPanel(rangeOrCustom = 'today') {
   // KPI kartalarni yangilash
   updateKpiCards(kpis, comments);
 
-  // Keyingi bosqichlarda grafiklar chizish qo'shiladi (STEP 4+)
+  // ===== STEP 4: Grafiklar chizish =====
+  drawRevenueChart(bookings, dateRange);
+  
+  // Keyingi bosqichlarda boshqa grafiklar (xizmatlar, ustalar, holat taqsimoti va h.k.) qo'shiladi
 }
 
 /** Statistika bo'limini birinchi marta initsializatsiya qiladi:
