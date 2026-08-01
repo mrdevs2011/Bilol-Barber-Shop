@@ -7,6 +7,7 @@ import { initAdminPWA } from './pwa.js';
 import { uzLatinToCyrillic } from './translit.js';
 import { initOfflineBanner, isOnline } from '../js/offline.js';
 import { isPushSupported, isPushSubscribed, subscribeToPush, unsubscribeFromPush } from '../js/push.js';
+import { renderStats, initStatsView } from './stats.js';
 
 // Admin panelni PWA sifatida o'rnatish uchun Service Worker'ni ro'yxatdan
 // o'tkazadi (mijozlar saytidagidan alohida o'rnatilganlik belgisi bilan —
@@ -61,6 +62,7 @@ let moodTimer = null;
 let realtimeChannel = null;
 let wakeLock = null;
 let manualLogout = false; // "Chiqish" tugmasi bosilganda true bo'ladi — shunda avtomatik qayta kirish ishlamaydi
+let currentStatsRange = 'today'; // Statistika bo'limidagi tanlangan sana oralig'i ('today', 'week', 'month', 'custom' va h.k.)
 
 // ---------------------------------------------------------------------------
 // "Bu qurilmani eslab qol" — do'konda doimiy turadigan tablet uchun.
@@ -494,6 +496,8 @@ function showDashboard() {
   loginView.classList.add('hidden');
   dashView.classList.remove('hidden');
   activateViewFromLocation();
+  // Statistika bo'limining filter tugmalarini initsializatsiya qilish
+  initStatsView();
   // Splash ekrani (#bootView) shu ikkala so'rov (bugungi bronlar +
   // xizmat/xodim katalogi) haqiqatan tugaguncha ochiq turadi — shunda
   // admin panelni ochgan xodim bo'sh/yarim yuklangan jadvalni ko'rmaydi.
@@ -1558,6 +1562,10 @@ function activateView(view, { pushUrl = true } = {}) {
   }
   if (view === 'comments') {
     loadComments();
+  }
+  if (view === 'stats') {
+    // Statistika bo'limi: sana oralig'ini belgilab, ma'lumot yuklash va tahlilni boshlash
+    renderStats(currentStatsRange);
   }
   if (view === 'dash') {
     // Bugungi ustalar holati va navbat — darhol yangilab ko'rsatamiz

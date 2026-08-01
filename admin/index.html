@@ -1310,15 +1310,130 @@
     </section>
   </main>
 
-  <!-- ================= STATISTIKA — keyingi bosqichda to'ldiriladi ================= -->
+  <!-- ================= STATISTIKA: Oylik/haftalik tahlil ================= -->
   <main id="viewStats" class="hidden">
     <section class="edit-section">
       <div class="edit-section-head">
         <h2 class="display">Statistika</h2>
       </div>
-      <div style="text-align:center; padding:60px 0; color:var(--ink-3);">
-        <i class="fa-solid fa-chart-pie" style="font-size:26px;"></i>
-        <div style="margin-top:10px; font-size:13px;">Advanced statistika bu yerda tez orada paydo bo'ladi.</div>
+
+      <!-- Sana oralig'i tanlash paneli -->
+      <div class="stats-filter-panel">
+        <div class="stats-filter-buttons">
+          <button type="button" class="stats-filter-btn active" data-range="today">Bugun</button>
+          <button type="button" class="stats-filter-btn" data-range="week">Shu hafta</button>
+          <button type="button" class="stats-filter-btn" data-range="month">Shu oy</button>
+          <button type="button" class="stats-filter-btn" data-range="30days">Oxirgi 30 kun</button>
+          <button type="button" class="stats-filter-btn" data-range="3months">Oxirgi 3 oy</button>
+        </div>
+        <div class="stats-filter-custom">
+          <label>
+            <span>Dan:</span>
+            <input type="date" id="statsFromDate" class="stats-date-input">
+          </label>
+          <label>
+            <span>Gacha:</span>
+            <input type="date" id="statsToDate" class="stats-date-input">
+          </label>
+          <button type="button" id="statsApplyCustom" class="btn-apply-custom">Qo'llash</button>
+        </div>
+      </div>
+
+      <!-- KPI kartalar qatori -->
+      <div class="stats" id="statsKpiRow">
+        <div class="stat-card">
+          <div class="stat-top">
+            <span class="stat-label">Jami tushum</span>
+            <span class="stat-icon"><i class="fa-solid fa-money-bill-wave"></i></span>
+          </div>
+          <div class="stat-value" id="statsRevenue">—</div>
+          <div class="stat-sub" id="statsRevenueCount">—</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-top">
+            <span class="stat-label">Jami bronlar</span>
+            <span class="stat-icon"><i class="fa-solid fa-calendar-check"></i></span>
+          </div>
+          <div class="stat-value" id="statsTotalBookings">—</div>
+          <div class="stat-sub">o'tgan ajralari</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-top">
+            <span class="stat-label">O'rtacha chek</span>
+            <span class="stat-icon"><i class="fa-solid fa-receipt"></i></span>
+          </div>
+          <div class="stat-value" id="statsAvgCheck">—</div>
+          <div class="stat-sub">faqat bajarilganlar</div>
+        </div>
+        <div class="stat-card warn">
+          <div class="stat-top">
+            <span class="stat-label">Bekor qilish</span>
+            <span class="stat-icon"><i class="fa-solid fa-ban"></i></span>
+          </div>
+          <div class="stat-value" id="statsCancelRate">—</div>
+          <div class="stat-sub">% jami bronlardan</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-top">
+            <span class="stat-label">No-show</span>
+            <span class="stat-icon"><i class="fa-solid fa-person-walking-arrow-right"></i></span>
+          </div>
+          <div class="stat-value" id="statsNoShowRate">—</div>
+          <div class="stat-sub">% kelishi kerak bo'lganlar</div>
+        </div>
+        <div class="stat-card info">
+          <div class="stat-top">
+            <span class="stat-label">Eng band kun</span>
+            <span class="stat-icon"><i class="fa-solid fa-calendar-days"></i></span>
+          </div>
+          <div class="stat-value" id="statsBusiestDay">—</div>
+          <div class="stat-sub" id="statsBusiestDayCount">—</div>
+        </div>
+      </div>
+
+      <!-- Grafiklar konteineri: 2-ustunli grid -->
+      <div class="stats-charts-grid">
+        <!-- Tushum grafigi (vaqt bo'yicha) -->
+        <div class="chart-container">
+          <h3 class="chart-title">Tushum (vaqt bo'yicha)</h3>
+          <canvas id="statsRevenueChart" height="80"></canvas>
+        </div>
+
+        <!-- Xizmatlar taqsimoti -->
+        <div class="chart-container">
+          <h3 class="chart-title">Xizmatlar (Top 5)</h3>
+          <canvas id="statsServicesChart" height="80"></canvas>
+        </div>
+
+        <!-- Ustalar performance -->
+        <div class="chart-container">
+          <h3 class="chart-title">Ustalar reytingi</h3>
+          <div id="statsMastersTable" class="stats-table"></div>
+        </div>
+
+        <!-- Band vaqtlar issiqlik xaritasi -->
+        <div class="chart-container">
+          <h3 class="chart-title">Band vaqtlar (Kun x Soat)</h3>
+          <div id="statsHeatmapContainer" class="stats-heatmap"></div>
+        </div>
+
+        <!-- Holat taqsimoti -->
+        <div class="chart-container">
+          <h3 class="chart-title">Holat taqsimoti</h3>
+          <canvas id="statsStatusChart" height="80"></canvas>
+        </div>
+
+        <!-- Reyting va sharhlar -->
+        <div class="chart-container">
+          <h3 class="chart-title">Sharhlar va reyting</h3>
+          <div id="statsReviewsInfo" class="stats-reviews-info"></div>
+        </div>
+      </div>
+
+      <!-- Bo'sh natija holati -->
+      <div id="statsEmpty" class="hidden" style="text-align:center; padding:60px 0; color:var(--ink-3);">
+        <i class="fa-solid fa-inbox" style="font-size:26px;"></i>
+        <div style="margin-top:10px; font-size:13px;">Bu oraliqda bron topilmadi.</div>
       </div>
     </section>
   </main>
@@ -1497,6 +1612,8 @@
 <div id="toastHost"></div>
 
 <script src="/js/vendor/supabase.js"></script>
+<!-- Chart.js: grafiklar uchun (statistika bo'limi) — admin.js dan OLDIN yuklanishi kerak -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4/dist/chart.umd.min.js"></script>
 <script type="module" src="/admin/admin.js"></script>
 <!-- Eslatma: kesh muammosi vercel.json orqali server darajasida hal qilingan
      (Cache-Control: no-cache, must-revalidate) — bu yerda qo'lda versiya
