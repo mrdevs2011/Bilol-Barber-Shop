@@ -7,7 +7,7 @@ import { initAdminPWA } from './pwa.js';
 import { uzLatinToCyrillic } from './translit.js';
 import { initOfflineBanner, isOnline } from '../js/offline.js';
 import { isPushSupported, isPushSubscribed, subscribeToPush, unsubscribeFromPush } from '../js/push.js';
-import { renderStatsPanel, initStatsView } from './stats.js';
+import { renderStatsPanel, initStatsView, getCurrentStatsRange } from './stats.js';
 
 // Admin panelni PWA sifatida o'rnatish uchun Service Worker'ni ro'yxatdan
 // o'tkazadi (mijozlar saytidagidan alohida o'rnatilganlik belgisi bilan —
@@ -62,7 +62,8 @@ let moodTimer = null;
 let realtimeChannel = null;
 let wakeLock = null;
 let manualLogout = false; // "Chiqish" tugmasi bosilganda true bo'ladi — shunda avtomatik qayta kirish ishlamaydi
-let currentStatsRange = 'today'; // Statistika bo'limidagi tanlangan sana oralig'i ('today', 'week', 'month', 'custom' va h.k.)
+// Statistika bo'limidagi sana oralig'i endi stats.js modulida saqlanadi
+// (getCurrentStatsRange()) — bu yerda alohida holat kerak emas.
 
 // ---------------------------------------------------------------------------
 // "Bu qurilmani eslab qol" — do'konda doimiy turadigan tablet uchun.
@@ -1568,7 +1569,7 @@ function activateView(view, { pushUrl = true } = {}) {
   }
   if (view === 'stats') {
     // Statistika bo'limi: sana oralig'ini belgilab, ma'lumot yuklash va tahlilni boshlash
-    renderStatsPanel(currentStatsRange);
+    renderStatsPanel(getCurrentStatsRange());
   }
   if (view === 'dash') {
     // Bugungi ustalar holati va navbat — darhol yangilab ko'rsatamiz

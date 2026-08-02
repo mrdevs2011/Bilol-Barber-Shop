@@ -163,19 +163,28 @@ async function fetchStatsComments(supabaseClient, fromDate, toDate) {
 /** KPI kartalar va grafiklar yuklanmoqda holatini ko'rsatadi yoki o'chiradi. */
 function showStatsLoading(isLoading) {
   const kpiRow = document.getElementById('statsKpiRow');
-  if (!kpiRow) return;
+  const chartsGrid = document.querySelector('.stats-charts-grid');
 
   if (isLoading) {
     // KPI kartalarni skeleton bilan to'ldirish
-    kpiRow.querySelectorAll('.stat-value').forEach(el => {
+    kpiRow?.querySelectorAll('.stat-value').forEach(el => {
       el.textContent = '...';
       el.style.opacity = '0.5';
     });
+    // Grafik/jadval joylarini ham xiralashtirib, "yuklanyapti" holatini bildiramiz
+    if (chartsGrid) {
+      chartsGrid.style.opacity = '0.4';
+      chartsGrid.style.pointerEvents = 'none';
+    }
   } else {
     // Skeleton olib tashlash
-    kpiRow.querySelectorAll('.stat-value').forEach(el => {
+    kpiRow?.querySelectorAll('.stat-value').forEach(el => {
       el.style.opacity = '1';
     });
+    if (chartsGrid) {
+      chartsGrid.style.opacity = '1';
+      chartsGrid.style.pointerEvents = '';
+    }
   }
 }
 
@@ -883,14 +892,58 @@ function renderReviewsInfo(comments) {
   `;
 }
 
+// Har bir renderStatsPanel() chaqiruvi o'ziga xos ID oladi — tarmoq sekin
+// bo'lib, foydalanuvchi filterni tez-tez almashtirsa, faqat ENG OXIRGI
+// so'rov natijasi ekranga chiqishi kerak (eskisi "kechikib" kelib, yangi
+// natija ustiga yozib qo'ymasligi uchun).
+let statsRequestId = 0;
+
+// Joriy tanlangan sana oralig'i — admin.js "Statistika" tabiga qaytganda
+// (masalan boshqa bo'limga o'tib qaytgach) shu qiymatni ishlatadi, aks
+// holda filter har safar "Bugun"ga qaytib qolar edi.
+let currentStatsRange = 'today';
+
+/** admin.js uchun: foydalanuvchi oxirgi marta tanlagan sana oralig'ini
+ *  qaytaradi (tab almashtirilganda filter holatini saqlab qolish uchun). */
+export function getCurrentStatsRange() {
+  return currentStatsRange;
+}
+
+/** Chart.js mavjud bo'lmaganda (masalan offline holatda CDN yuklanmagan)
+ *  grafik joyida shu haqda xabar ko'rsatadi va canvas'ni yashiradi. */
+function showChartUnavailable(canvasId) {
+  const canvas = document.getElementById(canvasId);
+  if (!canvas) return;
+  canvas.style.display = 'none';
+
+  const container = canvas.closest('.chart-container');
+  if (container && !container.querySelector('.chart-unavailable-msg')) {
+    const msg = document.createElement('div');
+    msg.className = 'chart-unavailable-msg';
+    msg.style.cssText = 'padding:20px 0; text-align:center; font-size:12.5px; color:var(--ink-3);';
+    msg.textContent = 'Grafik yuklanmadi (internet kerak)';
+    container.appendChild(msg);
+  }
+}
+
 /** Statistika sahifasini yangilaydi: ma'lumot yuklash, KPI hisoblash, grafiklar chizish.
  *  admin.js da global 'supabaseClient' ishlatiladi. */
 export async function renderStatsPanel(rangeOrCustom = 'today') {
-  // Chart.js yuklanganmi tekshirish
-  if (typeof Chart === 'undefined') {
-    console.error('Chart.js yuklanmadi');
-    toast('Grafiklar uchun kutubxona yuklanmadi. Brauzer konsolini tekshiring.', 'error');
-    return;
+  // Bu chaqiruvni identifikatsiya qilamiz — oxirida, agar orada boshqa
+  // (yangiroq) chaqiruv boshlangan bo'lsa, natijani ekranga chiqarmay
+  // to'xtaymiz (eski javob yangisi ustidan yozib qo'ymasin).
+  const requestId = ++statsRequestId;
+
+  // Keyingi safar tab almashtirilib qaytilganda ham shu oraliq ishlatilsin
+  currentStatsRange = rangeOrCustom;
+
+  // Chart.js yuklanganmi tekshirish — yuklanmagan bo'lsa ham sahifa butunlay
+  // ishlamay qolmasligi kerak: KPI kartalar, jadval va heatmap Chart.js'siz
+  // ham ishlaydi, faqat canvas-grafiklar o'rniga ogohlantirish chiqadi.
+  const chartJsAvailable = typeof Chart !== 'undefined';
+  if (!chartJsAvailable) {
+    console.error('Chart.js yuklanmadi — faqat grafiklar cheklanadi, qolgan bo\'limlar ishlayveradi');
+    toast('Grafiklar uchun kutubxona yuklanmadi. Boshqa ma\'lumotlar baribir ko\'rsatiladi.', 'error');
   }
 
   // Supabase clientini window'dan olamiz (admin.js tomonidan expose qilingan)
@@ -913,6 +966,9 @@ export async function renderStatsPanel(rangeOrCustom = 'today') {
     dateRange.to
   );
 
+  // Orada yangiroq so'rov boshlangan bo'lsa — bu javobni e'tiborsiz qoldiramiz
+  if (requestId !== statsRequestId) return;
+
   if (bookingsError || !bookings) {
     showStatsEmpty(true);
     return;
@@ -928,6 +984,10 @@ export async function renderStatsPanel(rangeOrCustom = 'today') {
   // Kommentlarni ham yuklash (KPI uchun)
   const { comments } = await fetchStatsComments(supabaseClient, dateRange.from, dateRange.to);
 
+  // Yana bir bor tekshiramiz — kommentlar so'rovi davomida ham yangi filter
+  // bosilgan bo'lishi mumkin
+  if (requestId !== statsRequestId) return;
+
   console.log('Yuklangan bronlar:', bookings.length);
   console.log('Yuklangan kommentlar:', comments.length);
 
@@ -938,25 +998,22 @@ export async function renderStatsPanel(rangeOrCustom = 'today') {
   // KPI kartalarni yangilash
   updateKpiCards(kpis, comments);
 
-  // ===== STEP 4: Grafiklar chizish =====
-  drawRevenueChart(bookings, dateRange);
+  // ===== STEP 4-5-8: Chart.js kerak bo'lgan grafiklar =====
+  if (chartJsAvailable) {
+    document.querySelectorAll('.chart-unavailable-msg').forEach(el => el.remove());
+    drawRevenueChart(bookings, dateRange);
+    drawServicesChart(bookings);
+    drawStatusChart(bookings);
+  } else {
+    showChartUnavailable('statsRevenueChart');
+    showChartUnavailable('statsServicesChart');
+    showChartUnavailable('statsStatusChart');
+  }
 
-  // ===== STEP 5: Xizmatlar bo'yicha taqsimot =====
-  drawServicesChart(bookings);
-
-  // ===== STEP 6: Ustalar reytingi =====
+  // ===== STEP 6-7: Chart.js'siz ham ishlaydigan bo'limlar =====
   renderMastersTable(bookings);
-
-  // ===== STEP 7: Band vaqtlar issiqlik xaritasi =====
   renderHeatmap(bookings);
-
-  // ===== STEP 8: Holat taqsimoti + sharhlar/reyting =====
-  drawStatusChart(bookings);
   renderReviewsInfo(comments);
-
-  // Keyingi bosqich (9): silliqlash/UX — barcha bo'limlar shu bitta chaqiruv
-  // orqali allaqachon birgalikda yangilanadi, qo'shimcha ish qolgani mobil/bo'sh
-  // holatlarni sinovdan o'tkazish.
 }
 
 /** Statistika bo'limini birinchi marta initsializatsiya qiladi:
@@ -982,10 +1039,15 @@ export async function initStatsView() {
   applyCustomBtn?.addEventListener('click', () => {
     const fromDate = document.getElementById('statsFromDate').value;
     const toDate = document.getElementById('statsToDate').value;
-    if (fromDate && toDate) {
-      // Custom sana bo'lsa, tugmalardan active klassni olib tashlash
-      filterBtns.forEach(b => b.classList.remove('active'));
-      renderStatsPanel({ from: fromDate, to: toDate });
+    if (!fromDate || !toDate) return;
+
+    if (fromDate > toDate) {
+      toast('"Dan" sanasi "Gacha" sanasidan keyin bo\'lishi mumkin emas', 'error');
+      return;
     }
+
+    // Custom sana bo'lsa, tugmalardan active klassni olib tashlash
+    filterBtns.forEach(b => b.classList.remove('active'));
+    renderStatsPanel({ from: fromDate, to: toDate });
   });
 }
