@@ -490,14 +490,14 @@ function drawRevenueChart(bookings, dateRange) {
         {
           label: 'Tushum (so\'m)',
           data: chartData.data,
-          borderColor: 'var(--brass-deep)', // #8A6A18 — chiziqning o'zi
+          borderColor: '#8A6A18', // --brass-deep (canvas var() ni tushunmaydi)
           backgroundColor: 'rgba(201, 162, 39, 0.15)', // --brass, yengil fon
           borderWidth: 2.5,
           tension: 0.4, // silliq egri chiziq (rasmga mos)
           fill: true,
           pointRadius: 3,
           pointHoverRadius: 5,
-          pointBackgroundColor: 'var(--brass-deep)',
+          pointBackgroundColor: '#8A6A18', // --brass-deep
           pointBorderColor: '#fff',
           pointBorderWidth: 1.5,
         },
@@ -582,8 +582,8 @@ function drawServicesChart(bookings) {
         {
           label: 'Tushum (so\'m)',
           data: serviceStats.map(s => s.revenue),
-          backgroundColor: 'var(--brass)',
-          borderColor: 'var(--brass-deep)',
+          backgroundColor: '#C9A227', // --brass (canvas var() ni tushunmaydi)
+          borderColor: '#8A6A18', // --brass-deep
           borderWidth: 1,
           borderRadius: 4,
         },
@@ -805,11 +805,17 @@ function computeStatusBreakdown(bookings) {
     else if (booking.status === 'new' || booking.status === 'confirmed') pending++;
   });
 
+  // Eslatma: rang qiymatlari qat'iy hex sifatida berilgan ("var(--jade)"
+  // emas), chunki Chart.js <canvas>ga chizadi — Canvas 2D konteksti
+  // CSS custom property (var(--x)) sintaksisini tushunmaydi, faqat DOM
+  // elementlarining haqiqiy CSS xossalarida ishlaydi. Qiymatlar
+  // admin/index.html'dagi :root o'zgaruvchilari bilan bir xil bo'lishi
+  // shart (--jade, --amber, --red, --sky).
   return [
-    { label: 'Bajarilgan', count: done, color: 'var(--jade)' },
-    { label: 'Kelmagan (no-show)', count: noShow, color: 'var(--amber)' },
-    { label: 'Bekor qilingan', count: cancelled, color: 'var(--red)' },
-    { label: 'Kutilmoqda', count: pending, color: 'var(--sky)' },
+    { label: 'Bajarilgan', count: done, color: '#1C7A54' },
+    { label: 'Kelmagan (no-show)', count: noShow, color: '#A9690B' },
+    { label: 'Bekor qilingan', count: cancelled, color: '#B7362B' },
+    { label: 'Kutilmoqda', count: pending, color: '#2857A6' },
   ].filter(item => item.count > 0);
 }
 
@@ -840,7 +846,7 @@ function drawStatusChart(bookings) {
         {
           data: breakdown.map(b => b.count),
           backgroundColor: breakdown.map(b => b.color),
-          borderColor: 'var(--panel)',
+          borderColor: '#FFFFFF', // --panel bilan bir xil (canvas var() ni tushunmaydi)
           borderWidth: 2,
         },
       ],
