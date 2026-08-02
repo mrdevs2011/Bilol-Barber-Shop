@@ -1020,6 +1020,23 @@
     border-color:var(--brass);
   }
 
+  .stats-compare-toggle{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    font-size:13px;
+    color:var(--ink-2);
+    cursor:pointer;
+    user-select:none;
+  }
+
+  .stats-compare-toggle input[type="checkbox"]{
+    width:16px;
+    height:16px;
+    accent-color:var(--brass);
+    cursor:pointer;
+  }
+
   .stats-charts-grid{
     display:grid;
     grid-template-columns:repeat(auto-fit, minmax(400px, 1fr));
@@ -1477,6 +1494,10 @@
           <button type="button" class="stats-filter-btn" data-range="30days">Oxirgi 30 kun</button>
           <button type="button" class="stats-filter-btn" data-range="3months">Oxirgi 3 oy</button>
         </div>
+        <label class="stats-compare-toggle">
+          <input type="checkbox" id="statsCompareToggle">
+          Oldingi davr bilan solishtirish
+        </label>
       </div>
 
       <!-- KPI kartalar qatori -->

@@ -86,6 +86,30 @@ function computeDateRange(rangeOrCustom) {
   };
 }
 
+/** Berilgan sana oralig'iga TENG UZUNLIKDAGI, undan darhol OLDIN keladigan
+ *  davrni hisoblaydi ("solishtirish" rejimi uchun). Masalan "Shu oy"
+ *  (1-31 avgust) tanlansa — bu "o'tgan oy"ga to'g'ri kelmasligi mumkin
+ *  (chunki oylar uzunligi har xil), aniqrog'i "shu oralig'dan oldingi
+ *  xuddi shuncha kunlik davr" (masalan 31 kunlik "shu oy" uchun oldingi
+ *  31 kun). Bu — eng sodda va universal solishtirish mantig'i, chunki
+ *  har qanday range (custom sana ham) uchun ishlaydi. */
+function computePreviousDateRange(dateRange) {
+  const fromDate = new Date(dateRange.from + 'T00:00:00Z');
+  const toDate = new Date(dateRange.to + 'T00:00:00Z');
+  const daysCount = Math.round((toDate - fromDate) / (1000 * 60 * 60 * 24)) + 1;
+
+  const prevTo = new Date(fromDate);
+  prevTo.setUTCDate(prevTo.getUTCDate() - 1);
+
+  const prevFrom = new Date(prevTo);
+  prevFrom.setUTCDate(prevFrom.getUTCDate() - (daysCount - 1));
+
+  return {
+    from: dateToString(prevFrom),
+    to: dateToString(prevTo),
+  };
+}
+
 // =============================================================================
 // SUPABASE MA'LUMOT YUKLASH
 // =============================================================================
@@ -463,8 +487,13 @@ function prepareRevenueChartData(bookings, dateRange) {
 /** Tushum grafigini Chart.js bilan chizadi (silliq trend chizig'i — line chart).
  *  Bar o'rniga line tanlangan, chunki tushum vaqt o'tishi bilan qanday
  *  o'zgarayotgani (o'sish/tushish yo'nalishi) bar'dan ko'ra egri chiziqda
- *  yaqqolroq ko'rinadi. */
-function drawRevenueChart(bookings, dateRange) {
+ *  yaqqolroq ko'rinadi.
+ *  compareBookings/compareDateRange berilsa — ikkinchi (oldingi davr)
+ *  chiziq ham qo'shiladi, kun tartib raqami bo'yicha tekislanadi (haqiqiy
+ *  sanalar farq qilgani uchun "1-kun vs 1-kun" tarzida solishtiriladi).
+ *  Legend ko'rsatilganda Chart.js standart holatda uni bosib chiziqni
+ *  yoqish/o'chirish imkonini beradi — buning uchun alohida kod kerak emas. */
+function drawRevenueChart(bookings, dateRange, compareBookings = null, compareDateRange = null) {
   const canvas = document.getElementById('statsRevenueChart');
   if (!canvas) return;
 
@@ -482,33 +511,64 @@ function drawRevenueChart(bookings, dateRange) {
 
   canvas.style.display = 'block';
 
+  const datasets = [
+    {
+      label: 'Joriy davr',
+      data: chartData.data,
+      borderColor: '#8A6A18', // --brass-deep (canvas var() ni tushunmaydi)
+      backgroundColor: 'rgba(201, 162, 39, 0.15)', // --brass, yengil fon
+      borderWidth: 2.5,
+      tension: 0.4, // silliq egri chiziq
+      fill: true,
+      pointRadius: 3,
+      pointHoverRadius: 5,
+      pointBackgroundColor: '#8A6A18', // --brass-deep
+      pointBorderColor: '#fff',
+      pointBorderWidth: 1.5,
+    },
+  ];
+
+  if (compareBookings && compareDateRange) {
+    const compareData = prepareRevenueChartData(compareBookings, compareDateRange);
+    // Kun tartib raqami bo'yicha tekislaymiz — chartData.labels uzunligiga
+    // moslab, yetishmagan kunlarga 0 qo'yamiz (masalan oldingi davr
+    // qisqaroq bo'lib chiqsa, oy uzunligi farqi kabi holatlarda).
+    const alignedCompareData = chartData.labels.map((_, i) => compareData.data[i] ?? 0);
+
+    datasets.push({
+      label: 'Oldingi davr',
+      data: alignedCompareData,
+      borderColor: '#8A93A6', // neytral kulrang-ko'k, joriy davrdan ajralib tursin
+      backgroundColor: 'rgba(138, 147, 166, 0.10)',
+      borderWidth: 2,
+      borderDash: [6, 4], // punktir chiziq — vizual ravishda "o'tmish" ekanini bildiradi
+      tension: 0.4,
+      fill: true,
+      pointRadius: 3,
+      pointHoverRadius: 5,
+      pointBackgroundColor: '#8A93A6',
+      pointBorderColor: '#fff',
+      pointBorderWidth: 1.5,
+    });
+  }
+
   window.revenueChartInstance = new Chart(canvas, {
     type: 'line',
     data: {
       labels: chartData.labels,
-      datasets: [
-        {
-          label: 'Tushum (so\'m)',
-          data: chartData.data,
-          borderColor: '#8A6A18', // --brass-deep (canvas var() ni tushunmaydi)
-          backgroundColor: 'rgba(201, 162, 39, 0.15)', // --brass, yengil fon
-          borderWidth: 2.5,
-          tension: 0.4, // silliq egri chiziq (rasmga mos)
-          fill: true,
-          pointRadius: 3,
-          pointHoverRadius: 5,
-          pointBackgroundColor: '#8A6A18', // --brass-deep
-          pointBorderColor: '#fff',
-          pointBorderWidth: 1.5,
-        },
-      ],
+      datasets,
     },
     options: {
       responsive: true,
       maintainAspectRatio: true,
       plugins: {
         legend: {
-          display: false,
+          // Faqat solishtirish rejimida ko'rsatamiz — bitta chiziq bo'lsa
+          // legend keraksiz joy egallaydi (avvalgi xatti-harakat saqlanadi).
+          display: datasets.length > 1,
+          position: 'top',
+          align: 'end',
+          labels: { boxWidth: 12, font: { size: 12 }, usePointStyle: true },
         },
       },
       scales: {
@@ -1077,6 +1137,27 @@ export async function renderStatsPanel(rangeOrCustom = 'today') {
   // bosilgan bo'lishi mumkin
   if (requestId !== statsRequestId) return;
 
+  // "Oldingi davr bilan solishtirish" checkbox belgilangan bo'lsa — o'sha
+  // davr uchun ham bronlarni yuklaymiz (faqat tushum grafigida ishlatiladi,
+  // KPI/boshqa bo'limlar hozircha faqat joriy davrga tegishli qoladi).
+  const compareToggle = document.getElementById('statsCompareToggle');
+  let compareBookings = null;
+  let compareDateRange = null;
+
+  if (compareToggle?.checked) {
+    compareDateRange = computePreviousDateRange(dateRange);
+    const { bookings: prevBookings } = await fetchStatsBookings(
+      supabaseClient,
+      compareDateRange.from,
+      compareDateRange.to
+    );
+
+    // Orada yangiroq so'rov boshlangan bo'lsa — bu javobni e'tiborsiz qoldiramiz
+    if (requestId !== statsRequestId) return;
+
+    compareBookings = prevBookings || [];
+  }
+
   console.log('Yuklangan bronlar:', bookings.length);
   console.log('Yuklangan kommentlar:', comments.length);
 
@@ -1090,7 +1171,7 @@ export async function renderStatsPanel(rangeOrCustom = 'today') {
   // ===== STEP 4-5-8: Chart.js kerak bo'lgan grafiklar =====
   if (chartJsAvailable) {
     document.querySelectorAll('.chart-unavailable-msg').forEach(el => el.remove());
-    drawRevenueChart(bookings, dateRange);
+    drawRevenueChart(bookings, dateRange, compareBookings, compareDateRange);
     drawServicesChart(bookings);
     drawStatusChart(bookings);
   } else {
@@ -1110,9 +1191,16 @@ export async function renderStatsPanel(rangeOrCustom = 'today') {
 export async function initStatsView() {
   const filterBtns = document.querySelectorAll('.stats-filter-btn');
   const exportCsvBtn = document.getElementById('statsExportCsv');
+  const compareToggle = document.getElementById('statsCompareToggle');
 
   exportCsvBtn?.addEventListener('click', () => {
     exportStatsToCSV(lastLoadedBookings, lastLoadedDateRange);
+  });
+
+  // Checkbox bosilganda joriy tanlangan oraliqni qayta chizamiz — shu bilan
+  // "oldingi davr" chizig'i qo'shiladi/olib tashlanadi.
+  compareToggle?.addEventListener('change', () => {
+    renderStatsPanel(currentStatsRange);
   });
 
   filterBtns.forEach(btn => {
