@@ -903,6 +903,11 @@ let statsRequestId = 0;
 // holda filter har safar "Bugun"ga qaytib qolar edi.
 let currentStatsRange = 'today';
 
+// Oxirgi yuklangan bronlar va sana oralig'i — "CSV yuklab olish" tugmasi
+// qayta so'rov yubormasdan, joriy ko'rinishdagi ma'lumotni eksport qiladi.
+let lastLoadedBookings = [];
+let lastLoadedDateRange = null;
+
 /** admin.js uchun: foydalanuvchi oxirgi marta tanlagan sana oralig'ini
  *  qaytaradi (tab almashtirilganda filter holatini saqlab qolish uchun). */
 export function getCurrentStatsRange() {
@@ -924,6 +929,70 @@ function showChartUnavailable(canvasId) {
     msg.textContent = 'Grafik yuklanmadi (internet kerak)';
     container.appendChild(msg);
   }
+}
+
+// =============================================================================
+// CSV EKSPORT (10-bosqich, ixtiyoriy — MR alohida so'ragani uchun qo'shildi)
+// =============================================================================
+
+/** Bron holatini o'zbekcha o'qish uchun qulay matnga aylantiradi. */
+const STATUS_LABELS_UZ = {
+  done: 'Bajarilgan',
+  no_show: 'Kelmagan (no-show)',
+  cancelled: 'Bekor qilingan',
+  new: 'Yangi',
+  confirmed: 'Tasdiqlangan',
+};
+
+/** CSV katagi uchun qiymatni xavfsiz formatlaydi: ichida vergul, tirnoq
+ *  yoki yangi qator bo'lsa — qo'shtirnoq ichiga oladi (standart CSV qoidasi). */
+function csvEscape(value) {
+  const str = String(value ?? '');
+  if (/[",\n]/.test(str)) {
+    return '"' + str.replace(/"/g, '""') + '"';
+  }
+  return str;
+}
+
+/** Tanlangan sana oralig'idagi bronlarni CSV faylga yig'ib, brauzerda
+ *  yuklab olishni boshlaydi. Tashqi kutubxonasiz — Blob + ObjectURL orqali. */
+function exportStatsToCSV(bookings, dateRange) {
+  if (!bookings || bookings.length === 0) {
+    toast('Eksport qilish uchun ma\'lumot yo\'q', 'error');
+    return;
+  }
+
+  const headers = ['Sana', 'Vaqt', 'Xizmat', 'Usta', 'Mijoz', 'Telefon', 'Narx (so\'m)', 'Holat'];
+  const rows = bookings.map(b => [
+    b.booking_date || '',
+    b.booking_time || '',
+    b.service_name || '',
+    b.master_name || '',
+    b.client_name || '',
+    b.client_phone || '',
+    b.price || 0,
+    STATUS_LABELS_UZ[b.status] || b.status || '',
+  ]);
+
+  const csvLines = [headers, ...rows].map(row => row.map(csvEscape).join(','));
+  // \uFEFF — UTF-8 BOM: Excel o'zbek/kirill harflarini shusiz noto'g'ri ko'rsatadi
+  const csvContent = '\uFEFF' + csvLines.join('\r\n');
+
+  const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+  const url = URL.createObjectURL(blob);
+
+  const fromLabel = dateRange?.from || 'boshi';
+  const toLabel = dateRange?.to || 'oxiri';
+
+  const link = document.createElement('a');
+  link.href = url;
+  link.download = `statistika_${fromLabel}_${toLabel}.csv`;
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+  URL.revokeObjectURL(url);
+
+  toast('CSV fayl yuklab olindi', 'success');
 }
 
 /** Statistika sahifasini yangilaydi: ma'lumot yuklash, KPI hisoblash, grafiklar chizish.
@@ -970,15 +1039,21 @@ export async function renderStatsPanel(rangeOrCustom = 'today') {
   if (requestId !== statsRequestId) return;
 
   if (bookingsError || !bookings) {
+    lastLoadedBookings = [];
+    lastLoadedDateRange = dateRange;
     showStatsEmpty(true);
     return;
   }
 
   if (bookings.length === 0) {
+    lastLoadedBookings = [];
+    lastLoadedDateRange = dateRange;
     showStatsEmpty(true);
     return;
   }
 
+  lastLoadedBookings = bookings;
+  lastLoadedDateRange = dateRange;
   showStatsEmpty(false);
 
   // Kommentlarni ham yuklash (KPI uchun)
@@ -1020,7 +1095,11 @@ export async function renderStatsPanel(rangeOrCustom = 'today') {
  *  filter tugmalariga event listener qo'shadi. */
 export async function initStatsView() {
   const filterBtns = document.querySelectorAll('.stats-filter-btn');
-  const applyCustomBtn = document.getElementById('statsApplyCustom');
+  const exportCsvBtn = document.getElementById('statsExportCsv');
+
+  exportCsvBtn?.addEventListener('click', () => {
+    exportStatsToCSV(lastLoadedBookings, lastLoadedDateRange);
+  });
 
   filterBtns.forEach(btn => {
     btn.addEventListener('click', (e) => {
@@ -1034,20 +1113,5 @@ export async function initStatsView() {
         renderStatsPanel(range);
       }
     });
-  });
-
-  applyCustomBtn?.addEventListener('click', () => {
-    const fromDate = document.getElementById('statsFromDate').value;
-    const toDate = document.getElementById('statsToDate').value;
-    if (!fromDate || !toDate) return;
-
-    if (fromDate > toDate) {
-      toast('"Dan" sanasi "Gacha" sanasidan keyin bo\'lishi mumkin emas', 'error');
-      return;
-    }
-
-    // Custom sana bo'lsa, tugmalardan active klassni olib tashlash
-    filterBtns.forEach(b => b.classList.remove('active'));
-    renderStatsPanel({ from: fromDate, to: toDate });
   });
 }

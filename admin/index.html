@@ -1020,45 +1020,6 @@
     border-color:var(--brass);
   }
 
-  .stats-filter-custom{
-    display:flex;
-    gap:8px;
-    flex-wrap:wrap;
-    align-items:flex-end;
-  }
-
-  .stats-filter-custom label{
-    display:flex;
-    flex-direction:column;
-    gap:4px;
-    font-size:11px;
-    color:var(--ink-2);
-    font-weight:500;
-  }
-
-  .stats-date-input{
-    padding:6px 10px;
-    border:1px solid var(--line);
-    border-radius:4px;
-    font-size:13px;
-    background:#fff;
-  }
-
-  .btn-apply-custom{
-    padding:8px 12px;
-    background:var(--brass);
-    color:#fff;
-    border:none;
-    border-radius:4px;
-    font-size:12px;
-    font-weight:500;
-    cursor:pointer;
-  }
-
-  .btn-apply-custom:hover{
-    background:var(--brass-deep);
-  }
-
   .stats-charts-grid{
     display:grid;
     grid-template-columns:repeat(auto-fit, minmax(400px, 1fr));
@@ -1165,21 +1126,6 @@
     .stats-filter-btn{
       padding:6px 10px;
       font-size:12px;
-    }
-
-    .stats-filter-custom{
-      flex-direction:column;
-      align-items:stretch;
-    }
-
-    .stats-filter-custom label{
-      flex-direction:row;
-      align-items:center;
-      gap:8px;
-    }
-
-    .stats-date-input{
-      flex:1;
     }
   }
 </style>
@@ -1517,6 +1463,9 @@
     <section class="edit-section">
       <div class="edit-section-head">
         <h2 class="display">Statistika</h2>
+        <button type="button" id="statsExportCsv" class="btn-add">
+          <i class="fa-solid fa-download" aria-hidden="true"></i> Yuklab olish (CSV)
+        </button>
       </div>
 
       <!-- Sana oralig'i tanlash paneli -->
@@ -1527,17 +1476,6 @@
           <button type="button" class="stats-filter-btn" data-range="month">Shu oy</button>
           <button type="button" class="stats-filter-btn" data-range="30days">Oxirgi 30 kun</button>
           <button type="button" class="stats-filter-btn" data-range="3months">Oxirgi 3 oy</button>
-        </div>
-        <div class="stats-filter-custom">
-          <label>
-            <span>Dan:</span>
-            <input type="date" id="statsFromDate" class="stats-date-input">
-          </label>
-          <label>
-            <span>Gacha:</span>
-            <input type="date" id="statsToDate" class="stats-date-input">
-          </label>
-          <button type="button" id="statsApplyCustom" class="btn-apply-custom">Qo'llash</button>
         </div>
       </div>
 
