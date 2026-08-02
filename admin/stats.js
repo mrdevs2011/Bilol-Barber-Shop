@@ -879,6 +879,31 @@ function computeStatusBreakdown(bookings) {
   ].filter(item => item.count > 0);
 }
 
+/** Donut yonidagi legend ro'yxatini chizadi (rang nuqtasi + nom + son + foiz —
+ *  Chart.js'ning o'rnatilgan legendi o'rniga, chunki bu ko'rinish (raqamlar
+ *  va foizlar bitta qatorda) standart legend'da mavjud emas). */
+function renderStatusLegend(breakdown, total) {
+  const container = document.getElementById('statsStatusLegend');
+  if (!container) return;
+
+  if (breakdown.length === 0) {
+    container.innerHTML = '';
+    return;
+  }
+
+  container.innerHTML = breakdown.map(item => {
+    const pct = total > 0 ? Math.round((item.count / total) * 100) : 0;
+    return `
+      <div class="stats-status-legend-row">
+        <span class="stats-status-legend-dot" style="background:${item.color}"></span>
+        <span class="stats-status-legend-label">${escapeHtml(item.label)}</span>
+        <span class="stats-status-legend-count">${item.count} ta</span>
+        <span class="stats-status-legend-pct">${pct}%</span>
+      </div>
+    `;
+  }).join('');
+}
+
 /** Holat taqsimoti donut diagrammasini Chart.js bilan chizadi. */
 function drawStatusChart(bookings) {
   const canvas = document.getElementById('statsStatusChart');
@@ -892,11 +917,14 @@ function drawStatusChart(bookings) {
 
   if (breakdown.length === 0) {
     canvas.style.display = 'none';
+    renderStatusLegend([], 0);
     return;
   }
 
   canvas.style.display = 'block';
   const total = breakdown.reduce((sum, item) => sum + item.count, 0);
+
+  renderStatusLegend(breakdown, total);
 
   window.statusChartInstance = new Chart(canvas, {
     type: 'doughnut',
@@ -915,9 +943,11 @@ function drawStatusChart(bookings) {
       responsive: true,
       maintainAspectRatio: true,
       plugins: {
+        // Chart.js'ning o'rnatilgan legendi o'chirilgan — o'rniga
+        // #statsStatusLegend'ga o'zimizning ro'yxatimizni chizamiz (yuqorida,
+        // renderStatusLegend()), chunki unda son+foiz bitta qatorda kerak.
         legend: {
-          position: 'bottom',
-          labels: { boxWidth: 12, font: { size: 11 } },
+          display: false,
         },
         tooltip: {
           callbacks: {

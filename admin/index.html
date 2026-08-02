@@ -1037,6 +1037,57 @@
     cursor:pointer;
   }
 
+  .stats-status-layout{
+    display:flex;
+    align-items:center;
+    gap:20px;
+    flex-wrap:wrap;
+  }
+
+  .stats-status-canvas-wrap{
+    flex:0 0 auto;
+    width:160px;
+  }
+
+  .stats-status-legend{
+    flex:1 1 200px;
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+    min-width:180px;
+  }
+
+  .stats-status-legend-row{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    font-size:13px;
+  }
+
+  .stats-status-legend-dot{
+    width:10px;
+    height:10px;
+    border-radius:50%;
+    flex:0 0 auto;
+  }
+
+  .stats-status-legend-label{
+    flex:1 1 auto;
+    color:var(--ink-2);
+  }
+
+  .stats-status-legend-count{
+    font-weight:600;
+    color:var(--ink);
+  }
+
+  .stats-status-legend-pct{
+    color:var(--ink-3);
+    font-size:12px;
+    min-width:38px;
+    text-align:right;
+  }
+
   .stats-charts-grid{
     display:grid;
     grid-template-columns:repeat(auto-fit, minmax(400px, 1fr));
@@ -1581,7 +1632,12 @@
         <!-- Holat taqsimoti -->
         <div class="chart-container">
           <h3 class="chart-title">Holat taqsimoti</h3>
-          <canvas id="statsStatusChart" height="80"></canvas>
+          <div class="stats-status-layout">
+            <div class="stats-status-canvas-wrap">
+              <canvas id="statsStatusChart" height="80"></canvas>
+            </div>
+            <div id="statsStatusLegend" class="stats-status-legend"></div>
+          </div>
         </div>
 
         <!-- Reyting va sharhlar -->
