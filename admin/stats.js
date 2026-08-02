@@ -9,6 +9,11 @@
 // - Ustalar va xizmatlar bo'yicha tahlil
 // =============================================================================
 
+// generateDaySlots() 30 daqiqalik slotlar beradi (09:00-19:30); band vaqtlar
+// issiqlik xaritasida esa soat darajasida guruhlaymiz — shu funksiyadan faqat
+// ish soatlari oralig'ini (09-19) izchil ushlab turish uchun foydalanamiz.
+import { generateDaySlots } from '../js/data.js';
+
 // =============================================================================
 // SANA ORALIQ HISOBLASH
 // =============================================================================
@@ -503,6 +508,381 @@ function drawRevenueChart(bookings, dateRange) {
   });
 }
 
+// =============================================================================
+// XIZMATLAR BO'YICHA TAQSIMOT (Top 5)
+// =============================================================================
+
+/** Bronlarni xizmat nomi bo'yicha guruhlaydi va har biri uchun buyurtmalar
+ *  sonini hamda tushumni hisoblaydi. Faqat 'done' bronlar hisobga olinadi —
+ *  KPI/tushum grafigidagi mantiq bilan bir xil bo'lishi uchun (bekor
+ *  qilingan yoki hali bo'lib o'tmagan bronning "qaysi xizmat ko'proq
+ *  sotilyapti" degan savolga aloqasi yo'q).
+ *  Qaytaradi: eng ko'p tushum keltirgan 5 ta xizmat, kamayish tartibida.
+ */
+function computeServiceStats(bookings) {
+  const map = {}; // xizmat nomi -> {count, revenue}
+
+  bookings.forEach(booking => {
+    if (booking.status !== 'done') return;
+
+    const name = booking.service_name || 'Noma\'lum xizmat';
+    if (!map[name]) map[name] = { count: 0, revenue: 0 };
+    map[name].count += 1;
+    map[name].revenue += (booking.price || 0);
+  });
+
+  return Object.entries(map)
+    .map(([name, v]) => ({ name, count: v.count, revenue: v.revenue }))
+    .sort((a, b) => b.revenue - a.revenue)
+    .slice(0, 5);
+}
+
+/** Xizmatlar taqsimoti grafigini Chart.js bilan chizadi (gorizontal bar). */
+function drawServicesChart(bookings) {
+  const canvas = document.getElementById('statsServicesChart');
+  if (!canvas) return;
+
+  if (window.servicesChartInstance) {
+    window.servicesChartInstance.destroy();
+  }
+
+  const serviceStats = computeServiceStats(bookings);
+
+  if (serviceStats.length === 0) {
+    canvas.style.display = 'none';
+    return;
+  }
+
+  canvas.style.display = 'block';
+
+  const totalRevenue = serviceStats.reduce((sum, s) => sum + s.revenue, 0);
+
+  window.servicesChartInstance = new Chart(canvas, {
+    type: 'bar',
+    data: {
+      labels: serviceStats.map(s => s.name),
+      datasets: [
+        {
+          label: 'Tushum (so\'m)',
+          data: serviceStats.map(s => s.revenue),
+          backgroundColor: 'var(--brass)',
+          borderColor: 'var(--brass-deep)',
+          borderWidth: 1,
+          borderRadius: 4,
+        },
+      ],
+    },
+    options: {
+      indexAxis: 'y', // gorizontal bar — eng ko'p sotilgan xizmat tepada
+      responsive: true,
+      maintainAspectRatio: true,
+      plugins: {
+        legend: {
+          display: false,
+        },
+        tooltip: {
+          callbacks: {
+            // Har bir ustunda buyurtmalar soni va tushum ulushini (%) ko'rsatamiz
+            label: function (ctx) {
+              const item = serviceStats[ctx.dataIndex];
+              const pct = totalRevenue > 0 ? Math.round((item.revenue / totalRevenue) * 100) : 0;
+              return `${item.count} ta bron · ${item.revenue.toLocaleString()} so'm (${pct}%)`;
+            },
+          },
+        },
+      },
+      scales: {
+        x: {
+          beginAtZero: true,
+          ticks: {
+            callback: function (value) {
+              return value.toLocaleString();
+            },
+          },
+        },
+      },
+    },
+  });
+}
+
+// =============================================================================
+// USTALAR BO'YICHA TAQSIMOT (performance reytingi)
+// =============================================================================
+
+/** HTML-safe matn uchun oddiy escape (stats.js o'z ichida mustaqil,
+ *  admin.js'dagi escapeHtml() import qilinmaydi). */
+function escapeHtml(str) {
+  const div = document.createElement('div');
+  div.textContent = str ?? '';
+  return div.innerHTML;
+}
+
+/** Bronlarni usta nomi bo'yicha guruhlaydi: bajargan bronlar soni, jami
+ *  tushum, o'rtacha chek va no-show foizi (shu usta bo'yicha, xuddi
+ *  umumiy KPI'dagi no-show mantig'i bilan bir xil: no_show / (done + no_show)).
+ *  Qaytaradi: tushum bo'yicha kamayish tartibida massiv.
+ */
+function computeMasterStats(bookings) {
+  const map = {}; // usta nomi -> {doneCount, revenue, noShowCount}
+
+  bookings.forEach(booking => {
+    const name = booking.master_name || 'Noma\'lum usta';
+    if (!map[name]) map[name] = { doneCount: 0, revenue: 0, noShowCount: 0 };
+
+    if (booking.status === 'done') {
+      map[name].doneCount += 1;
+      map[name].revenue += (booking.price || 0);
+    }
+    if (booking.status === 'no_show') {
+      map[name].noShowCount += 1;
+    }
+  });
+
+  return Object.entries(map)
+    .map(([name, v]) => {
+      const denom = v.doneCount + v.noShowCount;
+      return {
+        name,
+        doneCount: v.doneCount,
+        revenue: v.revenue,
+        avgCheck: v.doneCount > 0 ? Math.round(v.revenue / v.doneCount) : 0,
+        noShowRate: denom > 0 ? Math.round((v.noShowCount / denom) * 100) : 0,
+      };
+    })
+    .filter(m => m.doneCount > 0 || m.noShowCount > 0) // umuman ishi bo'lmagan ustalarni ko'rsatmaymiz
+    .sort((a, b) => b.revenue - a.revenue);
+}
+
+/** Ustalar reytingi jadvalini #statsMastersTable ichiga chizadi. */
+function renderMastersTable(bookings) {
+  const container = document.getElementById('statsMastersTable');
+  if (!container) return;
+
+  const masterStats = computeMasterStats(bookings);
+
+  if (masterStats.length === 0) {
+    container.innerHTML = '<div class="stats-table-row"><div>Ma\'lumot yo\'q</div></div>';
+    return;
+  }
+
+  const headerRow = `
+    <div class="stats-table-row stats-table-header">
+      <div>Usta</div>
+      <div>Bronlar</div>
+      <div>Tushum</div>
+      <div>No-show</div>
+    </div>
+  `;
+
+  const dataRows = masterStats.map(m => `
+    <div class="stats-table-row">
+      <div>${escapeHtml(m.name)}</div>
+      <div>${m.doneCount} ta</div>
+      <div>${m.revenue.toLocaleString()} so'm<br><span class="stats-table-sub">O'rtacha: ${m.avgCheck.toLocaleString()} so'm</span></div>
+      <div>${m.noShowRate}%</div>
+    </div>
+  `).join('');
+
+  container.innerHTML = headerRow + dataRows;
+}
+
+// =============================================================================
+// BAND VAQTLAR TAHLILI (kun x soat issiqlik xaritasi)
+// =============================================================================
+
+/** Bronlarni hafta kuni + soat bo'yicha guruhlab, issiqlik xaritasi uchun
+ *  matritsa tayyorlaydi. 'cancelled' bronlar hisobga olinmaydi (bo'lib
+ *  o'tmagan), qolgan barcha holatlar (done/no_show/new/confirmed) — chunki
+ *  bu yerdagi savol "qachon ko'proq mijoz keladi/keladigan bo'lgan",
+ *  faqat "qachon pul tushgan" emas.
+ *  Qaytaradi: {dayOrder, hours, matrix, maxCount}
+ */
+function computeHeatmapData(bookings) {
+  // Dushanbadan boshlab — biznes haftasi shu tartibda o'qilishi tabiiyroq
+  const dayOrder = ['Dushanba', 'Seshanba', 'Chorshanba', 'Payshanba', 'Juma', 'Shanba', 'Yakshanba'];
+  // getUTCDay(): 0=Yakshanba,1=Dushanba,...,6=Shanba -> dayOrder indeksiga moslash
+  const dayIndexMap = { 1: 0, 2: 1, 3: 2, 4: 3, 5: 4, 6: 5, 0: 6 };
+
+  // Ish soatlarini generateDaySlots()dan olamiz (09:00-19:30) — faqat
+  // butun soatlarni ajratib olamiz, chunki heatmap soat darajasida
+  const hourSet = new Set(generateDaySlots().map(slot => parseInt(slot.split(':')[0], 10)));
+  const hours = Array.from(hourSet).sort((a, b) => a - b);
+
+  const matrix = {}; // "dayIdx-hour" -> bron soni
+  let maxCount = 0;
+
+  bookings.forEach(booking => {
+    if (booking.status === 'cancelled') return;
+    if (!booking.booking_date || !booking.booking_time) return;
+
+    try {
+      const dateObj = new Date(booking.booking_date + 'T00:00:00Z');
+      const dayIdx = dayIndexMap[dateObj.getUTCDay()];
+      const hour = parseInt(String(booking.booking_time).split(':')[0], 10);
+      if (isNaN(hour) || !hours.includes(hour)) return;
+
+      const key = `${dayIdx}-${hour}`;
+      matrix[key] = (matrix[key] || 0) + 1;
+      if (matrix[key] > maxCount) maxCount = matrix[key];
+    } catch (e) {
+      // Sana/vaqt parse xatosi — o'tkazib yuboramiz
+    }
+  });
+
+  return { dayOrder, hours, matrix, maxCount };
+}
+
+/** Band vaqtlar issiqlik xaritasini #statsHeatmapContainer ichiga chizadi
+ *  (sof HTML/CSS grid — Chart.js shart emas). */
+function renderHeatmap(bookings) {
+  const container = document.getElementById('statsHeatmapContainer');
+  if (!container) return;
+
+  const { dayOrder, hours, matrix, maxCount } = computeHeatmapData(bookings);
+
+  if (maxCount === 0) {
+    container.innerHTML = '<div style="padding:12px; font-size:13px; color:var(--ink-3);">Ma\'lumot yo\'q</div>';
+    return;
+  }
+
+  const dayShort = ['Du', 'Se', 'Cho', 'Pay', 'Ju', 'Sha', 'Yak'];
+
+  let html = '<div class="heatmap-cell heatmap-corner"></div>';
+  dayShort.forEach(d => {
+    html += `<div class="heatmap-cell heatmap-day-label">${d}</div>`;
+  });
+
+  hours.forEach(hour => {
+    html += `<div class="heatmap-cell heatmap-hour-label">${String(hour).padStart(2, '0')}:00</div>`;
+
+    dayOrder.forEach((dayName, dayIdx) => {
+      const count = matrix[`${dayIdx}-${hour}`] || 0;
+      const intensity = count / maxCount;
+      // Zichlik qancha yuqori bo'lsa, --brass rangi shuncha to'yingan bo'ladi
+      const bg = count > 0 ? `rgba(201, 162, 39, ${(0.15 + intensity * 0.85).toFixed(2)})` : 'var(--canvas)';
+      const textColor = intensity > 0.55 ? '#fff' : 'var(--ink-2)';
+      html += `<div class="heatmap-cell" style="background:${bg}; color:${textColor};" title="${dayName}, ${String(hour).padStart(2, '0')}:00 — ${count} ta bron">${count > 0 ? count : ''}</div>`;
+    });
+  });
+
+  container.innerHTML = html;
+}
+
+// =============================================================================
+// HOLAT TAQSIMOTI (donut chart) + SHARHLAR/REYTING
+// =============================================================================
+
+/** Bronlarni holat bo'yicha 4 guruhga ajratadi: bajarilgan, kelmagan
+ *  (no-show), bekor qilingan, kutilmoqda ('new' + 'confirmed' birlashtirilgan
+ *  — ikkalasi ham "hali yakunlanmagan" degani).
+ *  Bo'sh (0 ta) guruhlar diagrammada chalkashlik keltirmasligi uchun
+ *  filtrlab tashlanadi.
+ */
+function computeStatusBreakdown(bookings) {
+  let done = 0, noShow = 0, cancelled = 0, pending = 0;
+
+  bookings.forEach(booking => {
+    if (booking.status === 'done') done++;
+    else if (booking.status === 'no_show') noShow++;
+    else if (booking.status === 'cancelled') cancelled++;
+    else if (booking.status === 'new' || booking.status === 'confirmed') pending++;
+  });
+
+  return [
+    { label: 'Bajarilgan', count: done, color: 'var(--jade)' },
+    { label: 'Kelmagan (no-show)', count: noShow, color: 'var(--amber)' },
+    { label: 'Bekor qilingan', count: cancelled, color: 'var(--red)' },
+    { label: 'Kutilmoqda', count: pending, color: 'var(--sky)' },
+  ].filter(item => item.count > 0);
+}
+
+/** Holat taqsimoti donut diagrammasini Chart.js bilan chizadi. */
+function drawStatusChart(bookings) {
+  const canvas = document.getElementById('statsStatusChart');
+  if (!canvas) return;
+
+  if (window.statusChartInstance) {
+    window.statusChartInstance.destroy();
+  }
+
+  const breakdown = computeStatusBreakdown(bookings);
+
+  if (breakdown.length === 0) {
+    canvas.style.display = 'none';
+    return;
+  }
+
+  canvas.style.display = 'block';
+  const total = breakdown.reduce((sum, item) => sum + item.count, 0);
+
+  window.statusChartInstance = new Chart(canvas, {
+    type: 'doughnut',
+    data: {
+      labels: breakdown.map(b => b.label),
+      datasets: [
+        {
+          data: breakdown.map(b => b.count),
+          backgroundColor: breakdown.map(b => b.color),
+          borderColor: 'var(--panel)',
+          borderWidth: 2,
+        },
+      ],
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: true,
+      plugins: {
+        legend: {
+          position: 'bottom',
+          labels: { boxWidth: 12, font: { size: 11 } },
+        },
+        tooltip: {
+          callbacks: {
+            label: function (ctx) {
+              const item = breakdown[ctx.dataIndex];
+              const pct = total > 0 ? Math.round((item.count / total) * 100) : 0;
+              return `${item.label}: ${item.count} ta (${pct}%)`;
+            },
+          },
+        },
+      },
+    },
+  });
+}
+
+/** Berilgan reyting uchun yulduzcha ikonalarini HTML sifatida qaytaradi
+ *  (js/reviews.js'dagi starsHtml() bilan bir xil uslub — to'ldirilmagan
+ *  yulduzlar xira ko'rinadi). */
+function starsHtml(rating) {
+  let html = '';
+  const rounded = Math.round(rating);
+  for (let i = 1; i <= 5; i++) {
+    html += `<i class="fa-solid fa-star"${i <= rounded ? '' : ' style="opacity:.25"'}></i>`;
+  }
+  return html;
+}
+
+/** Tanlangan sana oralig'idagi tasdiqlangan sharhlarning o'rtacha reytingi
+ *  va sonini #statsReviewsInfo ichiga chizadi. */
+function renderReviewsInfo(comments) {
+  const container = document.getElementById('statsReviewsInfo');
+  if (!container) return;
+
+  if (!comments || comments.length === 0) {
+    container.innerHTML = '<div style="font-size:13px; color:var(--ink-3);">Bu oraliqda sharh yo\'q</div>';
+    return;
+  }
+
+  const sum = comments.reduce((total, c) => total + (c.rating || 0), 0);
+  const avg = sum / comments.length;
+
+  container.innerHTML = `
+    <div style="font-size:28px; font-weight:700; color:var(--ink);">${avg.toFixed(1)}</div>
+    <div style="font-size:16px; color:var(--brass); margin:4px 0;">${starsHtml(avg)}</div>
+    <div style="font-size:12.5px; color:var(--ink-3);">${comments.length} ta sharh asosida</div>
+  `;
+}
+
 /** Statistika sahifasini yangilaydi: ma'lumot yuklash, KPI hisoblash, grafiklar chizish.
  *  admin.js da global 'supabaseClient' ishlatiladi. */
 export async function renderStatsPanel(rangeOrCustom = 'today') {
@@ -560,8 +940,23 @@ export async function renderStatsPanel(rangeOrCustom = 'today') {
 
   // ===== STEP 4: Grafiklar chizish =====
   drawRevenueChart(bookings, dateRange);
-  
-  // Keyingi bosqichlarda boshqa grafiklar (xizmatlar, ustalar, holat taqsimoti va h.k.) qo'shiladi
+
+  // ===== STEP 5: Xizmatlar bo'yicha taqsimot =====
+  drawServicesChart(bookings);
+
+  // ===== STEP 6: Ustalar reytingi =====
+  renderMastersTable(bookings);
+
+  // ===== STEP 7: Band vaqtlar issiqlik xaritasi =====
+  renderHeatmap(bookings);
+
+  // ===== STEP 8: Holat taqsimoti + sharhlar/reyting =====
+  drawStatusChart(bookings);
+  renderReviewsInfo(comments);
+
+  // Keyingi bosqich (9): silliqlash/UX — barcha bo'limlar shu bitta chaqiruv
+  // orqali allaqachon birgalikda yangilanadi, qo'shimcha ish qolgani mobil/bo'sh
+  // holatlarni sinovdan o'tkazish.
 }
 
 /** Statistika bo'limini birinchi marta initsializatsiya qiladi:

@@ -1098,9 +1098,23 @@
     border-bottom:none;
   }
 
+  .stats-table-header{
+    font-weight:600;
+    color:var(--ink-3);
+    font-size:11.5px;
+    text-transform:uppercase;
+    letter-spacing:.02em;
+  }
+
+  .stats-table-sub{
+    font-size:11px;
+    color:var(--ink-3);
+    font-weight:400;
+  }
+
   .stats-heatmap{
     display:grid;
-    grid-template-columns:repeat(7, 1fr);
+    grid-template-columns:38px repeat(7, 1fr);
     gap:4px;
     margin-top:8px;
   }
@@ -1114,6 +1128,21 @@
     font-size:10px;
     font-weight:500;
     cursor:pointer;
+  }
+
+  .heatmap-corner,
+  .heatmap-day-label,
+  .heatmap-hour-label{
+    aspect-ratio:auto;
+    cursor:default;
+    font-size:10.5px;
+    font-weight:600;
+    color:var(--ink-3);
+  }
+
+  .heatmap-hour-label{
+    justify-content:flex-end;
+    padding-right:2px;
   }
 
   .stats-reviews-info{
