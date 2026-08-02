@@ -17,7 +17,9 @@
     { "source": "/admin/blocked", "destination": "/admin/index.html" },
     { "source": "/admin/blocked/", "destination": "/admin/index.html" },
     { "source": "/admin/reviews", "destination": "/admin/index.html" },
-    { "source": "/admin/reviews/", "destination": "/admin/index.html" }
+    { "source": "/admin/reviews/", "destination": "/admin/index.html" },
+    { "source": "/admin/stats", "destination": "/admin/index.html" },
+    { "source": "/admin/stats/", "destination": "/admin/index.html" }
   ],
   "headers": [
     {

@@ -39,7 +39,7 @@ function computeDateRange(rangeOrCustom) {
   }
 
   const range = rangeOrCustom || 'today';
-  to = today;
+  to = new Date(today); // nusxa olish — 'today' keyinroq mutatsiya qilinishi mumkin (masalan 'week' holatida)
 
   switch (range) {
     case 'today':
@@ -398,7 +398,7 @@ function prepareRevenueChartData(bookings, dateRange) {
         // ISO hafta raqamini hisoblash
         const jan4 = new Date(date.getUTCFullYear(), 0, 4);
         const msPerDay = 24 * 60 * 60 * 1000;
-        const weekNum = Math.ceil(((date - jan4) / msPerDay) + jan4.getUTCDay() + 1) / 7;
+        const weekNum = Math.ceil(((date - jan4) / msPerDay + jan4.getUTCDay() + 1) / 7);
         const weekKey = `${date.getUTCFullYear()}-W${String(weekNum).padStart(2, '0')}`;
         
         weeklyData[weekKey] = (weeklyData[weekKey] || 0) + (booking.price || 0);
