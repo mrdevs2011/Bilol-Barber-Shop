@@ -46,6 +46,11 @@ const MIN_CANCEL_NOTICE_MS = 2 * 60 * 60 * 1000;
 
 let cachedBookings = [];
 let countdownTimer = null;
+// Foydalanuvchi o'z bronlariga obuna bo'lgan realtime kanal — admin panelda
+// (yoki boshqa qurilmada) shu mijozning bronini o'zgartirsa/tasdiqlasa/bekor
+// qilsa, sahifa yangilanmasa ham DARHOL shu yerda ko'rinadi.
+let myBookingsChannel = null;
+let myBookingsChannelProfileId = null;
 
 function listEl() { return document.getElementById('myBookingsList'); }
 
@@ -116,11 +121,22 @@ async function loadMyBookings() {
   const profile = getCurrentProfile();
   if (!profile) {
     // Chiqib ketilganda ro'yxatni tozalab qo'yamiz — bo'lim ham
-    // data-auth-logged-in orqali avtomatik yashiriladi.
+    // data-auth-logged-in orqali avtomatik yashiriladi. Realtime obunani
+    // ham uzamiz — chiqib ketgan foydalanuvchining kanali keraksiz osilib
+    // qolmasin.
     cachedBookings = [];
     el.innerHTML = '';
+    unsubscribeMyBookingsRealtime();
     return;
   }
+
+  // Har safar (login, boshqa foydalanuvchi bilan qayta kirish h.k.) shu
+  // profilga mos obunani ta'minlaymiz — funksiya ichida profil o'zgargan
+  // bo'lsa avvalgisini uzib, yangisiga ulanadi.
+  if (myBookingsChannel && myBookingsChannelProfileId !== profile.id) {
+    unsubscribeMyBookingsRealtime();
+  }
+  subscribeMyBookingsRealtime(profile.id);
 
   el.innerHTML = `<p class="col-span-full text-center py-10"><i class="fa-solid fa-spinner fa-spin"></i></p>`;
 
@@ -144,6 +160,43 @@ async function loadMyBookings() {
   }
   cachedBookings = data || [];
   renderList();
+}
+
+/** Faqat shu mijozning bronlariga (user_id bo'yicha filtrlangan) obuna
+ *  bo'ladi — boshqa mijozlarning hodisalari bu yerga umuman kelmaydi
+ *  (filter server tomonida, "masters"/"services" katalogidagi kabi
+ *  butun jadvalga emas). Admin tomonda status o'zgartirilsa (tasdiqlash,
+ *  bekor qilish, "keldi" belgilash) yoki admin qo'lda yangi bron qo'shsa —
+ *  shu funksiya ro'yxatni qayta yuklaydi. */
+function subscribeMyBookingsRealtime(profileId) {
+  const client = getSupabaseClient();
+  if (!client || !profileId || myBookingsChannel) return;
+
+  myBookingsChannel = client
+    .channel(`my-bookings-realtime-${profileId}`)
+    .on(
+      'postgres_changes',
+      { event: '*', schema: 'public', table: 'bookings', filter: `user_id=eq.${profileId}` },
+      () => loadMyBookings()
+    )
+    .subscribe((status) => {
+      if (status === 'CHANNEL_ERROR' || status === 'TIMED_OUT') {
+        console.warn('[realtime] mening-bronlarim kanaliga ulanishda xatolik, holat:', status);
+      }
+    });
+  myBookingsChannelProfileId = profileId;
+}
+
+/** Chiqib ketilganda (yoki foydalanuvchi almashtirilganda) obunani uzadi —
+ *  aks holda avvalgi foydalanuvchining kanali "osilib" qolib, xotira sizib
+ *  chiqishi yoki noto'g'ri profilga bog'lanib qolishi mumkin. */
+function unsubscribeMyBookingsRealtime() {
+  const client = getSupabaseClient();
+  if (myBookingsChannel && client) {
+    client.removeChannel(myBookingsChannel);
+  }
+  myBookingsChannel = null;
+  myBookingsChannelProfileId = null;
 }
 
 async function handleCancel(id, btn) {

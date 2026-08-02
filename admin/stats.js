@@ -505,11 +505,11 @@ function drawRevenueChart(bookings, dateRange, compareBookings = null, compareDa
   const chartData = prepareRevenueChartData(bookings, dateRange);
 
   if (chartData.labels.length === 0) {
-    canvas.style.display = 'none';
+    hideChartCard('statsRevenueChart');
     return;
   }
 
-  canvas.style.display = 'block';
+  showChartCard('statsRevenueChart');
 
   const datasets = [
     {
@@ -626,11 +626,11 @@ function drawServicesChart(bookings) {
   const serviceStats = computeServiceStats(bookings);
 
   if (serviceStats.length === 0) {
-    canvas.style.display = 'none';
+    hideChartCard('statsServicesChart');
     return;
   }
 
-  canvas.style.display = 'block';
+  showChartCard('statsServicesChart');
 
   const totalRevenue = serviceStats.reduce((sum, s) => sum + s.revenue, 0);
 
@@ -916,12 +916,12 @@ function drawStatusChart(bookings) {
   const breakdown = computeStatusBreakdown(bookings);
 
   if (breakdown.length === 0) {
-    canvas.style.display = 'none';
+    hideChartCard('statsStatusChart');
     renderStatusLegend([], 0);
     return;
   }
 
-  canvas.style.display = 'block';
+  showChartCard('statsStatusChart');
   const total = breakdown.reduce((sum, item) => sum + item.count, 0);
 
   renderStatusLegend(breakdown, total);
@@ -1018,15 +1018,41 @@ export function getCurrentStatsRange() {
   return currentStatsRange;
 }
 
+/** Ma'lumot yo'q bo'lganda BUTUN kartani (.chart-container) butunlay
+ *  yashiradi — bo'sh matn bilan emas, karta o'zi sahifadan yo'qoladi.
+ *  Ma'lumot paydo bo'lganda (masalan filter almashtirilganda) showChartCard()
+ *  bilan qaytadan ko'rsatiladi. */
+function hideChartCard(canvasId) {
+  const canvas = document.getElementById(canvasId);
+  if (!canvas) return;
+  const container = canvas.closest('.chart-container');
+  if (container) container.style.display = 'none';
+}
+
+/** hideChartCard() bilan yashirilgan kartani qaytadan ko'rinadigan qiladi. */
+function showChartCard(canvasId) {
+  const canvas = document.getElementById(canvasId);
+  if (!canvas) return;
+  const container = canvas.closest('.chart-container');
+  if (container) container.style.display = '';
+  canvas.style.display = 'block';
+}
+
 /** Chart.js mavjud bo'lmaganda (masalan offline holatda CDN yuklanmagan)
- *  grafik joyida shu haqda xabar ko'rsatadi va canvas'ni yashiradi. */
+ *  grafik joyida shu haqda xabar ko'rsatadi va canvas'ni yashiradi — bu holat
+ *  "ma'lumot yo'q"dan farqli, karta o'zi ko'rinishda qoladi (QA talabi:
+ *  KPI va boshqa qismlar baribir ishlashi kerak, faqat grafik joyida
+ *  ogohlantirish chiqsin). */
 function showChartUnavailable(canvasId) {
   const canvas = document.getElementById(canvasId);
   if (!canvas) return;
   canvas.style.display = 'none';
 
   const container = canvas.closest('.chart-container');
-  if (container && !container.querySelector('.chart-unavailable-msg')) {
+  if (!container) return;
+  container.style.display = ''; // avval hideChartCard bilan yashirilgan bo'lishi mumkin
+
+  if (!container.querySelector('.chart-unavailable-msg')) {
     const msg = document.createElement('div');
     msg.className = 'chart-unavailable-msg';
     msg.style.cssText = 'padding:20px 0; text-align:center; font-size:12.5px; color:var(--ink-3);';
