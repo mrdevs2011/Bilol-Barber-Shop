@@ -460,7 +460,10 @@ function prepareRevenueChartData(bookings, dateRange) {
   return { labels, data: revenueData };
 }
 
-/** Tushum grafigini Chart.js bilan chizadi (bar chart). */
+/** Tushum grafigini Chart.js bilan chizadi (silliq trend chizig'i — line chart).
+ *  Bar o'rniga line tanlangan, chunki tushum vaqt o'tishi bilan qanday
+ *  o'zgarayotgani (o'sish/tushish yo'nalishi) bar'dan ko'ra egri chiziqda
+ *  yaqqolroq ko'rinadi. */
 function drawRevenueChart(bookings, dateRange) {
   const canvas = document.getElementById('statsRevenueChart');
   if (!canvas) return;
@@ -480,18 +483,23 @@ function drawRevenueChart(bookings, dateRange) {
   canvas.style.display = 'block';
 
   window.revenueChartInstance = new Chart(canvas, {
-    type: 'bar',
+    type: 'line',
     data: {
       labels: chartData.labels,
       datasets: [
         {
           label: 'Tushum (so\'m)',
           data: chartData.data,
-          backgroundColor: 'var(--brass)', // #C9A227
-          borderColor: 'var(--brass-deep)', // #8A6A18
-          borderWidth: 1,
-          borderRadius: 4,
-          tension: 0.1,
+          borderColor: 'var(--brass-deep)', // #8A6A18 — chiziqning o'zi
+          backgroundColor: 'rgba(201, 162, 39, 0.15)', // --brass, yengil fon
+          borderWidth: 2.5,
+          tension: 0.4, // silliq egri chiziq (rasmga mos)
+          fill: true,
+          pointRadius: 3,
+          pointHoverRadius: 5,
+          pointBackgroundColor: 'var(--brass-deep)',
+          pointBorderColor: '#fff',
+          pointBorderWidth: 1.5,
         },
       ],
     },
